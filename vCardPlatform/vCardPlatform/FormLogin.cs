@@ -11,9 +11,9 @@ using System.Data.SqlClient;
 
 namespace vCardPlatform
 {
-    public partial class FormLoginAdmin : Form
+    public partial class FormLogin : Form
     {
-        public FormLoginAdmin()
+        public FormLogin()
         {
             InitializeComponent();
         }
@@ -61,6 +61,11 @@ namespace vCardPlatform
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+            pictureLogo.SizeMode = PictureBoxSizeMode.StretchImage;
         }
     }
 }

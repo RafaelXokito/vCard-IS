@@ -21,7 +21,7 @@ namespace vCardPlatform
         private void buttonLogout_Click(object sender, EventArgs e)
         {
             this.Hide();
-            FormLoginAdmin fl = new FormLoginAdmin();
+            FormLogin fl = new FormLogin();
             fl.Show();
         }
 
