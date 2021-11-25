@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<users>
+	<user>
+		<name>Administrator 1</name>
+		<email>a1@mail.pt</email>
+		<phone>1</phone>
+		<password>1234</password>
+		<code>1234</code>
+	</user>
+	<user>
+		<name>Administrator 2</name>
+		<email>a2@mail.pt</email>
+		<phone>2</phone>
+		<password>1234</password>
+		<code>1234</code>
+	</user>
+	<user>
+		<name>Administrator 3</name>
+		<email>a3@mail.pt</email>
+		<phone>3</phone>
+		<password>1234</password>
+		<code>1234</code>
+	</user>
+	<user>
+		<name>Administrator 4</name>
+		<email>a4@mail.pt</email>
+		<phone>4</phone>
+		<password>1234</password>
+		<code>1234</code>
+	</user>
+	<user>
+		<name>Administrator 5</name>
+		<email>a5@mail.pt</email>
+		<phone>5</phone>
+		<password>1234</password>
+		<code>1234</code>
+	</user>
+</users>
