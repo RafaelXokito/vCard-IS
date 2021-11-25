@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<endpoints>
+	<endpoint>
+		<name>MBWayAPI</name>
+		<url>http://localhost:55059</url>
+	</endpoint>
+</endpoints>

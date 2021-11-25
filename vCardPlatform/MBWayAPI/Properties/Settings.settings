@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnStr" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\NOPLEX\Documents\GitHub\vCard-IS\vCardPlatform\MBWayAPI\App_Data\DBMBWay.mdf;Integrated Security=True</Value>
+      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\dcarr\Documents\GitHub\vCard-IS\vCardPlatform\MBWayAPI\App_Data\DBMBWay.mdf;Integrated Security=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>
