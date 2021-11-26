@@ -42,7 +42,23 @@ namespace vCardGateway.Controllers
 
             try
             {
-                handlerXML.createEndpoint(endpoint);
+                handlerXML.CreateEndpoint(endpoint);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("api/endpoints/{name}")]
+        public IHttpActionResult PutEndpoint(string name, Endpoint endpoint)
+        {
+            HandlerXML handlerXML = new HandlerXML(endpointPath);
+
+            try
+            {
+                handlerXML.UpdateEndpoint(name, endpoint);
                 return Ok();
             }
             catch (Exception ex)
@@ -58,7 +74,7 @@ namespace vCardGateway.Controllers
 
             try
             {
-                handlerXML.deleteEndpointByName(name);
+                handlerXML.DeleteEndpointByName(name);
                 return Ok();
             }
             catch (Exception ex)

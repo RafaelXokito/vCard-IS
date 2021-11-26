@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Xml;
 using System.Xml.Schema;
@@ -31,6 +32,7 @@ namespace vCardGateway
             get { return validationMessage; }
         }
 
+        #region ENDPOINTS
         public List<Endpoint> GetEndpoints()
         {
             XmlDocument doc = new XmlDocument();
@@ -43,6 +45,7 @@ namespace vCardGateway
             {
                 Endpoint endpoint = new Endpoint
                 {
+                    Id = node["id"].InnerText,
                     Name = node["name"].InnerText,
                     Url = node["url"].InnerText
                 };
@@ -62,6 +65,7 @@ namespace vCardGateway
 
             Endpoint endpoint = new Endpoint
             {
+                Id = node["id"].InnerText,
                 Name = node["name"].InnerText,
                 Url = node["url"].InnerText
             };
@@ -69,7 +73,7 @@ namespace vCardGateway
             return endpoint;
         }
 
-        public void createEndpoint(Endpoint endpoint)
+        public void CreateEndpoint(Endpoint endpoint)
         {
             if (GetEndpointByName(endpoint.Name) != null)
             {
@@ -84,6 +88,10 @@ namespace vCardGateway
             XmlElement newEndpoint = doc.CreateElement("endpoint");
             root.AppendChild(newEndpoint);
 
+            XmlElement id = doc.CreateElement("id");
+            id.InnerText = Guid.NewGuid().ToString();
+            newEndpoint.AppendChild(id);
+
             XmlElement name = doc.CreateElement("name");
             name.InnerText = endpoint.Name;
             newEndpoint.AppendChild(name);
@@ -95,7 +103,28 @@ namespace vCardGateway
             doc.Save(XmlFilePath);
         }
 
-        public void deleteEndpointByName(string name)
+        public void UpdateEndpoint(string name, Endpoint endpoint)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/endpoints/endpoint[name='{name}']");
+
+            if (node == null)
+            {
+                throw new Exception("The endpoint that you are looking for, does not exist");
+            }
+
+            if (endpoint.Name != null)
+                node["name"].InnerText = endpoint.Name;
+
+            if (endpoint.Url != null)
+                node["url"].InnerText = endpoint.Url;
+
+            doc.Save(XmlFilePath);
+        }
+
+        public void DeleteEndpointByName(string name)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
@@ -116,6 +145,7 @@ namespace vCardGateway
 
             doc.Save(XmlFilePath);
         }
+        #endregion
 
         #region VALIDATE XML WITH SCHEMA FILE
         public bool ValidateXML()

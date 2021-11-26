@@ -80,6 +80,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DBGateway.mdf" />
+    <Content Include="App_Data\DBGateway_log.ldf">
+      <DependentUpon>DBGateway.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="App_Data\endpoints.xml" />
