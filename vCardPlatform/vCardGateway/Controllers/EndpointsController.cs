@@ -3,31 +3,68 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Xml;
+using vCardGateway.Models;
 
 namespace vCardGateway.Controllers
 {
     public class EndpointsController : ApiController
     {
+        private string endpointPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\endpoints.xml";
+
         [Route("api/endpoints")]
-        public IEnumerable<EndPoint> GetEndpoints()
+        public IEnumerable<Endpoint> GetEndpoints()
         {
-            List<EndPoint> endpoints = new List<EndPoint>();
+            HandlerXML handlerXML = new HandlerXML(endpointPath);
 
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\endpoints.xml");
-
-            XmlNodeList nodeList = doc.SelectNodes("//endpoint");
-
-            return endpoints;
+            return handlerXML.GetEndpoints();
         }
 
-        [Route("api/endpoint")]
-        public IHttpActionResult GetEndpoint()
+        [Route("api/endpoints/{name}")]
+        public IHttpActionResult GetEndpoint(string name)
         {
-            return Ok();
+            HandlerXML handlerXML = new HandlerXML(endpointPath);
+
+            Endpoint endpoint = handlerXML.GetEndpointByName(name);
+
+            if (endpoint == null)
+            {
+                return NotFound();
+            }
+            return Ok(endpoint);
+        }
+
+        [Route("api/endpoints")]
+        public IHttpActionResult PostEndpoint(Endpoint endpoint)
+        {
+            HandlerXML handlerXML = new HandlerXML(endpointPath);
+
+            try
+            {
+                handlerXML.createEndpoint(endpoint);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("api/endpoints/{name}")]
+        public IHttpActionResult DeleteEndpoint(string name)
+        {
+            HandlerXML handlerXML = new HandlerXML(endpointPath);
+
+            try
+            {
+                handlerXML.deleteEndpointByName(name);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
     }
 }
