@@ -76,6 +76,7 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxPasswordAdmin.Location = new System.Drawing.Point(73, 318);
             this.textBoxPasswordAdmin.Name = "textBoxPasswordAdmin";
+            this.textBoxPasswordAdmin.PasswordChar = '*';
             this.textBoxPasswordAdmin.Size = new System.Drawing.Size(503, 22);
             this.textBoxPasswordAdmin.TabIndex = 3;
             // 

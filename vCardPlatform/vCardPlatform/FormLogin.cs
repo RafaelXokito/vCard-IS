@@ -18,8 +18,10 @@ namespace vCardPlatform
             InitializeComponent();
         }
 
+        public static string username = "";
         //Connection String
-        string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DatabaseVCardPlatform.mdf;Integrated Security=True;";
+        //string cn = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
+        string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         //button Login Click event
         private void buttonLoginAdmin_Click(object sender, EventArgs e)
         {
@@ -31,12 +33,14 @@ namespace vCardPlatform
 
             try
             {
+                username = textBoxUserNameAdmin.Text;
                 //Create SqlConnection
                 SqlConnection con = new SqlConnection(cs);
-                SqlCommand cmd = new SqlCommand("Select * from tbl_Login where UserName=@username and Password=@password", con);
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("Select * from Administrators where Email=@username and Password=@password", con);
                 cmd.Parameters.AddWithValue("@username", textBoxUserNameAdmin.Text);
                 cmd.Parameters.AddWithValue("@password", textBoxPasswordAdmin.Text);
-                con.Open();
 
                 SqlDataAdapter adapt = new SqlDataAdapter(cmd);
                 DataSet ds = new DataSet();
