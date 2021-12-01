@@ -158,7 +158,7 @@ namespace MBWayAPI.Controllers
         [Route("api/users/{number:int}")]
         public IHttpActionResult PutUser(int number, [FromBody] User user)
         {
-            string queryString = "UPDATE Users SET Password = @password, Name = @name, Email = @email, ConfirmationCode = @confirmationcode, MaximumLimit = @maximumlimit, Photo = @photo Where PhoneNumber = @phonenumber";
+            string queryString = "UPDATE Users SET Name = @name, Email = @email, MaximumLimit = @maximumlimit, Photo = @photo WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -174,13 +174,95 @@ namespace MBWayAPI.Controllers
                 string photo = user.Photo == null ? "" : user.Photo;
                 command.Parameters.AddWithValue("@photo", photo);
 
+                try
+                {
+                    connection.Open();
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return Ok();
+                    }
+                    connection.Close();
+
+                    return NotFound();
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
+        public class Secret
+        {
+            public string Password { get; set; }
+            public string NewPassword { get; set; }
+            public string NewConfirmationCode { get; set; }
+        }
+
+        [Route("api/users/{number:int}/password")]
+        public IHttpActionResult PatchUserPassword(int number, [FromBody] Secret secret)
+        {
+            string queryString = "UPDATE Users SET Password = @newpassword WHERE PhoneNumber = @phonenumber AND Password = @oldpassword";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.Parameters.AddWithValue("@phonenumber", number);
+
                 using (SHA256 sha256 = SHA256.Create())
                 {
-                    string passwordHash = GetHash(sha256, user.Password);
+                    string oldPasswordHash = GetHash(sha256, secret.Password);
+                    command.Parameters.AddWithValue("@oldpassword", oldPasswordHash);
+
+                    string newPasswordHash = GetHash(sha256, secret.NewPassword);
+                    command.Parameters.AddWithValue("@newpassword", newPasswordHash);
+                }
+
+                try
+                {
+                    connection.Open();
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return Ok();
+                    }
+                    connection.Close();
+
+                    return NotFound();
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
+        [Route("api/users/{number:int}/confirmationcode")]
+        public IHttpActionResult PatchUserConfirmationCode(int number, [FromBody] Secret secret)
+        {
+            string queryString = "UPDATE Users SET ConfirmationCode = @newconfirmationcode WHERE PhoneNumber = @phonenumber AND Password = @password";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.Parameters.AddWithValue("@phonenumber", number);
+
+                using (SHA256 sha256 = SHA256.Create())
+                {
+                    string passwordHash = GetHash(sha256, secret.Password);
                     command.Parameters.AddWithValue("@password", passwordHash);
 
-                    string confirmationCodeHash = GetHash(sha256, user.ConfirmationCode);
-                    command.Parameters.AddWithValue("@confirmationcode", confirmationCodeHash);
+                    string newConfirmationCodeHash = GetHash(sha256, secret.NewPassword);
+                    command.Parameters.AddWithValue("@newconfirmationcode", newConfirmationCodeHash);
                 }
 
                 try
@@ -247,16 +329,7 @@ namespace MBWayAPI.Controllers
             {
                 sBuilder.Append(data[i].ToString("x2"));
             }
-
             return sBuilder.ToString();
-        }
-
-        // Verify a hash against a string.
-        private bool VerifyHash(HashAlgorithm hashAlgorithm, string input, string hash)
-        {
-            var hashOfInput = GetHash(hashAlgorithm, input);
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            return comparer.Compare(hashOfInput, hash) == 0;
         }
     }
 }

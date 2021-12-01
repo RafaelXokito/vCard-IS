@@ -48,23 +48,8 @@ namespace vCardGateway
                     Id = node["id"].InnerText,
                     Name = node["name"].InnerText,
                     Endpoint = node["endpoint"].InnerText,
-                    MaxLimit = Convert.ToInt32(node["maxlimit"].InnerText),
-                    Categories = new List<Category>()
+                    MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
                 };
-
-                XmlNodeList categoriesNodeList = node.SelectNodes("/categories/category");
-
-                foreach (XmlNode categoryNode in categoriesNodeList)
-                {
-                    Category category = new Category();
-
-                    string typeString = categoryNode.Attributes["type"].InnerText;
-                    category.Type = (CategoryType)Enum.Parse(typeof(CategoryType), typeString);
-
-                    category.Name = categoryNode.InnerText;
-
-                    entity.Categories.Add(category);
-                }
 
                 entities.Add(entity);
             }
@@ -85,23 +70,8 @@ namespace vCardGateway
                 Id = node["id"].InnerText,
                 Name = node["name"].InnerText,
                 Endpoint = node["endpoint"].InnerText,
-                MaxLimit = Convert.ToInt32(node["maxlimit"].InnerText),
-                Categories = new List<Category>()
+                MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
             };
-
-            XmlNodeList categoriesNodeList = node.SelectNodes("/categories/category");
-
-            foreach (XmlNode categoryNode in categoriesNodeList)
-            {
-                Category category = new Category();
-
-                string typeString = categoryNode.Attributes["type"].InnerText;
-                category.Type = (CategoryType)Enum.Parse(typeof(CategoryType), typeString);
-
-                category.Name = categoryNode.InnerText;
-
-                entity.Categories.Add(category);
-            }
 
             return entity;
         }
@@ -137,20 +107,6 @@ namespace vCardGateway
             maxlimit.InnerText = Convert.ToString(entity.MaxLimit);
             newEntity.AppendChild(maxlimit);
 
-            XmlElement categories = doc.CreateElement("categories");
-
-            foreach (Category cat in entity.Categories)
-            {
-                XmlElement category = doc.CreateElement("category");
-
-                category.InnerText = cat.Name;
-                category.SetAttribute("type", cat.Type.ToString());
-
-                categories.AppendChild(category);
-            }
-
-            newEntity.AppendChild(categories);
-
             doc.Save(XmlFilePath);
         }
 
@@ -174,28 +130,6 @@ namespace vCardGateway
 
             if (entity.MaxLimit != 0)
                 node["maxlimit"].InnerText = Convert.ToString(entity.MaxLimit);
-
-            if (entity.Categories != null)
-            {
-                //Given that categories if required, else need to verify node["categories"] is not null
-                XmlElement categories = node["categories"];
-                if (node["categories"] == null)
-                {
-                    categories = doc.CreateElement("categories");
-                    node.AppendChild(categories);
-                }
-                categories.RemoveAll();
-                
-                foreach (Category category in entity.Categories)
-                {
-                    XmlElement categoryElement = doc.CreateElement("category");
-
-                    categoryElement.InnerText = category.Name;
-                    categoryElement.SetAttribute("type", category.Type.ToString());
-
-                    categories.AppendChild(categoryElement);
-                }
-            }
 
             doc.Save(XmlFilePath);
         }

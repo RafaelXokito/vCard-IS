@@ -16,6 +16,6 @@ namespace MBWayAPI.Models
         public decimal NewBalance { get; set; }
         public string PaymentType { get; set; }
         public string PaymentReference { get; set; }
-        public string Description { get; set; }
+        public int ClassificationId { get; set; }
     }
 }
