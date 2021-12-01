@@ -86,19 +86,20 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
-    <Content Include="App_Data\endpoints.xml" />
+    <Content Include="App_Data\Entities.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\EndpointsController.cs" />
+    <Compile Include="Controllers\EntitiesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HandlerXML.cs" />
-    <Compile Include="Models\Endpoint.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Operations.log" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

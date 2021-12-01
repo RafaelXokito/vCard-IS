@@ -32,115 +32,191 @@ namespace vCardGateway
             get { return validationMessage; }
         }
 
-        #region ENDPOINTS
-        public List<Endpoint> GetEndpoints()
+        #region ENTITIES
+        public List<Entity> GetEntities()
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
             
-            List<Endpoint> endpoints = new List<Endpoint>();
-            XmlNodeList nodeList = doc.SelectNodes("/endpoints/endpoint");
+            List<Entity> entities = new List<Entity>();
+            XmlNodeList nodeList = doc.SelectNodes("/entities/entity");
 
             foreach (XmlNode node in nodeList)
             {
-                Endpoint endpoint = new Endpoint
+                Entity entity = new Entity
                 {
                     Id = node["id"].InnerText,
                     Name = node["name"].InnerText,
-                    Url = node["url"].InnerText
+                    Endpoint = node["endpoint"].InnerText,
+                    MaxLimit = Convert.ToInt32(node["maxlimit"].InnerText),
+                    Categories = new List<Category>()
                 };
-                endpoints.Add(endpoint);
+
+                XmlNodeList categoriesNodeList = node.SelectNodes("/categories/category");
+
+                foreach (XmlNode categoryNode in categoriesNodeList)
+                {
+                    Category category = new Category();
+
+                    string typeString = categoryNode.Attributes["type"].InnerText;
+                    category.Type = (CategoryType)Enum.Parse(typeof(CategoryType), typeString);
+
+                    category.Name = categoryNode.InnerText;
+
+                    entity.Categories.Add(category);
+                }
+
+                entities.Add(entity);
             }
-            return endpoints;
+            return entities;
         }
 
-        public Endpoint GetEndpointByName(string name)
+        public Entity GetEntityByName(string name)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/endpoints/endpoint[name='{name}']");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
 
             if (node == null) return null;
 
-            Endpoint endpoint = new Endpoint
+            Entity entity = new Entity
             {
                 Id = node["id"].InnerText,
                 Name = node["name"].InnerText,
-                Url = node["url"].InnerText
+                Endpoint = node["endpoint"].InnerText,
+                MaxLimit = Convert.ToInt32(node["maxlimit"].InnerText),
+                Categories = new List<Category>()
             };
 
-            return endpoint;
+            XmlNodeList categoriesNodeList = node.SelectNodes("/categories/category");
+
+            foreach (XmlNode categoryNode in categoriesNodeList)
+            {
+                Category category = new Category();
+
+                string typeString = categoryNode.Attributes["type"].InnerText;
+                category.Type = (CategoryType)Enum.Parse(typeof(CategoryType), typeString);
+
+                category.Name = categoryNode.InnerText;
+
+                entity.Categories.Add(category);
+            }
+
+            return entity;
         }
 
-        public void CreateEndpoint(Endpoint endpoint)
+        public void CreateEntity(Entity entity)
         {
-            if (GetEndpointByName(endpoint.Name) != null)
+            if (GetEntityByName(entity.Name) != null)
             {
-                throw new Exception("A endpoint with that name already exists");
+                throw new Exception("A entity with that name already exists");
             }
 
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode root = doc.SelectSingleNode($"/endpoints");
+            XmlNode root = doc.SelectSingleNode($"/entities");
 
-            XmlElement newEndpoint = doc.CreateElement("endpoint");
-            root.AppendChild(newEndpoint);
+            XmlElement newEntity = doc.CreateElement("entity");
+            root.AppendChild(newEntity);
 
             XmlElement id = doc.CreateElement("id");
             id.InnerText = Guid.NewGuid().ToString();
-            newEndpoint.AppendChild(id);
+            newEntity.AppendChild(id);
 
             XmlElement name = doc.CreateElement("name");
-            name.InnerText = endpoint.Name;
-            newEndpoint.AppendChild(name);
+            name.InnerText = entity.Name;
+            newEntity.AppendChild(name);
 
-            XmlElement url = doc.CreateElement("url");
-            url.InnerText = endpoint.Url;
-            newEndpoint.AppendChild(url);
+            XmlElement endpoint = doc.CreateElement("endpoint");
+            endpoint.InnerText = entity.Endpoint;
+            newEntity.AppendChild(endpoint);
 
-            doc.Save(XmlFilePath);
-        }
+            XmlElement maxlimit = doc.CreateElement("maxlimit");
+            maxlimit.InnerText = Convert.ToString(entity.MaxLimit);
+            newEntity.AppendChild(maxlimit);
 
-        public void UpdateEndpoint(string name, Endpoint endpoint)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(XmlFilePath);
+            XmlElement categories = doc.CreateElement("categories");
 
-            XmlNode node = doc.SelectSingleNode($"/endpoints/endpoint[name='{name}']");
-
-            if (node == null)
+            foreach (Category cat in entity.Categories)
             {
-                throw new Exception("The endpoint that you are looking for, does not exist");
+                XmlElement category = doc.CreateElement("category");
+
+                category.InnerText = cat.Name;
+                category.SetAttribute("type", cat.Type.ToString());
+
+                categories.AppendChild(category);
             }
 
-            if (endpoint.Name != null)
-                node["name"].InnerText = endpoint.Name;
-
-            if (endpoint.Url != null)
-                node["url"].InnerText = endpoint.Url;
+            newEntity.AppendChild(categories);
 
             doc.Save(XmlFilePath);
         }
 
-        public void DeleteEndpointByName(string name)
+        public void UpdateEntity(string name, Entity entity)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/endpoints/endpoint[name='{name}']");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
 
             if (node == null)
             {
-                throw new Exception("The endpoint that you are looking for, does not exist");
+                throw new Exception("The entity that you are looking for, does not exist");
+            }
+
+            if (entity.Name != null)
+                node["name"].InnerText = entity.Name;
+
+            if (entity.Endpoint != null)
+                node["endpoint"].InnerText = entity.Endpoint;
+
+            if (entity.MaxLimit != 0)
+                node["maxlimit"].InnerText = Convert.ToString(entity.MaxLimit);
+
+            if (entity.Categories != null)
+            {
+                //Given that categories if required, else need to verify node["categories"] is not null
+                XmlElement categories = node["categories"];
+                if (node["categories"] == null)
+                {
+                    categories = doc.CreateElement("categories");
+                    node.AppendChild(categories);
+                }
+                categories.RemoveAll();
+                
+                foreach (Category category in entity.Categories)
+                {
+                    XmlElement categoryElement = doc.CreateElement("category");
+
+                    categoryElement.InnerText = category.Name;
+                    categoryElement.SetAttribute("type", category.Type.ToString());
+
+                    categories.AppendChild(categoryElement);
+                }
+            }
+
+            doc.Save(XmlFilePath);
+        }
+
+        public void DeleteEntityByName(string name)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
+
+            if (node == null)
+            {
+                throw new Exception("The entity that you are looking for, does not exist");
             }
 
             XmlNode root = node.ParentNode;
 
             if (root.RemoveChild(node) == null)
             {
-                throw new Exception("The endpoint couldn't be deleted with success");
+                throw new Exception("The entity couldn't be deleted with success");
             }
 
             doc.Save(XmlFilePath);
