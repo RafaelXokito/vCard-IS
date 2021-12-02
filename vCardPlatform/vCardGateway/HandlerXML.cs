@@ -56,12 +56,12 @@ namespace vCardGateway
             return entities;
         }
 
-        public Entity GetEntityByName(string name)
+        public Entity GetEntity(string id)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
 
             if (node == null) return null;
 
@@ -78,7 +78,7 @@ namespace vCardGateway
 
         public void CreateEntity(Entity entity)
         {
-            if (GetEntityByName(entity.Name) != null)
+            if (GetEntity(entity.Id) != null)
             {
                 throw new Exception("A entity with that name already exists");
             }
@@ -110,12 +110,12 @@ namespace vCardGateway
             doc.Save(XmlFilePath);
         }
 
-        public void UpdateEntity(string name, Entity entity)
+        public void UpdateEntity(string id, Entity entity)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
 
             if (node == null)
             {
@@ -134,12 +134,12 @@ namespace vCardGateway
             doc.Save(XmlFilePath);
         }
 
-        public void DeleteEntityByName(string name)
+        public void DeleteEntity(string id)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
 
             if (node == null)
             {

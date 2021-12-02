@@ -22,11 +22,12 @@ namespace MBWayAPI.Controllers
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.Parameters.AddWithValue("@number", number);
                 try
                 {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@number", number);
+
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
@@ -125,6 +126,8 @@ namespace MBWayAPI.Controllers
                     string photo = user.Photo == null ? "" : user.Photo;
                     command.Parameters.AddWithValue("@photo", photo);
 
+
+
                     using (SHA256 sha256 = SHA256.Create())
                     {
                         string passwordHash = GetHash(sha256, user.Password);
@@ -158,24 +161,21 @@ namespace MBWayAPI.Controllers
         [Route("api/users/{number:int}")]
         public IHttpActionResult PutUser(int number, [FromBody] User user)
         {
-            string queryString = "UPDATE Users SET Name = @name, Email = @email, MaximumLimit = @maximumlimit, Photo = @photo WHERE PhoneNumber = @phonenumber";
+            string queryString = "UPDATE Users SET Name = @name, Email = @email, Photo = @photo WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.Parameters.AddWithValue("@phonenumber", number);
-                command.Parameters.AddWithValue("@name", user.Name);
-                command.Parameters.AddWithValue("@email", user.Email);
-
-                decimal maxLimit = user.MaximumLimit == 0 ? 5000 : user.MaximumLimit;
-                command.Parameters.AddWithValue("@maximumlimit", maxLimit);
-
-                string photo = user.Photo == null ? "" : user.Photo;
-                command.Parameters.AddWithValue("@photo", photo);
-
                 try
                 {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", number);
+                    command.Parameters.AddWithValue("@name", user.Name);
+                    command.Parameters.AddWithValue("@email", user.Email);
+
+                    string photo = user.Photo == null ? "" : user.Photo;
+                    command.Parameters.AddWithValue("@photo", photo);
+
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -206,25 +206,25 @@ namespace MBWayAPI.Controllers
         [Route("api/users/{number:int}/password")]
         public IHttpActionResult PatchUserPassword(int number, [FromBody] Secret secret)
         {
-            string queryString = "UPDATE Users SET Password = @newpassword WHERE PhoneNumber = @phonenumber AND Password = @oldpassword";
+            string queryString = "UPDATE Users SET Password = @newpassword WHERE PhoneNumber = @phonenumber AND Password = @password";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.Parameters.AddWithValue("@phonenumber", number);
-
-                using (SHA256 sha256 = SHA256.Create())
-                {
-                    string oldPasswordHash = GetHash(sha256, secret.Password);
-                    command.Parameters.AddWithValue("@oldpassword", oldPasswordHash);
-
-                    string newPasswordHash = GetHash(sha256, secret.NewPassword);
-                    command.Parameters.AddWithValue("@newpassword", newPasswordHash);
-                }
-
                 try
                 {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", number);
+
+                    using (SHA256 sha256 = SHA256.Create())
+                    {
+                        string oldPasswordHash = GetHash(sha256, secret.Password);
+                        command.Parameters.AddWithValue("@password", oldPasswordHash);
+
+                        string newPasswordHash = GetHash(sha256, secret.NewPassword);
+                        command.Parameters.AddWithValue("@newpassword", newPasswordHash);
+                    }
+
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -252,21 +252,21 @@ namespace MBWayAPI.Controllers
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.Parameters.AddWithValue("@phonenumber", number);
-
-                using (SHA256 sha256 = SHA256.Create())
-                {
-                    string passwordHash = GetHash(sha256, secret.Password);
-                    command.Parameters.AddWithValue("@password", passwordHash);
-
-                    string newConfirmationCodeHash = GetHash(sha256, secret.NewPassword);
-                    command.Parameters.AddWithValue("@newconfirmationcode", newConfirmationCodeHash);
-                }
-
                 try
                 {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", number);
+
+                    using (SHA256 sha256 = SHA256.Create())
+                    {
+                        string passwordHash = GetHash(sha256, secret.Password);
+                        command.Parameters.AddWithValue("@password", passwordHash);
+
+                        string newConfirmationCodeHash = GetHash(sha256, secret.NewConfirmationCode);
+                        command.Parameters.AddWithValue("@newconfirmationcode", newConfirmationCodeHash);
+                    }
+
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -294,12 +294,12 @@ namespace MBWayAPI.Controllers
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
-
-                command.Parameters.AddWithValue("@phonenumber", number);
-
                 try
                 {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", number);
+
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -322,6 +322,8 @@ namespace MBWayAPI.Controllers
 
         private string GetHash(HashAlgorithm hashAlgorithm, string input)
         {
+            if (input == null) return null;
+
             byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
 
             var sBuilder = new StringBuilder();

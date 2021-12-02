@@ -15,16 +15,16 @@ namespace vCardGateway.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
-        [Route("api/administrators/{email}")]
-        public IHttpActionResult GetAdministrator(string email)
+        [Route("api/administrators/{id:int}")]
+        public IHttpActionResult GetAdministrator(int id)
         {
-            string queryString = "SELECT * FROM Administrators WHERE Email = @email";
+            string queryString = "SELECT * FROM Administrators WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@id", id);
                 try
                 {
                     connection.Open();
@@ -34,6 +34,7 @@ namespace vCardGateway.Controllers
                     {
                         Administrator administrator = new Administrator()
                         {
+                            Id = Convert.ToInt32(reader["Id"]),
                             Email = (string)reader["Email"],
                             Name = (string)reader["Name"],
                             Disabled = (bool)reader["Disabled"]
@@ -73,14 +74,15 @@ namespace vCardGateway.Controllers
 
                     while (reader.Read())
                     {
-                        Administrator user = new Administrator()
+                        Administrator administrator = new Administrator()
                         {
+                            Id = Convert.ToInt32(reader["Id"]),
                             Email = (string)reader["Email"],
                             Name = (string)reader["Name"],
                             Disabled = (bool)reader["Disabled"]
                         };
 
-                        administrators.Add(user);
+                        administrators.Add(administrator);
                     }
                     reader.Close();
 
@@ -98,7 +100,7 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/users")]
+        [Route("api/administrators")]
         public IHttpActionResult PostAdministrator(Administrator administrator)
         {
             string queryString = "INSERT INTO Administrators(Email, Password, Name) VALUES(@email, @password, @name)";
@@ -139,10 +141,10 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/administrators/{email}")]
-        public IHttpActionResult PutAdministrator(string email, [FromBody] Administrator administrator)
+        [Route("api/administrators/{id:int}")]
+        public IHttpActionResult PutAdministrator(int id, [FromBody] Administrator administrator)
         {
-            string queryString = "UPDATE Administrators SET Name = @name, Disabled = @disabled WHERE Email = @email";
+            string queryString = "UPDATE Administrators SET Name = @name, Disabled = @disabled WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -150,13 +152,7 @@ namespace vCardGateway.Controllers
 
                 command.Parameters.AddWithValue("@name", administrator.Name);
                 command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
-                command.Parameters.AddWithValue("@email", email);
-
-                using (SHA256 sha256 = SHA256.Create())
-                {
-                    string passwordHash = GetHash(sha256, administrator.Password);
-                    command.Parameters.AddWithValue("@password", passwordHash);
-                }
+                command.Parameters.AddWithValue("@id", id);
 
                 try
                 {
@@ -180,17 +176,17 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/administrators/{email}/disabled")]
-        public IHttpActionResult PatchAdministratorDisabled(string email, [FromBody] Administrator administrator)
+        [Route("api/administrators/{id:int}/disabled")]
+        public IHttpActionResult PatchAdministratorDisabled(int id, [FromBody] Administrator administrator)
         {
-            string queryString = "UPDATE Administrators SET Disabled = @disabled WHERE Email = @email";
+            string queryString = "UPDATE Administrators SET Disabled = @disabled WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
-                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@id", id);
 
                 try
                 {
@@ -220,16 +216,16 @@ namespace vCardGateway.Controllers
             public string NewPassword { get; set; }
         }
 
-        [Route("api/administrators/{email}/password")]
-        public IHttpActionResult PatchAdministratorPassword(string email, [FromBody] Secret secret)
+        [Route("api/administrators/{id:int}/password")]
+        public IHttpActionResult PatchAdministratorPassword(int id, [FromBody] Secret secret)
         {
-            string queryString = "UPDATE Administrators SET Password = @newpassword WHERE Email = @email AND Password = @oldpassword";
+            string queryString = "UPDATE Administrators SET Password = @newpassword WHERE Id = @id AND Password = @oldpassword";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@id", id);
 
                 using (SHA256 sha256 = SHA256.Create())
                 {
@@ -262,16 +258,16 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/administrators/{email}")]
-        public IHttpActionResult DeleteUser(string email)
+        [Route("api/administrators/{id:int}")]
+        public IHttpActionResult DeleteAdministrator(int id)
         {
-            string queryString = "DELETE FROM Administrators WHERE Email = @email";
+            string queryString = "DELETE FROM Administrators WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                command.Parameters.AddWithValue("@email", email);
+                command.Parameters.AddWithValue("@id", id);
 
                 try
                 {
@@ -297,6 +293,8 @@ namespace vCardGateway.Controllers
 
         private string GetHash(HashAlgorithm hashAlgorithm, string input)
         {
+            if (input == null) return null;
+
             byte[] data = hashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
 
             var sBuilder = new StringBuilder();

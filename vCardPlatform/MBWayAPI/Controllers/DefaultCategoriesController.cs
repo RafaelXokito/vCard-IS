@@ -32,7 +32,7 @@ namespace MBWayAPI.Controllers
                     {
                         DefaultCategory category = new DefaultCategory()
                         {
-                            Id = (int)reader["Id"],
+                            Id = Convert.ToInt32(reader["Id"]),
                             Name = (string)reader["Name"],
                             Type = (string)reader["Type"]
                         };
@@ -73,7 +73,7 @@ namespace MBWayAPI.Controllers
                     {
                         DefaultCategory category = new DefaultCategory()
                         {
-                            Id = (int)reader["Id"],
+                            Id = Convert.ToInt32(reader["Id"]),
                             Name = (string)reader["Name"],
                             Type = (string)reader["Type"]
                         };

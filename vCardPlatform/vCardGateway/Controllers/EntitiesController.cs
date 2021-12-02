@@ -21,12 +21,12 @@ namespace vCardGateway.Controllers
             return handlerXML.GetEntities();
         }
 
-        [Route("api/entities/{name}")]
-        public IHttpActionResult GetEntity(string name)
+        [Route("api/entities/{id}")]
+        public IHttpActionResult GetEntity(string id)
         {
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
-            Entity entity = handlerXML.GetEntityByName(name);
+            Entity entity = handlerXML.GetEntity(id);
 
             if (entity == null)
             {
@@ -51,14 +51,14 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/entities/{name}")]
-        public IHttpActionResult PutEntity(string name, Entity entity)
+        [Route("api/entities/{id}")]
+        public IHttpActionResult PutEntity(string id, Entity entity)
         {
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
             {
-                handlerXML.UpdateEntity(name, entity);
+                handlerXML.UpdateEntity(id, entity);
                 return Ok();
             }
             catch (Exception ex)
@@ -67,14 +67,14 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/entities/{name}")]
-        public IHttpActionResult DeleteEntity(string name)
+        [Route("api/entities/{id}")]
+        public IHttpActionResult DeleteEntity(string id)
         {
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
             {
-                handlerXML.DeleteEntityByName(name);
+                handlerXML.DeleteEntity(id);
                 return Ok();
             }
             catch (Exception ex)

@@ -1,14 +1,20 @@
 <entities>
-	<entity>
-		<id>1</id>
-		<name>VCardAPI</name>
-		<endpoint>http://localhost:60001</endpoint>
-		<maxlimit>5000</maxlimit>
-	</entity>
-	<entity>
-		<id>2</id>
-		<name>MBWayAPI</name>
-		<endpoint>http://localhost:55059</endpoint>
-		<maxlimit>5000</maxlimit>
-	</entity>
+  <entity>
+    <id>1</id>
+    <name>VCardAPI</name>
+    <endpoint>http://localhost:60001</endpoint>
+    <maxlimit>5000</maxlimit>
+  </entity>
+  <entity>
+    <id>2</id>
+    <name>MBWayAPI</name>
+    <endpoint>http://localhost:55059</endpoint>
+    <maxlimit>5000</maxlimit>
+  </entity>
+  <entity>
+    <id>4e8d8e0f-f029-49c2-9357-afceaa4d40cd</id>
+    <name>TesteAPI</name>
+    <endpoint>http://localhost:63021</endpoint>
+    <maxlimit>5000,0</maxlimit>
+  </entity>
 </entities>
