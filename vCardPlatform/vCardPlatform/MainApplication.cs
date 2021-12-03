@@ -14,6 +14,7 @@ namespace vCardPlatform
     public partial class FormMainApplication : Form
     {
         public static string password = "";
+        public static Int64 id = 0;
         //string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
         string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         public FormMainApplication()
@@ -25,10 +26,11 @@ namespace vCardPlatform
             SqlCommand cmd = new SqlCommand("Select * from Administrators where Email=@username", con);
             cmd.Parameters.AddWithValue("@username", FormLogin.username);
             SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-            DataTable ds = new DataTable();
-            adapt.Fill(ds);
-            labelAdministratorName.Text = (string)ds.Rows[0]["Name"];
-            password = (string)ds.Rows[0]["Password"];
+            DataTable dt = new DataTable();
+            adapt.Fill(dt);
+            labelAdministratorName.Text = (string)dt.Rows[0]["Name"];
+            password = (string)dt.Rows[0]["Password"];
+            id = (Int64)dt.Rows[0]["Id"];
 
             con.Close();
         }

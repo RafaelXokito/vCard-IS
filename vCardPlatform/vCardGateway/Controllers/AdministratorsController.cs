@@ -13,8 +13,8 @@ namespace vCardGateway.Controllers
 {
     public class AdministratorsController : ApiController
     {
-        string connectionString = Properties.Settings.Default.ConnStr;
-        //string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
+        //string connectionString = Properties.Settings.Default.ConnStr;
+        string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
 
         [Route("api/administrators/{id:int}")]
         public IHttpActionResult GetAdministrator(int id)
@@ -230,10 +230,12 @@ namespace vCardGateway.Controllers
 
                 using (SHA256 sha256 = SHA256.Create())
                 {
-                    string oldPasswordHash = GetHash(sha256, secret.Password);
+                    //string oldPasswordHash = GetHash(sha256, secret.Password);
+                    string oldPasswordHash = secret.Password;
                     command.Parameters.AddWithValue("@oldpassword", oldPasswordHash);
 
-                    string newPasswordHash = GetHash(sha256, secret.NewPassword);
+                    //string newPasswordHash = GetHash(sha256, secret.NewPassword);
+                    string newPasswordHash = secret.NewPassword;
                     command.Parameters.AddWithValue("@newpassword", newPasswordHash);
                 }
 

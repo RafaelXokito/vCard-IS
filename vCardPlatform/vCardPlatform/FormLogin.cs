@@ -20,8 +20,8 @@ namespace vCardPlatform
 
         public static string username = "";
         //Connection String
-        string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
-        //string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
+        //string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
+        string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         //button Login Click event
         private void buttonLoginAdmin_Click(object sender, EventArgs e)
         {
@@ -44,21 +44,31 @@ namespace vCardPlatform
                 SqlDataAdapter adapt = new SqlDataAdapter(cmd);
                 DataSet ds = new DataSet();
                 adapt.Fill(ds);
+                DataTable dt = new DataTable();
+                adapt.Fill(dt);
                 con.Close();
 
                 int count = ds.Tables[0].Rows.Count;
-                //If count is equal to 1, than show Main Applocation form
-                if (count == 1)
+                bool enable = (bool)dt.Rows[0]["Disabled"];
+                if (!enable)
                 {
-                    username = textBoxUserNameAdmin.Text;
-                    MessageBox.Show("Login Successful!");
-                    this.Hide();
-                    FormMainApplication fm = new FormMainApplication();
-                    fm.Show();
+                    //If count is equal to 1, than show Main Applocation form
+                    if (count == 1)
+                    {
+                        username = textBoxUserNameAdmin.Text;
+                        MessageBox.Show("Login Successful!");
+                        this.Hide();
+                        FormMainApplication fm = new FormMainApplication();
+                        fm.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login Failed!");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Login Failed!");
+                    MessageBox.Show("Account Disabled!");
                 }
             }
             catch (Exception ex)

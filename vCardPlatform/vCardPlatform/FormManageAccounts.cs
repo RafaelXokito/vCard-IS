@@ -44,6 +44,14 @@ namespace vCardPlatform
 
             if (response != null)
             {
+                if (response.Disabled == true)
+                {
+                    buttonDisable.Text = "Enable";
+                }
+                else
+                {
+                    buttonDisable.Text = "Disable";
+                }
                 richTextBoxGet.Text = $"Id: {response.Id}\tName: {response.Name}\tE-mail: {response.Email}\tDisabled: {response.Disabled}\t";
             }
             else {
@@ -55,9 +63,15 @@ namespace vCardPlatform
 
         private void buttonDisable_Click(object sender, EventArgs e)
         {
-            buttonDisable.Text = buttonDisable.Text.Contains("Disable") ? "Enable" : "Disable";
-
-            //richTextBoxGet.Text = $"Disabled: {buttonDisable.Text}\t";
+            //buttonDisable.Text = buttonDisable.Text.Contains("Disable") ? "Enable" : "Disable";
+            bool disable = true;
+            if (buttonDisable.Text == "Disable")
+            {
+                disable = true;
+            }
+            else {
+                disable = false; 
+            }
 
             var client = new RestSharp.RestClient(baseURI);
 
@@ -66,30 +80,39 @@ namespace vCardPlatform
 
             var response = client.Execute<Administrator>(request).Data;
 
-            if (response != null)
+            Administrator admin = new Administrator
             {
+                Id = response.Id,
+                Name = response.Name,
+                Email = response.Email,
+                Password = response.Password,
+                Disabled = disable
+            };
+
+            var requestPatch = new RestSharp.RestRequest("api/administrators/{id}/disabled", RestSharp.Method.PATCH);
+            requestPatch.AddUrlSegment("id", textBoxFilterById.Text);
+
+            requestPatch.AddJsonBody(admin);
+
+            RestSharp.IRestResponse responsePatch = client.Execute(requestPatch);
+
+            if (responsePatch != null)
+            {
+                if (response.Disabled == true)
+                {
+                    buttonDisable.Text = "Enable";
+                }
+                else
+                {
+                    buttonDisable.Text = "Disable";
+                }
                 richTextBoxGet.Text = $"Id: {response.Id}\tName: {response.Name}\tE-mail: {response.Email}\tDisabled: {response.Disabled}\t";
             }
             else
             {
                 richTextBoxGet.Clear();
             }
-
-            Administrator admin = new Administrator
-            {
-                Name = response.Name,
-                Email = response.Email,
-                Password = response.Password
-            };
-
-            var request1 = new RestSharp.RestRequest("api/administrators/{id}/disabled", RestSharp.Method.PATCH);
-            request1.AddUrlSegment("id", textBoxFilterById.Text);
-
-            request1.AddJsonBody(admin);
-
-            RestSharp.IRestResponse response1 = client.Execute(request1);
-
-            MessageBox.Show(response1.StatusCode + " " + response1.ResponseStatus);
+            //MessageBox.Show(response1.StatusCode + " " + response1.ResponseStatus);
         }
 
         private void buttonCreate_Click(object sender, EventArgs e)
