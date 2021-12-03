@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>RESTful web service - Administrators App</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <h2>All Administrators</h2>
+        <ul id="administrators" />
+    </div>
+    <div>
+        <h2>Search by Id</h2>
+        <input type="text" id="adminId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="admin" />
+    </div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+    <script>
+        var uri = 'http://localhost:59458/api/administrators'; //TODO: MUST BE UPDATED
+
+         $(document).ready(function ()
+         {
+            $.get(uri)
+            .done(function (data) {
+                $.each(data, function (key, item) {
+                    //ADD a list item for the admin
+                    $('<li>', { text: formatItem(item) }).appendTo($('#administrators'));
+                });
+            })
+            .fail(function (jqxhr, textStatus, error) {
+                var err = textStatus + ", " + error;
+                alert("Request failed: " + err);
+            });
+         });
+
+         function formatItem(item)
+         {
+            return item.Name + ": " + item.Email;
+         }
+
+         function find()
+         {
+             var id = $('#adminId').val();
+             $.getJSON(uri + '/' + id)
+             .done(function (data) {
+                $('#admin').text(formatItem(data));
+             })
+             .fail(function (jqxhr, textStatus, error) {
+                 var err = textStatus2 + ", " + error;
+                 alert("request failed! : ", err);
+             });
+         } //find()
+    </script>
+</body>
+</html>

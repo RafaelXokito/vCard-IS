@@ -20,8 +20,8 @@ namespace vCardPlatform
 
         public static string username = "";
         //Connection String
-        //string cn = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
-        string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
+        string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
+        //string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         //button Login Click event
         private void buttonLoginAdmin_Click(object sender, EventArgs e)
         {
@@ -33,7 +33,6 @@ namespace vCardPlatform
 
             try
             {
-                username = textBoxUserNameAdmin.Text;
                 //Create SqlConnection
                 SqlConnection con = new SqlConnection(cs);
                 con.Open();
@@ -51,6 +50,7 @@ namespace vCardPlatform
                 //If count is equal to 1, than show Main Applocation form
                 if (count == 1)
                 {
+                    username = textBoxUserNameAdmin.Text;
                     MessageBox.Show("Login Successful!");
                     this.Hide();
                     FormMainApplication fm = new FormMainApplication();
