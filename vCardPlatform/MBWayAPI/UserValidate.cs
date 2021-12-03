@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -49,6 +50,17 @@ namespace MBWayAPI
                 }
                 return false;
             }
+        }
+
+        public static string GetUserNumberAuth(AuthenticationHeaderValue authHeader)
+        {
+            if (authHeader == null)
+            {
+                return null;
+            }
+            string authEncoded = authHeader.ToString().Split(' ')[1];
+            string authDecoded = Encoding.UTF8.GetString(Convert.FromBase64String(authEncoded));
+            return authDecoded.Split(':')[0];
         }
 
         private static string GetHash(HashAlgorithm hashAlgorithm, string input)

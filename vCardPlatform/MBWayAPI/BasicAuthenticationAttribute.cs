@@ -34,25 +34,32 @@ namespace MBWayAPI
                 //Get the authentication token from the request header
                 string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
                 //Decode the string
-                string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
-                //Convert the string into an string array
-                string[] phoneNumberPasswordArray = decodedAuthenticationToken.Split(':');
-                //First element of the array is the username
-                string phonenumber = phoneNumberPasswordArray[0];
-                //Second element of the array is the password
-                string password = phoneNumberPasswordArray[1];
-                //call the login method to check the username and password
-                if (UserValidate.Login(phonenumber, password))
+                try
                 {
-                    var identity = new GenericIdentity(phonenumber);
-                    IPrincipal principal = new GenericPrincipal(identity, null);
-                    Thread.CurrentPrincipal = principal;
-                    if (HttpContext.Current != null)
+                    string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
+                    //Convert the string into an string array
+                    string[] phoneNumberPasswordArray = decodedAuthenticationToken.Split(':');
+                    //First element of the array is the username
+                    string phonenumber = phoneNumberPasswordArray[0];
+                    //Second element of the array is the password
+                    string password = phoneNumberPasswordArray[1];
+                    //call the login method to check the username and password
+                    if (UserValidate.Login(phonenumber, password))
                     {
-                        HttpContext.Current.User = principal;
+                        var identity = new GenericIdentity(phonenumber);
+                        IPrincipal principal = new GenericPrincipal(identity, null);
+                        Thread.CurrentPrincipal = principal;
+                        if (HttpContext.Current != null)
+                        {
+                            HttpContext.Current.User = principal;
+                        }
+                    }
+                    else
+                    {
+                        actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                     }
                 }
-                else
+                catch (Exception)
                 {
                     actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }

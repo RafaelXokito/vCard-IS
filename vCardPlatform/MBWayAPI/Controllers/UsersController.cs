@@ -15,9 +15,16 @@ namespace MBWayAPI.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
+        [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult GetUser(int number)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Unauthorized();
+            }
+
             string queryString = "SELECT * FROM Users WHERE PhoneNumber = @number";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -59,6 +66,7 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {
@@ -158,9 +166,16 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult PutUser(int number, [FromBody] User user)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Unauthorized();
+            }
+
             string queryString = "UPDATE Users SET Name = @name, Email = @email, Photo = @photo WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -203,9 +218,16 @@ namespace MBWayAPI.Controllers
             public string NewConfirmationCode { get; set; }
         }
 
+        [BasicAuthentication]
         [Route("api/users/{number:int}/password")]
         public IHttpActionResult PatchUserPassword(int number, [FromBody] Secret secret)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Unauthorized();
+            }
+
             string queryString = "UPDATE Users SET Password = @newpassword WHERE PhoneNumber = @phonenumber AND Password = @password";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -245,9 +267,16 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/users/{number:int}/confirmationcode")]
         public IHttpActionResult PatchUserConfirmationCode(int number, [FromBody] Secret secret)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Unauthorized();
+            }
+
             string queryString = "UPDATE Users SET ConfirmationCode = @newconfirmationcode WHERE PhoneNumber = @phonenumber AND Password = @password";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -287,9 +316,16 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult DeleteUser(int number)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Unauthorized();
+            }
+
             string queryString = "DELETE FROM Users WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
