@@ -9,6 +9,8 @@ namespace MBWayAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Filters.Add(new BasicAuthenticationAttribute());
+
             // Web API configuration and services
 
             // Web API routes
