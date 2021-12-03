@@ -85,6 +85,7 @@
       <DependentUpon>DBGateway.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
     <Content Include="Web.config" />
     <Content Include="App_Data\Entities.xml" />
   </ItemGroup>

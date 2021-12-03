@@ -14,6 +14,7 @@ namespace vCardGateway.Controllers
     public class AdministratorsController : ApiController
     {
         string connectionString = Properties.Settings.Default.ConnStr;
+        //string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
 
         [Route("api/administrators/{id:int}")]
         public IHttpActionResult GetAdministrator(int id)

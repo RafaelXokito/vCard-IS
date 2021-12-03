@@ -14,7 +14,7 @@ namespace vCardPlatform
     public partial class FormMainApplication : Form
     {
         public static string password = "";
-        //string cn = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
+        //string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
         string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         public FormMainApplication()
         {
@@ -55,6 +55,12 @@ namespace vCardPlatform
         private void FormMainApplication_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonManageAccounts_Click(object sender, EventArgs e)
+        {
+            FormManageAccounts fm = new FormManageAccounts();
+            fm.Show();
         }
     }
 }
