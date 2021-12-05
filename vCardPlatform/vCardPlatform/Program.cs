@@ -16,7 +16,7 @@ namespace vCardPlatform
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMainApplication());
+            Application.Run(new FormLogin());
         }
     }
 }

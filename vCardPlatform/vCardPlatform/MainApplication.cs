@@ -122,8 +122,6 @@ namespace vCardPlatform
 
         private void btnAdministratorsRefresh_Click(object sender, EventArgs e)
         {
-            var client = new RestSharp.RestClient(baseURI);
-
             var request = new RestSharp.RestRequest("api/administrators", RestSharp.Method.GET);
 
             var result = client.Execute<List<Administrator>>(request).Data;
@@ -140,8 +138,6 @@ namespace vCardPlatform
                 Password = txtPassword.Text
             };
 
-            var client = new RestSharp.RestClient(baseURI);
-
             var request = new RestSharp.RestRequest("api/administrators", RestSharp.Method.POST);
 
             request.AddJsonBody(admin);
@@ -152,8 +148,6 @@ namespace vCardPlatform
 
         private void btnEntitiesRefresh_Click(object sender, EventArgs e)
         {
-
-            var client = new RestSharp.RestClient(baseURI);
 
             var request = new RestSharp.RestRequest("api/entities", RestSharp.Method.GET);
 

@@ -65,8 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administrator.cs" />
-    <Compile Include="Entity.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="FormChangePassword.cs">
       <SubType>Form</SubType>
