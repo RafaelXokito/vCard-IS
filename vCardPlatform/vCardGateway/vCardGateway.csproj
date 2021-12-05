@@ -85,12 +85,12 @@
       <DependentUpon>DBGateway.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
     <Content Include="Web.config" />
     <Content Include="App_Data\Entities.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BasicAuthenticationAttribute.cs" />
     <Compile Include="Controllers\AdministratorsController.cs" />
     <Compile Include="Controllers\EntitiesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -98,13 +98,16 @@
     </Compile>
     <Compile Include="HandlerXML.cs" />
     <Compile Include="Models\Administrator.cs" />
+    <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Secret.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="AdminValidate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

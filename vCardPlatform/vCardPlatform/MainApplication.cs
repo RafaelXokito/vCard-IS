@@ -8,32 +8,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using RestSharp;
+using RestSharp.Authenticators;
 
 namespace vCardPlatform
 {
     public partial class FormMainApplication : Form
     {
-        public static string password = "";
-        public static Int64 id = 0;
-        //string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
-        string cs = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Admin\Desktop\escola\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security=True";
-        string baseURI = @"http://localhost:59458/";
-        public FormMainApplication()
+        //Connection String
+        string connStr = Properties.Settings.Default.ConnStr;
+
+        RestClient client = new RestClient("http://localhost:59458/api");
+        Administrator administrator = null;
+
+        public FormMainApplication(string username, string password)
         {
             InitializeComponent();
-            SqlConnection con = new SqlConnection(cs);
-            con.Open();
+            client.Authenticator = new HttpBasicAuthenticator(username, password);
 
-            SqlCommand cmd = new SqlCommand("Select * from Administrators where Email=@username", con);
-            cmd.Parameters.AddWithValue("@username", "a1@mail.pt");
-            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            adapt.Fill(dt);
-            labelAdministratorName.Text = (string)dt.Rows[0]["Name"];
-            password = (string)dt.Rows[0]["Password"];
-            id = (Int64)dt.Rows[0]["Id"];
+            RestRequest request = new RestRequest("me", Method.GET, DataFormat.Json);
+            var response = client.Execute<Administrator>(request);
 
-            con.Close();
+            if (response.IsSuccessful)
+            {
+                administrator = response.Data;
+                return;
+            }
+
+            MessageBox.Show("Error: " + response.ErrorMessage);
         }
 
         //button Logout Click Event
@@ -69,11 +71,9 @@ namespace vCardPlatform
                 lblStatus.Text = "Loading tables...";
 
                 #region Load Administrators Table
-                var clientAdmin = new RestSharp.RestClient(baseURI);
+                var requestAdmin = new RestRequest("administrators", Method.GET);
 
-                var requestAdmin = new RestSharp.RestRequest("api/administrators", RestSharp.Method.GET);
-
-                var resultAdmin = clientAdmin.Execute<List<Administrator>>(requestAdmin).Data;
+                var resultAdmin = client.Execute<List<Administrator>>(requestAdmin).Data;
 
                 dataGridViewAdministrators.DataSource = resultAdmin;
 
@@ -83,11 +83,9 @@ namespace vCardPlatform
                 #endregion
 
                 #region Load Entities Table
-                var clientEntity = new RestSharp.RestClient(baseURI);
+                var requestEntity = new RestRequest("entities", Method.GET);
 
-                var requestEntity = new RestSharp.RestRequest("api/entities", RestSharp.Method.GET);
-
-                var resultEntity = clientEntity.Execute<List<Entity>>(requestEntity).Data;
+                var resultEntity = client.Execute<List<Entity>>(requestEntity).Data;
 
                 dataGridViewEntities.DataSource = resultEntity;
 

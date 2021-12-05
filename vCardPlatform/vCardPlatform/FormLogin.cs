@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using RestSharp;
+using RestSharp.Authenticators;
+using vCardPlatform.Models;
 
 namespace vCardPlatform
 {
@@ -18,57 +21,42 @@ namespace vCardPlatform
             InitializeComponent();
         }
 
-        public static string username = "";
-        //Connection String
-        //string cs = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
-        string cs = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=|DataDirectory|\DBGateway.mdf;Integrated Security=True;";
         //button Login Click event
         private void buttonLoginAdmin_Click(object sender, EventArgs e)
         {
-            if (textBoxUserNameAdmin.Text == "" || textBoxPasswordAdmin.Text == "")
+            string email = textBoxUserNameAdmin.Text.Trim();
+            string password = textBoxPasswordAdmin.Text;
+            if (email == "" || password == "")
             {
-                MessageBox.Show("Please provide UserName and Password");
+                MessageBox.Show("The username/e-mail and password are required");
                 return;
             }
 
             try
             {
-                //Create SqlConnection
-                SqlConnection con = new SqlConnection(cs);
-                con.Open();
-
-                SqlCommand cmd = new SqlCommand("Select * from Administrators where Email=@username and Password=@password", con);
-                cmd.Parameters.AddWithValue("@username", textBoxUserNameAdmin.Text);
-                cmd.Parameters.AddWithValue("@password", textBoxPasswordAdmin.Text);
-
-                SqlDataAdapter adapt = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                adapt.Fill(ds);
-                DataTable dt = new DataTable();
-                adapt.Fill(dt);
-                con.Close();
-
-                int count = ds.Tables[0].Rows.Count;
-                bool enable = (bool)dt.Rows[0]["Disabled"];
-                if (!enable)
+                Credentials credentials = new Credentials()
                 {
-                    //If count is equal to 1, than show Main Applocation form
-                    if (count == 1)
-                    {
-                        username = textBoxUserNameAdmin.Text;
-                        MessageBox.Show("Login Successful!");
-                        this.Hide();
-                        FormMainApplication fm = new FormMainApplication();
-                        fm.Show();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Login Failed!");
-                    }
+                    Email = email,
+                    Password = password
+                };
+
+                RestClient client = new RestClient("http://localhost:59458/api");
+
+                RestRequest request = new RestRequest("login", Method.POST, DataFormat.Json);
+
+                request.AddJsonBody(credentials);
+
+                var response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    FormMainApplication fm = new FormMainApplication(email, password);
+                    fm.Show();
+                    this.Hide();
                 }
                 else
                 {
-                    MessageBox.Show("Account Disabled!");
+                    MessageBox.Show("Error: " + response.StatusCode + " - " + response.ErrorMessage);
                 }
             }
             catch (Exception ex)

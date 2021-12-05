@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBWayAPI;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,8 +15,62 @@ namespace vCardGateway.Controllers
     public class AdministratorsController : ApiController
     {
         string connectionString = Properties.Settings.Default.ConnStr;
-        //string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\User\Desktop\Integração de Sistemas\vCard-IS\vCardPlatform\vCardGateway\App_Data\DBGateway.mdf;Integrated Security = True";
 
+        [Route("api/login")]
+        public IHttpActionResult PostSignin(Credentials credentials)
+        {
+            if (AdminValidate.Login(credentials.Email, credentials.Password))
+            {
+                return Ok();
+            }
+            return Unauthorized();
+        }
+
+        [BasicAuthentication]
+        [Route("api/me")]
+        public IHttpActionResult GetLoggedAdministrator()
+        {
+            string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
+
+            string queryString = "SELECT * FROM Administrators WHERE Email = @email";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.Parameters.AddWithValue("@email", email);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Administrator administrator = new Administrator()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Email = (string)reader["Email"],
+                            Name = (string)reader["Name"],
+                            Disabled = (bool)reader["Disabled"]
+                        };
+                        return Ok(administrator);
+                    }
+
+                    reader.Close();
+
+                }
+                catch (Exception)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+                return NotFound();
+            }
+        }
+
+        [BasicAuthentication]
         [Route("api/administrators/{id:int}")]
         public IHttpActionResult GetAdministrator(int id)
         {
@@ -57,6 +112,7 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/administrators")]
         public IEnumerable<Administrator> GetAdministrators()
         {
@@ -101,6 +157,7 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/administrators")]
         public IHttpActionResult PostAdministrator(Administrator administrator)
         {
@@ -142,6 +199,7 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/administrators/{id:int}")]
         public IHttpActionResult PutAdministrator(int id, [FromBody] Administrator administrator)
         {
@@ -177,6 +235,7 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/administrators/{id:int}/disabled")]
         public IHttpActionResult PatchAdministratorDisabled(int id, [FromBody] Administrator administrator)
         {
@@ -211,12 +270,7 @@ namespace vCardGateway.Controllers
             }
         }
 
-        public class Secret
-        {
-            public string Password { get; set; }
-            public string NewPassword { get; set; }
-        }
-
+        [BasicAuthentication]
         [Route("api/administrators/{id:int}/password")]
         public IHttpActionResult PatchAdministratorPassword(int id, [FromBody] Secret secret)
         {
@@ -261,6 +315,7 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [BasicAuthentication]
         [Route("api/administrators/{id:int}")]
         public IHttpActionResult DeleteAdministrator(int id)
         {

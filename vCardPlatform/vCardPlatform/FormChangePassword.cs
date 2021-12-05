@@ -37,36 +37,7 @@ namespace vCardPlatform
         }
         private void buttonSubmit_Click(object sender, EventArgs e)
         {
-            if (FormMainApplication.password != textBoxOldPassword.Text)
-            {
-                MessageBox.Show("Old Password does not match with the current password!");
-                return;
-            }
-
-            try {
-                var client = new RestSharp.RestClient(baseURI);
-
-                Secret secret = new Secret
-                {
-                    Password = textBoxOldPassword.Text,
-                    NewPassword = textBoxNewPassword.Text
-                };
-
-                var request = new RestSharp.RestRequest("api/administrators/{id}/password", RestSharp.Method.PATCH);
-                request.AddUrlSegment("id", FormMainApplication.id);
-
-                request.AddJsonBody(secret);
-
-                RestSharp.IRestResponse response = client.Execute(request);
-
-                MessageBox.Show(response.StatusCode + " " + response.ResponseStatus);
-                FormMainApplication.password = textBoxNewPassword.Text;
-                this.Hide();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
