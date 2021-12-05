@@ -25,9 +25,8 @@ namespace MBWayAPI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\dcarr\\Documents\\GitH" +
-            "ub\\vCard-IS\\vCardPlatform\\MBWayAPI\\App_Data\\DBMBWay.mdf;Integrated Security=True" +
-            "")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Admin\\Desktop\\escola" +
+            "\\vCard-IS\\vCardPlatform\\MBWayAPI\\App_Data\\DBMBWay.mdf;Integrated Security=True")]
         public string ConnStr {
             get {
                 return ((string)(this["ConnStr"]));

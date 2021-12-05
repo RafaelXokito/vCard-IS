@@ -146,5 +146,40 @@ namespace vCardPlatform
             MessageBox.Show(response.StatusCode + " " + response.ResponseStatus);
             richTextBoxGet.Clear();
         }
+
+        private void labelName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBoxCreate_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxEmail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelEmail_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelPassword_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
