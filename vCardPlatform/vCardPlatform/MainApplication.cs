@@ -22,9 +22,6 @@ namespace vCardPlatform
         RestClient client = new RestClient("http://localhost:59458/api");
         Administrator administrator = null;
 
-        //Aux Variables
-        string entitySelected = "";
-
         public FormMainApplication(string username, string password)
         {
             InitializeComponent();
@@ -41,7 +38,6 @@ namespace vCardPlatform
 
             MessageBox.Show("Error: " + response.ErrorMessage);
         }
-
 
         private void FormMainApplication_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -291,7 +287,6 @@ namespace vCardPlatform
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0) {
                 #region Fill Necessary Fields
-                entitySelected = dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString();
                 txtEntityName.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[1].Value.ToString();
                 txtEntityEndpoint.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[2].Value.ToString();
                 numEntityMaxLimit.Value = Decimal.Parse(dataGridViewEntities.Rows[e.RowIndex].Cells[3].Value.ToString());
@@ -319,8 +314,12 @@ namespace vCardPlatform
                 d3.Name = "type";
 
                 //Add the Columns to the DataGridView
+                dataGridViewEntityDefaultCategory.Columns.Clear();
                 dataGridViewEntityDefaultCategory.Columns.AddRange(d1, d2, d3);
 
+                dataGridViewEntityDefaultCategory.Rows.Clear();
+
+                if (responseData!=null)
                 foreach (DefaultCategory defaultCategory in responseData)
                 {
                     int rowId = dataGridViewEntityDefaultCategory.Rows.Add();
@@ -329,6 +328,14 @@ namespace vCardPlatform
                     row.Cells["name"].Value = defaultCategory.Name;
                     row.Cells["type"].Value = (defaultCategory.Type == "D" ? "Debit" : "Credit");
                 }
+
+                txtEntityId.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString();
+                groupDataEntity.Enabled = true;
+                groupEntityDefaultCategory.Enabled = true;
+                btnEntitySave.Enabled = true;
+
+
+                btnEntitySave.Text = "Update";
 
                 tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
             }
@@ -352,19 +359,22 @@ namespace vCardPlatform
 
         private void btnTestEndpoint_Click(object sender, EventArgs e)
         {
-            RestClient client = new RestClient(txtEntityEndpoint.Text);
-
-            RestRequest request = new RestRequest("", Method.GET);
-
-            IRestResponse responseData = client.Execute(request);
-
-            if (responseData.StatusCode != 0)
+            if (txtEntityEndpoint.Text != "")
             {
-                txtEntityEndpoint.BackColor = Color.GreenYellow;
-            }
-            else
-            {
-                txtEntityEndpoint.BackColor = Color.MediumVioletRed;
+                RestClient client = new RestClient(txtEntityEndpoint.Text);
+
+                RestRequest request = new RestRequest("", Method.GET);
+
+                IRestResponse responseData = client.Execute(request);
+
+                if (responseData.StatusCode != 0)
+                {
+                    txtEntityEndpoint.BackColor = Color.GreenYellow;
+                }
+                else
+                {
+                    txtEntityEndpoint.BackColor = Color.MediumVioletRed;
+                }
             }
         }
 
@@ -382,7 +392,7 @@ namespace vCardPlatform
             #endregion
 
             #region Create&Populate&Send Request
-            var request = new RestSharp.RestRequest("entities/"+ entitySelected, RestSharp.Method.PUT, DataFormat.Json);
+            var request = new RestSharp.RestRequest("entities/"+ txtEntityId.Text, RestSharp.Method.PUT, DataFormat.Json);
 
             request.AddJsonBody(entity);
 
@@ -396,6 +406,7 @@ namespace vCardPlatform
                 lblStatus.Text = "Entity " + txtEntityName.Text + " updated!";
                 loadEntities();
                 tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntityTable"];
+                txtEntityId.Text = "";
                 txtEntityName.Text = "";
                 txtEntityEndpoint.Text = "";
                 numEntityMaxLimit.Value = 0;
@@ -409,6 +420,10 @@ namespace vCardPlatform
             }
             #endregion
             statusProgressBar.Value = 100;
+            groupDataEntity.Enabled = false;
+            btnEntitySave.Enabled = false;
+            groupEntityDefaultCategory.Enabled = false;
+
         }
 
         private void btnEntitiesDelete_Click(object sender, EventArgs e)
@@ -460,6 +475,21 @@ namespace vCardPlatform
 
                 loadEntities();
             }
+        }
+
+        private void btnEntitiesCreate_Click(object sender, EventArgs e)
+        {
+            groupDataEntity.Enabled = true;
+            groupEntityDefaultCategory.Enabled = true;
+            btnEntitySave.Enabled = true;
+
+            btnEntitySave.Text = "Create";
+
+            tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
+            txtEntityId.Text = "";
+            txtEntityName.Text = "";
+            txtEntityEndpoint.Text = "";
+            numEntityMaxLimit.Value = 0;
         }
     }
 }

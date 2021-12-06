@@ -9,7 +9,7 @@
     <id>2</id>
     <name>MBWayAPI</name>
     <endpoint>http://localhost:55059</endpoint>
-    <maxlimit>5000</maxlimit>
+    <maxlimit>5000,02</maxlimit>
   </entity>
   <entity>
     <id>4e8d8e0f-f029-49c2-9357-afceaa4d40cd</id>

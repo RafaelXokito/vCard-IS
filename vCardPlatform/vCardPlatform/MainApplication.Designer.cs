@@ -38,24 +38,27 @@ namespace vCardPlatform
             this.tabEntities = new System.Windows.Forms.TabPage();
             this.tabCEntities = new System.Windows.Forms.TabControl();
             this.tabEntityTable = new System.Windows.Forms.TabPage();
-            this.btnEntitiesBlock = new System.Windows.Forms.Button();
+            this.btnEntitiesCreate = new System.Windows.Forms.Button();
             this.btnEntitiesDelete = new System.Windows.Forms.Button();
             this.btnEntitiesRefresh = new System.Windows.Forms.Button();
             this.dataGridViewEntities = new System.Windows.Forms.DataGridView();
             this.tabEntityCreate = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.tabEntity = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.btnEntitySave = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupDataEntity = new System.Windows.Forms.GroupBox();
+            this.lblEntityID = new System.Windows.Forms.Label();
+            this.txtEntityId = new System.Windows.Forms.TextBox();
             this.numEntityMaxLimit = new System.Windows.Forms.NumericUpDown();
             this.btnTestEndpoint = new System.Windows.Forms.Button();
             this.lblEntityMaxLimit = new System.Windows.Forms.Label();
@@ -63,10 +66,11 @@ namespace vCardPlatform
             this.txtEntityEndpoint = new System.Windows.Forms.TextBox();
             this.lblEntityName = new System.Windows.Forms.Label();
             this.txtEntityName = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupEntityDefaultCategory = new System.Windows.Forms.GroupBox();
             this.btnEntityDCRemoveRow = new System.Windows.Forms.Button();
             this.dataGridViewEntityDefaultCategory = new System.Windows.Forms.DataGridView();
             this.groupEntityStatus = new System.Windows.Forms.GroupBox();
+            this.entityLink1 = new System.Windows.Forms.LinkLabel();
             this.tabAdmistrators = new System.Windows.Forms.TabPage();
             this.tabCAdministrators = new System.Windows.Forms.TabControl();
             this.tabTable = new System.Windows.Forms.TabPage();
@@ -86,7 +90,6 @@ namespace vCardPlatform
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnLogout = new System.Windows.Forms.Button();
-            this.entityLink1 = new System.Windows.Forms.LinkLabel();
             this.tabCMain.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabEntities.SuspendLayout();
@@ -95,10 +98,11 @@ namespace vCardPlatform
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntities)).BeginInit();
             this.tabEntityCreate.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabEntity.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupDataEntity.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityMaxLimit)).BeginInit();
-            this.groupBox3.SuspendLayout();
+            this.groupEntityDefaultCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntityDefaultCategory)).BeginInit();
             this.groupEntityStatus.SuspendLayout();
             this.tabAdmistrators.SuspendLayout();
@@ -194,7 +198,7 @@ namespace vCardPlatform
             // 
             // tabEntityTable
             // 
-            this.tabEntityTable.Controls.Add(this.btnEntitiesBlock);
+            this.tabEntityTable.Controls.Add(this.btnEntitiesCreate);
             this.tabEntityTable.Controls.Add(this.btnEntitiesDelete);
             this.tabEntityTable.Controls.Add(this.btnEntitiesRefresh);
             this.tabEntityTable.Controls.Add(this.dataGridViewEntities);
@@ -206,18 +210,19 @@ namespace vCardPlatform
             this.tabEntityTable.Text = "Table";
             this.tabEntityTable.UseVisualStyleBackColor = true;
             // 
-            // btnEntitiesBlock
+            // btnEntitiesCreate
             // 
-            this.btnEntitiesBlock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntitiesBlock.Image = global::vCardPlatform.Properties.Resources.block;
-            this.btnEntitiesBlock.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesBlock.Location = new System.Drawing.Point(664, 6);
-            this.btnEntitiesBlock.Name = "btnEntitiesBlock";
-            this.btnEntitiesBlock.Size = new System.Drawing.Size(75, 23);
-            this.btnEntitiesBlock.TabIndex = 23;
-            this.btnEntitiesBlock.Text = "Block";
-            this.btnEntitiesBlock.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntitiesBlock.UseVisualStyleBackColor = true;
+            this.btnEntitiesCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitiesCreate.Image = global::vCardPlatform.Properties.Resources.add;
+            this.btnEntitiesCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntitiesCreate.Location = new System.Drawing.Point(664, 6);
+            this.btnEntitiesCreate.Name = "btnEntitiesCreate";
+            this.btnEntitiesCreate.Size = new System.Drawing.Size(75, 23);
+            this.btnEntitiesCreate.TabIndex = 23;
+            this.btnEntitiesCreate.Text = "Create";
+            this.btnEntitiesCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntitiesCreate.UseVisualStyleBackColor = true;
+            this.btnEntitiesCreate.Click += new System.EventHandler(this.btnEntitiesCreate_Click);
             // 
             // btnEntitiesDelete
             // 
@@ -276,11 +281,12 @@ namespace vCardPlatform
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Controls.Add(this.textBox5);
             this.groupBox2.Controls.Add(this.textBox6);
             this.groupBox2.Controls.Add(this.button5);
             this.groupBox2.Location = new System.Drawing.Point(7, 5);
@@ -292,25 +298,41 @@ namespace vCardPlatform
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Create Entity";
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(322, 200);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(350, 20);
+            this.numericUpDown1.TabIndex = 21;
+            // 
+            // button1
+            // 
+            this.button1.Image = global::vCardPlatform.Properties.Resources.connect;
+            this.button1.Location = new System.Drawing.Point(649, 157);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 20;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(256, 202);
+            this.label4.Location = new System.Drawing.Point(236, 202);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 15);
             this.label4.TabIndex = 19;
-            this.label4.Text = "Password:";
+            this.label4.Text = "Max Limit:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(256, 163);
+            this.label5.Location = new System.Drawing.Point(241, 162);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 15);
+            this.label5.Size = new System.Drawing.Size(59, 15);
             this.label5.TabIndex = 18;
-            this.label5.Text = "E-mail:";
+            this.label5.Text = "Endpoint:";
             // 
             // label6
             // 
@@ -330,21 +352,12 @@ namespace vCardPlatform
             this.textBox4.Size = new System.Drawing.Size(350, 20);
             this.textBox4.TabIndex = 14;
             // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(322, 199);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(2);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.PasswordChar = '*';
-            this.textBox5.Size = new System.Drawing.Size(350, 20);
-            this.textBox5.TabIndex = 16;
-            // 
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(322, 159);
             this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(350, 20);
+            this.textBox6.Size = new System.Drawing.Size(322, 20);
             this.textBox6.TabIndex = 15;
             // 
             // button5
@@ -362,8 +375,8 @@ namespace vCardPlatform
             this.tabEntity.Controls.Add(this.button3);
             this.tabEntity.Controls.Add(this.button2);
             this.tabEntity.Controls.Add(this.btnEntitySave);
-            this.tabEntity.Controls.Add(this.groupBox4);
-            this.tabEntity.Controls.Add(this.groupBox3);
+            this.tabEntity.Controls.Add(this.groupDataEntity);
+            this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
             this.tabEntity.Controls.Add(this.groupEntityStatus);
             this.tabEntity.Location = new System.Drawing.Point(4, 22);
             this.tabEntity.Name = "tabEntity";
@@ -395,6 +408,7 @@ namespace vCardPlatform
             // btnEntitySave
             // 
             this.btnEntitySave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitySave.Enabled = false;
             this.btnEntitySave.Image = global::vCardPlatform.Properties.Resources.save;
             this.btnEntitySave.Location = new System.Drawing.Point(841, 3);
             this.btnEntitySave.Name = "btnEntitySave";
@@ -405,23 +419,47 @@ namespace vCardPlatform
             this.btnEntitySave.UseVisualStyleBackColor = true;
             this.btnEntitySave.Click += new System.EventHandler(this.btnEntitySave_Click);
             // 
-            // groupBox4
+            // groupDataEntity
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupDataEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox4.Controls.Add(this.numEntityMaxLimit);
-            this.groupBox4.Controls.Add(this.btnTestEndpoint);
-            this.groupBox4.Controls.Add(this.lblEntityMaxLimit);
-            this.groupBox4.Controls.Add(this.lblEntityEndpoint);
-            this.groupBox4.Controls.Add(this.txtEntityEndpoint);
-            this.groupBox4.Controls.Add(this.lblEntityName);
-            this.groupBox4.Controls.Add(this.txtEntityName);
-            this.groupBox4.Location = new System.Drawing.Point(315, 32);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(304, 392);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Data";
+            this.groupDataEntity.Controls.Add(this.lblEntityID);
+            this.groupDataEntity.Controls.Add(this.txtEntityId);
+            this.groupDataEntity.Controls.Add(this.numEntityMaxLimit);
+            this.groupDataEntity.Controls.Add(this.btnTestEndpoint);
+            this.groupDataEntity.Controls.Add(this.lblEntityMaxLimit);
+            this.groupDataEntity.Controls.Add(this.lblEntityEndpoint);
+            this.groupDataEntity.Controls.Add(this.txtEntityEndpoint);
+            this.groupDataEntity.Controls.Add(this.lblEntityName);
+            this.groupDataEntity.Controls.Add(this.txtEntityName);
+            this.groupDataEntity.Enabled = false;
+            this.groupDataEntity.Location = new System.Drawing.Point(315, 32);
+            this.groupDataEntity.Name = "groupDataEntity";
+            this.groupDataEntity.Size = new System.Drawing.Size(304, 392);
+            this.groupDataEntity.TabIndex = 2;
+            this.groupDataEntity.TabStop = false;
+            this.groupDataEntity.Text = "Data";
+            // 
+            // lblEntityID
+            // 
+            this.lblEntityID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblEntityID.AutoSize = true;
+            this.lblEntityID.Location = new System.Drawing.Point(52, 96);
+            this.lblEntityID.Name = "lblEntityID";
+            this.lblEntityID.Size = new System.Drawing.Size(17, 15);
+            this.lblEntityID.TabIndex = 9;
+            this.lblEntityID.Text = "Id";
+            // 
+            // txtEntityId
+            // 
+            this.txtEntityId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEntityId.Enabled = false;
+            this.txtEntityId.Location = new System.Drawing.Point(55, 114);
+            this.txtEntityId.Name = "txtEntityId";
+            this.txtEntityId.Size = new System.Drawing.Size(210, 20);
+            this.txtEntityId.TabIndex = 8;
             // 
             // numEntityMaxLimit
             // 
@@ -431,7 +469,7 @@ namespace vCardPlatform
             0,
             0,
             131072});
-            this.numEntityMaxLimit.Location = new System.Drawing.Point(48, 188);
+            this.numEntityMaxLimit.Location = new System.Drawing.Point(55, 255);
             this.numEntityMaxLimit.Maximum = new decimal(new int[] {
             -559939585,
             902409669,
@@ -444,7 +482,7 @@ namespace vCardPlatform
             // btnTestEndpoint
             // 
             this.btnTestEndpoint.Image = global::vCardPlatform.Properties.Resources.connect;
-            this.btnTestEndpoint.Location = new System.Drawing.Point(235, 136);
+            this.btnTestEndpoint.Location = new System.Drawing.Point(242, 203);
             this.btnTestEndpoint.Name = "btnTestEndpoint";
             this.btnTestEndpoint.Size = new System.Drawing.Size(23, 23);
             this.btnTestEndpoint.TabIndex = 6;
@@ -456,7 +494,7 @@ namespace vCardPlatform
             this.lblEntityMaxLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityMaxLimit.AutoSize = true;
-            this.lblEntityMaxLimit.Location = new System.Drawing.Point(45, 170);
+            this.lblEntityMaxLimit.Location = new System.Drawing.Point(52, 237);
             this.lblEntityMaxLimit.Name = "lblEntityMaxLimit";
             this.lblEntityMaxLimit.Size = new System.Drawing.Size(61, 15);
             this.lblEntityMaxLimit.TabIndex = 5;
@@ -467,7 +505,7 @@ namespace vCardPlatform
             this.lblEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityEndpoint.AutoSize = true;
-            this.lblEntityEndpoint.Location = new System.Drawing.Point(45, 119);
+            this.lblEntityEndpoint.Location = new System.Drawing.Point(52, 186);
             this.lblEntityEndpoint.Name = "lblEntityEndpoint";
             this.lblEntityEndpoint.Size = new System.Drawing.Size(56, 15);
             this.lblEntityEndpoint.TabIndex = 3;
@@ -477,7 +515,7 @@ namespace vCardPlatform
             // 
             this.txtEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityEndpoint.Location = new System.Drawing.Point(48, 137);
+            this.txtEntityEndpoint.Location = new System.Drawing.Point(55, 204);
             this.txtEntityEndpoint.Name = "txtEntityEndpoint";
             this.txtEntityEndpoint.Size = new System.Drawing.Size(181, 20);
             this.txtEntityEndpoint.TabIndex = 2;
@@ -487,7 +525,7 @@ namespace vCardPlatform
             this.lblEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityName.AutoSize = true;
-            this.lblEntityName.Location = new System.Drawing.Point(45, 67);
+            this.lblEntityName.Location = new System.Drawing.Point(52, 134);
             this.lblEntityName.Name = "lblEntityName";
             this.lblEntityName.Size = new System.Drawing.Size(41, 15);
             this.lblEntityName.TabIndex = 1;
@@ -497,24 +535,25 @@ namespace vCardPlatform
             // 
             this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityName.Location = new System.Drawing.Point(48, 85);
+            this.txtEntityName.Location = new System.Drawing.Point(55, 152);
             this.txtEntityName.Name = "txtEntityName";
             this.txtEntityName.Size = new System.Drawing.Size(210, 20);
             this.txtEntityName.TabIndex = 0;
             // 
-            // groupBox3
+            // groupEntityDefaultCategory
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.btnEntityDCRemoveRow);
-            this.groupBox3.Controls.Add(this.dataGridViewEntityDefaultCategory);
-            this.groupBox3.Location = new System.Drawing.Point(623, 32);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(304, 392);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Default Categories";
+            this.groupEntityDefaultCategory.Controls.Add(this.btnEntityDCRemoveRow);
+            this.groupEntityDefaultCategory.Controls.Add(this.dataGridViewEntityDefaultCategory);
+            this.groupEntityDefaultCategory.Enabled = false;
+            this.groupEntityDefaultCategory.Location = new System.Drawing.Point(623, 32);
+            this.groupEntityDefaultCategory.Name = "groupEntityDefaultCategory";
+            this.groupEntityDefaultCategory.Size = new System.Drawing.Size(304, 392);
+            this.groupEntityDefaultCategory.TabIndex = 1;
+            this.groupEntityDefaultCategory.TabStop = false;
+            this.groupEntityDefaultCategory.Text = "Default Categories";
             // 
             // btnEntityDCRemoveRow
             // 
@@ -549,6 +588,16 @@ namespace vCardPlatform
             this.groupEntityStatus.TabIndex = 0;
             this.groupEntityStatus.TabStop = false;
             this.groupEntityStatus.Text = "Status";
+            // 
+            // entityLink1
+            // 
+            this.entityLink1.AutoSize = true;
+            this.entityLink1.Location = new System.Drawing.Point(6, 67);
+            this.entityLink1.Name = "entityLink1";
+            this.entityLink1.Size = new System.Drawing.Size(65, 15);
+            this.entityLink1.TabIndex = 0;
+            this.entityLink1.TabStop = true;
+            this.entityLink1.Text = "entityLink1";
             // 
             // tabAdmistrators
             // 
@@ -757,16 +806,6 @@ namespace vCardPlatform
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
-            // entityLink1
-            // 
-            this.entityLink1.AutoSize = true;
-            this.entityLink1.Location = new System.Drawing.Point(6, 67);
-            this.entityLink1.Name = "entityLink1";
-            this.entityLink1.Size = new System.Drawing.Size(65, 15);
-            this.entityLink1.TabIndex = 0;
-            this.entityLink1.TabStop = true;
-            this.entityLink1.Text = "entityLink1";
-            // 
             // FormMainApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -791,11 +830,12 @@ namespace vCardPlatform
             this.tabEntityCreate.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabEntity.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupDataEntity.ResumeLayout(false);
+            this.groupDataEntity.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEntityMaxLimit)).EndInit();
-            this.groupBox3.ResumeLayout(false);
+            this.groupEntityDefaultCategory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntityDefaultCategory)).EndInit();
             this.groupEntityStatus.ResumeLayout(false);
             this.groupEntityStatus.PerformLayout();
@@ -833,7 +873,7 @@ namespace vCardPlatform
         private System.Windows.Forms.Button btnAdministratorsDelete;
         private System.Windows.Forms.TabControl tabCEntities;
         private System.Windows.Forms.TabPage tabEntityTable;
-        private System.Windows.Forms.Button btnEntitiesBlock;
+        private System.Windows.Forms.Button btnEntitiesCreate;
         private System.Windows.Forms.Button btnEntitiesDelete;
         private System.Windows.Forms.Button btnEntitiesRefresh;
         private System.Windows.Forms.DataGridView dataGridViewEntities;
@@ -843,7 +883,6 @@ namespace vCardPlatform
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label1;
@@ -854,9 +893,9 @@ namespace vCardPlatform
         private System.Windows.Forms.TextBox txtAdministratorEmail;
         private System.Windows.Forms.Button btnCreateAdmin;
         private System.Windows.Forms.TabPage tabEntity;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupDataEntity;
         private System.Windows.Forms.TextBox txtEntityName;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupEntityDefaultCategory;
         private System.Windows.Forms.GroupBox groupEntityStatus;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
@@ -870,5 +909,9 @@ namespace vCardPlatform
         private System.Windows.Forms.NumericUpDown numEntityMaxLimit;
         private System.Windows.Forms.Button btnEntityDCRemoveRow;
         private System.Windows.Forms.LinkLabel entityLink1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblEntityID;
+        private System.Windows.Forms.TextBox txtEntityId;
     }
 }
