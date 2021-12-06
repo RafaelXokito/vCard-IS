@@ -1,5 +1,4 @@
-﻿using MBWayAPI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -23,7 +22,8 @@ namespace vCardGateway.Controllers
             {
                 return Ok();
             }
-            return Unauthorized();
+
+            return BadRequest("Invalid Email and/or Password");
         }
 
         [BasicAuthentication]

@@ -8,7 +8,7 @@ using System.Text;
 using System.Web;
 using vCardGateway.Models;
 
-namespace MBWayAPI
+namespace vCardGateway
 {
     public class AdminValidate
     {

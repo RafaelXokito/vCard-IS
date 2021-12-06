@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MBWayAPI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using vCardGateway.Models;
 
 namespace vCardGateway.Controllers
 {
+    [BasicAuthentication]
     public class EntitiesController : ApiController
     {
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
