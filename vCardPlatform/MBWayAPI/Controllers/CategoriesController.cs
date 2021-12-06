@@ -13,9 +13,12 @@ namespace MBWayAPI.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
-        [Route("api/users/{number:int}/categories/{id:int}")]
-        public IHttpActionResult GetUserCategory(int number, int id)
+        [BasicAuthentication]
+        [Route("api/categories/{id:int}")]
+        public IHttpActionResult GetCategory(int id)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "SELECT * FROM Categories WHERE Id = @id AND Owner = @owner";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -23,7 +26,7 @@ namespace MBWayAPI.Controllers
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@owner", number);
+                command.Parameters.AddWithValue("@owner", phoneNumber);
 
                 try
                 {
@@ -56,9 +59,12 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [Route("api/users/{number:int}/categories")]
-        public IEnumerable<Category> GetUserCategories(int number)
+        [BasicAuthentication]
+        [Route("api/categories")]
+        public IEnumerable<Category> GetCategories()
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "SELECT * FROM Categories WHERE Owner = @owner";
 
             List<Category> categories = new List<Category>();
@@ -67,10 +73,9 @@ namespace MBWayAPI.Controllers
             {
                 try
                 {
-
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    command.Parameters.AddWithValue("@owner", number);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
 
                     connection.Open();
                     
@@ -104,9 +109,12 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [Route("api/users/{number:int}/categories")]
-        public IHttpActionResult PostUserCategory(int number, [FromBody] Category category)
+        [BasicAuthentication]
+        [Route("api/categories")]
+        public IHttpActionResult PostCategory(Category category)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "INSERT INTO Categories(Name, Type, Owner) VALUES(@name, @type, @owner)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -117,7 +125,7 @@ namespace MBWayAPI.Controllers
 
                     command.Parameters.AddWithValue("@name", category.Name);
                     command.Parameters.AddWithValue("@type", category.Type);
-                    command.Parameters.AddWithValue("@owner", number);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
 
                     connection.Open();
 
@@ -140,9 +148,12 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [Route("api/users/{number:int}/categories/{id:int}")]
-        public IHttpActionResult PutUserCategory(int number, int id, [FromBody] Category category)
+        [BasicAuthentication]
+        [Route("api/categories/{id:int}")]
+        public IHttpActionResult PutCategory(int id, [FromBody] Category category)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "UPDATE Categories SET Name = @name, Type = @type WHERE Id = @id AND Owner = @owner";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -152,7 +163,7 @@ namespace MBWayAPI.Controllers
                 command.Parameters.AddWithValue("@id", id);
                 command.Parameters.AddWithValue("@name", category.Name);
                 command.Parameters.AddWithValue("@type", category.Type);
-                command.Parameters.AddWithValue("@owner", number);
+                command.Parameters.AddWithValue("@owner", phoneNumber);
 
                 try
                 {
@@ -176,9 +187,12 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [Route("api/users/{number:int}/categories/{id:int}")]
-        public IHttpActionResult DeleteUserCategory(int number, int id)
+        [BasicAuthentication]
+        [Route("api/categories/{id:int}")]
+        public IHttpActionResult DeleteCategory(int id)
         {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "DELETE FROM Categories WHERE Id = @id AND Owner = @owner";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -186,7 +200,7 @@ namespace MBWayAPI.Controllers
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@owner", number);
+                command.Parameters.AddWithValue("@owner", phoneNumber);
 
                 try
                 {

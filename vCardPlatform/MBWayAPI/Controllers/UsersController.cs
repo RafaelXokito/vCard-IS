@@ -40,16 +40,16 @@ namespace MBWayAPI.Controllers
 
                     if (reader.Read())
                     {
-                        User product = new User()
+                        User user = new User()
                         {
                             PhoneNumber = (string)reader["PhoneNumber"],
                             Name = (string)reader["Name"],
                             Email = (string)reader["Email"],
                             MaximumLimit = (decimal)reader["MaximumLimit"],
                             Balance = (decimal)reader["Balance"],
-                            Photo = reader["Photo"] == null ? "" : (string)reader["Photo"]
+                            Photo = reader["Photo"].ToString()
                         };
-                        return Ok(product);
+                        return Ok(user);
                     }
 
                     reader.Close();
@@ -66,7 +66,7 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [BasicAuthentication]
+        [BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {
@@ -116,13 +116,16 @@ namespace MBWayAPI.Controllers
         [Route("api/users")]
         public IHttpActionResult PostUser(User user)
         {
-            string queryString = "INSERT INTO Users(PhoneNumber, Password, Name, Email, ConfirmationCode, MaximumLimit, Photo) VALUES(@phonenumber, @password, @name, @email, @confirmationcode, @maximumlimit, @photo)";
+            string queryStringDefaultCategories = "SELECT * FROM DefaultCategories";
+            string queryStringCategory = "INSERT INTO Categories(Name, Type, Owner) VALUES(@name, @type, @owner)";
+            string queryStringUser = "INSERT INTO Users(PhoneNumber, Password, Name, Email, ConfirmationCode, MaximumLimit, Photo) VALUES(@phonenumber, @password, @name, @email, @confirmationcode, @maximumlimit, @photo)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
+                    #region CREATE USER
+                    SqlCommand command = new SqlCommand(queryStringUser, connection);
 
                     command.Parameters.AddWithValue("@phonenumber", user.PhoneNumber);
                     command.Parameters.AddWithValue("@name", user.Name);
@@ -133,8 +136,6 @@ namespace MBWayAPI.Controllers
 
                     string photo = user.Photo == null ? "" : user.Photo;
                     command.Parameters.AddWithValue("@photo", photo);
-
-
 
                     using (SHA256 sha256 = SHA256.Create())
                     {
@@ -147,13 +148,53 @@ namespace MBWayAPI.Controllers
 
                     connection.Open();
 
-                    if (command.ExecuteNonQuery() > 0)
+                    if (command.ExecuteNonQuery() == 0)
                     {
-                        return Ok();
+                        return BadRequest();
+                    }
+                    #endregion
+
+                    #region GET ALL DEFAULT CATEGORIES
+                    command = new SqlCommand(queryStringDefaultCategories, connection);
+
+                    List<DefaultCategory> categories = new List<DefaultCategory>();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        DefaultCategory category = new DefaultCategory()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Name = (string)reader["Name"],
+                            Type = (string)reader["Type"]
+                        };
+
+                        categories.Add(category);
+                    }
+                    reader.Close();
+                    #endregion
+
+                    #region CREATE ALL CATEGORIES OF USER
+                    foreach (DefaultCategory defaultCategory in categories)
+                    {
+                        command = new SqlCommand(queryStringCategory, connection);
+
+                        command.Parameters.AddWithValue("@name", defaultCategory.Name);
+                        command.Parameters.AddWithValue("@type", defaultCategory.Type);
+                        command.Parameters.AddWithValue("@owner", user.PhoneNumber);
+
+                        if (command.ExecuteNonQuery() == 0)
+                        {
+                            throw new Exception("Error creating user categories from default categories");
+                        }
                     }
 
+                    reader.Close();
                     connection.Close();
-                    return BadRequest();
+                    #endregion
+
+                    return Ok();
                 }
                 catch (Exception ex)
                 {
@@ -326,23 +367,51 @@ namespace MBWayAPI.Controllers
                 return Unauthorized();
             }
 
-            string queryString = "DELETE FROM Users WHERE PhoneNumber = @phonenumber";
+            string queryStringGetUser = "SELECT * FROM Users WHERE PhoneNumber = @phonenumber";
+            string queryStringDelUser = "DELETE FROM Users WHERE PhoneNumber = @phonenumber";
+            string queryStringDelCategories = "DELETE FROM Categories WHERE Id = @id AND Owner = @owner";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
+                    SqlCommand command = new SqlCommand(queryStringGetUser, connection);
 
-                    command.Parameters.AddWithValue("@phonenumber", number);
+                    command.Parameters.AddWithValue("@phonenumber", phoneNumber);
 
                     connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        decimal balance = (decimal)reader["Balance"];
+
+                        if (balance > 0)
+                        {
+                            return BadRequest("The user must have a balance of zero euros to be deleted");
+                        }
+                    }
+
+                    command = new SqlCommand(queryStringDelUser, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", phoneNumber);
+
+                    if (command.ExecuteNonQuery() == 0)
+                    {
+                        connection.Close();
+                        return NotFound();
+                    }
+
+                    command = new SqlCommand(queryStringDelCategories, connection);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
                     if (command.ExecuteNonQuery() > 0)
                     {
                         return Ok();
                     }
-                    connection.Close();
 
+                    connection.Close();
                     return NotFound();
                 }
                 catch (Exception ex)

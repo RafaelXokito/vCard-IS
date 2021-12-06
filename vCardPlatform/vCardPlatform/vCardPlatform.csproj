@@ -159,7 +159,6 @@
     <None Include="Resources\refresh.png" />
     <None Include="Resources\delete.png" />
     <None Include="Resources\block.png" />
-    <Content Include="Users.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
