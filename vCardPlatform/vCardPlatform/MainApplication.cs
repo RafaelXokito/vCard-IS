@@ -211,7 +211,7 @@ namespace vCardPlatform
                         }
                         else
                         {
-                            lblStatus.Text = "Not disabled " + email + " administrator!";
+                            lblStatus.Text = "Not deleted " + email + " administrator!";
                             lblStatus.ForeColor = Color.Red;
                         }
                         #endregion
@@ -334,6 +334,7 @@ namespace vCardPlatform
             }
         }
 
+
         private void btnEntityDCRemoveRow_Click(object sender, EventArgs e)
         {
             Int32 selectedRowCount = dataGridViewEntityDefaultCategory.Rows.GetRowCount(DataGridViewElementStates.Selected);
@@ -351,12 +352,114 @@ namespace vCardPlatform
 
         private void btnTestEndpoint_Click(object sender, EventArgs e)
         {
+            RestClient client = new RestClient(txtEntityEndpoint.Text);
 
+            RestRequest request = new RestRequest("", Method.GET);
+
+            IRestResponse responseData = client.Execute(request);
+
+            if (responseData.StatusCode != 0)
+            {
+                txtEntityEndpoint.BackColor = Color.GreenYellow;
+            }
+            else
+            {
+                txtEntityEndpoint.BackColor = Color.MediumVioletRed;
+            }
         }
 
         private void btnEntitySave_Click(object sender, EventArgs e)
         {
+            statusProgressBar.Value = 0;
 
+            #region Create Entity Model
+            Entity entity = new Entity
+            {
+                Name = txtEntityName.Text,
+                Endpoint = txtEntityEndpoint.Text,
+                MaxLimit = numEntityMaxLimit.Value
+            };
+            #endregion
+
+            #region Create&Populate&Send Request
+            var request = new RestSharp.RestRequest("entities/"+ entitySelected, RestSharp.Method.PUT, DataFormat.Json);
+
+            request.AddJsonBody(entity);
+
+            RestSharp.IRestResponse response = client.Execute(request);
+            #endregion
+
+            #region Handle Request Response
+            if (response.IsSuccessful)
+            {
+                lblStatus.ForeColor = Color.Green;
+                lblStatus.Text = "Entity " + txtEntityName.Text + " updated!";
+                loadEntities();
+                tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntityTable"];
+                txtEntityName.Text = "";
+                txtEntityEndpoint.Text = "";
+                numEntityMaxLimit.Value = 0;
+                dataGridViewEntityDefaultCategory.Rows.Clear();
+                dataGridViewEntityDefaultCategory.Refresh();
+            }
+            else
+            {
+                lblStatus.ForeColor = Color.Red;
+                lblStatus.Text = response.ErrorMessage;
+            }
+            #endregion
+            statusProgressBar.Value = 100;
+        }
+
+        private void btnEntitiesDelete_Click(object sender, EventArgs e)
+        {
+            Int32 selectedRowCount = dataGridViewEntities.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            int counteDeleted = 0;
+            if (selectedRowCount > 0)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    #region Ask User For Confirmation
+                    string PK = dataGridViewEntities.SelectedRows[i].Cells[0].Value.ToString();
+                    string name = dataGridViewEntities.SelectedRows[i].Cells[1].Value.ToString();
+                    var confirmResult = MessageBox.Show("Are you sure to delete this entity " + name + "?",
+                                     "Confirm Delete!!",
+                                     MessageBoxButtons.YesNo);
+                    #region Handle Confirmation Response
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        #region Create&Send&Handle Request
+                        var request = new RestSharp.RestRequest("entities/" + PK, RestSharp.Method.DELETE);
+
+                        IRestResponse response = client.Execute(request);
+
+
+                        if (response.IsSuccessful)
+                        {
+                            lblStatus.Text = "Deleted " + name + " entity!";
+                            lblStatus.ForeColor = Color.Green;
+                        }
+                        else
+                        {
+                            lblStatus.Text = "Not deleted " + name + " entity!";
+                            lblStatus.ForeColor = Color.Red;
+                        }
+                        #endregion
+
+                        counteDeleted++;
+                    }
+                    #endregion
+
+                    #endregion
+                }
+
+                lblStatus.Text = "Deleted " + counteDeleted + " entities!";
+                lblStatus.ForeColor = Color.Green;
+
+                loadEntities();
+            }
         }
     }
 }
