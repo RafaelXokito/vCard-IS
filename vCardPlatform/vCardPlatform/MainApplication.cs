@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using RestSharp;
 using RestSharp.Authenticators;
 using vCardPlatform.Models;
+using System.Threading;
 
 namespace vCardPlatform
 {
@@ -117,6 +118,8 @@ namespace vCardPlatform
             var resultAdmin = client.Execute<List<Administrator>>(requestAdmin).Data;
 
             dataGridViewAdministrators.DataSource = resultAdmin;
+
+            dataGridViewAdministrators.Columns["password"].Visible = false;
         }
 
 
@@ -278,56 +281,22 @@ namespace vCardPlatform
             }
         }
 
-        private void dataGridViewEntities_DoubleClick(object sender, EventArgs e)
-        {
-            
-        }
-
         private void dataGridViewEntities_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0) {
+
+                int c = groupEntityStatus.Controls.Count;
+                for (int i = c - 1; i >= 0; i--)
+                    if (groupEntityStatus.Controls[i].Name == "")
+                        groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
+
                 #region Fill Necessary Fields
                 txtEntityName.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[1].Value.ToString();
                 txtEntityEndpoint.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[2].Value.ToString();
                 numEntityMaxLimit.Value = Decimal.Parse(dataGridViewEntities.Rows[e.RowIndex].Cells[3].Value.ToString());
                 #endregion
 
-
-                RestClient client = new RestClient(txtEntityEndpoint.Text+"/api");
-
-                RestRequest request = new RestRequest("defaultcategories", Method.GET);
-
-                var responseData = client.Execute<List<DefaultCategory>>(request).Data;
-                //dataGridViewEntityDefaultCategory.DataSource = responseData;
-
-                //You can assign the Column types while initializing
-                DataGridViewColumn d1 = new DataGridViewTextBoxColumn();
-                DataGridViewColumn d2 = new DataGridViewTextBoxColumn();
-                DataGridViewColumn d3 = new DataGridViewTextBoxColumn();
-
-                //Add Header Texts to be displayed on the Columns
-                d1.HeaderText = "Id";
-                d1.Name = "id";
-                d2.HeaderText = "Name";
-                d2.Name = "name";
-                d3.HeaderText = "Type";
-                d3.Name = "type";
-
-                //Add the Columns to the DataGridView
-                dataGridViewEntityDefaultCategory.Columns.Clear();
-                dataGridViewEntityDefaultCategory.Columns.AddRange(d1, d2, d3);
-
-                dataGridViewEntityDefaultCategory.Rows.Clear();
-
-                if (responseData!=null)
-                foreach (DefaultCategory defaultCategory in responseData)
-                {
-                    int rowId = dataGridViewEntityDefaultCategory.Rows.Add();
-                    DataGridViewRow row = dataGridViewEntityDefaultCategory.Rows[rowId];
-                    row.Cells["id"].Value = defaultCategory.Id;
-                    row.Cells["name"].Value = defaultCategory.Name;
-                    row.Cells["type"].Value = (defaultCategory.Type == "D" ? "Debit" : "Credit");
-                }
+                loadEntityDefaultCategories();
 
                 txtEntityId.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString();
                 groupDataEntity.Enabled = true;
@@ -336,22 +305,68 @@ namespace vCardPlatform
 
 
                 btnEntitySave.Text = "Update";
+                txtEntityEndpoint.BackColor = SystemColors.Window;
 
                 tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
             }
         }
 
+        public void loadEntityDefaultCategories()
+        {
+            RestClient client = new RestClient(txtEntityEndpoint.Text + "/api");
+
+            RestRequest request = new RestRequest("defaultcategories", Method.GET);
+
+            var responseData = client.Execute<List<DefaultCategory>>(request).Data;
+            //dataGridViewEntityDefaultCategory.DataSource = responseData;
+
+            dataGridViewEntityDefaultCategorySetup(responseData);
+        }
+
+        private void dataGridViewEntityDefaultCategorySetup(List<DefaultCategory> responseData)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<List<DefaultCategory>>(dataGridViewEntityDefaultCategorySetup), new object[] { responseData });
+                return;
+            }
+            //You can assign the Column types while initializing
+            DataGridViewColumn d2 = new DataGridViewTextBoxColumn();
+            DataGridViewColumn d3 = new DataGridViewTextBoxColumn();
+
+            //Add Header Texts to be displayed on the Columns
+            d2.HeaderText = "Name";
+            d2.Name = "name";
+            d3.HeaderText = "Type";
+            d3.Name = "type";
+
+            dataGridViewEntityDefaultCategory.Columns.Clear();
+            dataGridViewEntityDefaultCategory.Columns.AddRange(d2, d3);
+
+            dataGridViewEntityDefaultCategory.Rows.Clear();
+
+            if (responseData != null)
+                foreach (DefaultCategory defaultCategory in responseData)
+                {
+                    int rowId = dataGridViewEntityDefaultCategory.Rows.Add();
+                    DataGridViewRow row = dataGridViewEntityDefaultCategory.Rows[rowId];
+                    row.Cells["name"].Value = defaultCategory.Name;
+                    row.Cells["type"].Value = (defaultCategory.Type == "D" ? "Debit" : "Credit");
+                }
+        }
 
         private void btnEntityDCRemoveRow_Click(object sender, EventArgs e)
         {
             Int32 selectedRowCount = dataGridViewEntityDefaultCategory.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            DataGridViewSelectedRowCollection dataGridViewRowCollection = dataGridViewEntityDefaultCategory.SelectedRows;
 
             if (selectedRowCount > 0)
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 for (int i = 0; i < selectedRowCount; i++)
                 {
-                    dataGridViewEntityDefaultCategory.Rows.RemoveAt(i);
+                    dataGridViewEntityDefaultCategory.Rows.Remove(dataGridViewRowCollection[i]);
                 }
 
             }
@@ -359,71 +374,269 @@ namespace vCardPlatform
 
         private void btnTestEndpoint_Click(object sender, EventArgs e)
         {
+            foreach (Label item in groupEntityStatus.Controls)
+            {
+                if (item.Name == "")
+                {
+                    groupEntityStatus.Controls.Remove(item);
+                }
+            }
             if (txtEntityEndpoint.Text != "")
             {
-                RestClient client = new RestClient(txtEntityEndpoint.Text);
-
-                RestRequest request = new RestRequest("", Method.GET);
-
-                IRestResponse responseData = client.Execute(request);
-
-                if (responseData.StatusCode != 0)
-                {
-                    txtEntityEndpoint.BackColor = Color.GreenYellow;
-                }
-                else
-                {
-                    txtEntityEndpoint.BackColor = Color.MediumVioletRed;
-                }
+                Thread thread1 = new Thread(testEntityStatus);
+                thread1.Start(txtEntityEndpoint.Text);
             }
         }
 
         private void btnEntitySave_Click(object sender, EventArgs e)
         {
-            statusProgressBar.Value = 0;
-
-            #region Create Entity Model
-            Entity entity = new Entity
+            try
             {
-                Name = txtEntityName.Text,
-                Endpoint = txtEntityEndpoint.Text,
-                MaxLimit = numEntityMaxLimit.Value
-            };
-            #endregion
+                RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
 
-            #region Create&Populate&Send Request
-            var request = new RestSharp.RestRequest("entities/"+ txtEntityId.Text, RestSharp.Method.PUT, DataFormat.Json);
+                RestRequest request = new RestRequest("", Method.GET);
 
-            request.AddJsonBody(entity);
+                IRestResponse responseData = clientTest.Execute(request);
+                if (responseData.StatusCode != 0)
+                {
+                    statusProgressBar.Value = 0;
 
-            RestSharp.IRestResponse response = client.Execute(request);
-            #endregion
+                    #region Create Entity Model
+                    Entity entity = new Entity
+                    {
+                        Name = txtEntityName.Text,
+                        Endpoint = txtEntityEndpoint.Text,
+                        MaxLimit = numEntityMaxLimit.Value
+                    };
+                    #endregion
 
-            #region Handle Request Response
-            if (response.IsSuccessful)
-            {
-                lblStatus.ForeColor = Color.Green;
-                lblStatus.Text = "Entity " + txtEntityName.Text + " updated!";
-                loadEntities();
-                tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntityTable"];
-                txtEntityId.Text = "";
-                txtEntityName.Text = "";
-                txtEntityEndpoint.Text = "";
-                numEntityMaxLimit.Value = 0;
-                dataGridViewEntityDefaultCategory.Rows.Clear();
-                dataGridViewEntityDefaultCategory.Refresh();
+                    #region Create&Populate&Send Request
+                    if (btnEntitySave.Text == "Update")
+                    {
+                        request = new RestSharp.RestRequest("entities/" + txtEntityId.Text, RestSharp.Method.PUT, DataFormat.Json);
+                    }
+                    else
+                    {
+                        request = new RestSharp.RestRequest("entities", RestSharp.Method.POST, DataFormat.Json);
+                    }
+                    request.AddJsonBody(entity);
+
+                    RestSharp.IRestResponse<Entity> response = client.Execute<Entity>(request);
+                    #endregion
+                    #region Handle Request Response
+                    if (response.IsSuccessful)
+                    {
+                        
+                        statusProgressBar.Value = 50;
+
+                        #region Get Default Categories From Endpoint & Prepare To Compare
+                        clientTest = new RestClient(response.Data.Endpoint + "/api");
+                    
+                        request = new RestRequest("defaultcategories", Method.GET);
+
+                        List<DefaultCategory> defaultCategories = clientTest.Execute<List<DefaultCategory>>(request).Data;
+
+                        DataTable dataTable1 = ConvertToDataTable<DefaultCategory>(defaultCategories);
+                        dataTable1.Columns.RemoveAt(0);
+                        
+                        #endregion
+
+                        DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
+
+                        foreach (DataRow row in dataTable2.Rows)
+                        {
+                            if (row["Type"].ToString() == "Credit")
+                                row["Type"] = "C";
+                            else
+                                row["Type"] = "D";
+                        }
+
+                        DataTable dt = getDifferentRecords(dataTable2, dataTable1);
+
+                        #region Handle Different Rows
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            DefaultCategory defaultCategory = new DefaultCategory
+                            {
+                                Name = row["Name"].ToString(),
+                                Type = row["Type"].ToString(),
+                            };
+
+                            #region Create&Populate&Send Request
+                            if (row["Method"].ToString() == "POST") { 
+                                request = new RestSharp.RestRequest("entities/"+response.Data.Id+"/defaultcategories", RestSharp.Method.POST, DataFormat.Json);
+                                request.AddJsonBody(defaultCategory);
+                            }
+                            else if (row["Method"].ToString() == "DELETE") { 
+                                request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
+                                request.AddJsonBody(defaultCategory);
+
+                            }
+                            RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                            #endregion
+                        }
+                        #endregion
+                        statusProgressBar.Value = 100;
+                        groupDataEntity.Enabled = false;
+                        btnEntitySave.Enabled = false;
+                        groupEntityDefaultCategory.Enabled = false;
+
+                        lblStatus.ForeColor = Color.Green;
+                        if (btnEntitySave.Text == "Create")
+                            lblStatus.Text = "Entity " + txtEntityName.Text + " created!";
+                        else
+                            lblStatus.Text = "Entity " + txtEntityName.Text + " updated!";
+                        loadEntities();
+                        tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntityTable"];
+                        txtEntityId.Text = "";
+                        txtEntityName.Text = "";
+                        txtEntityEndpoint.Text = "";
+                        numEntityMaxLimit.Value = 0;
+                        dataGridViewEntityDefaultCategory.Rows.Clear();
+                        dataGridViewEntityDefaultCategory.Refresh();
+                    }
+                    else
+                    {
+                        lblStatus.ForeColor = Color.Red;
+                        lblStatus.Text = response.StatusDescription;
+                        MessageBox.Show(response.StatusDescription);
+                    }
+                    #endregion
+                }
+                else
+                {
+                    MessageBox.Show("You endpoint is invalid! Use de 'Test End-Point' Button");
+                    btnTestEndpoint.Focus();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblStatus.ForeColor = Color.Red;
-                lblStatus.Text = response.ErrorMessage;
+                testEntityStatus(txtEntityEndpoint.Text);
+                MessageBox.Show(ex.Message);
             }
-            #endregion
-            statusProgressBar.Value = 100;
-            groupDataEntity.Enabled = false;
-            btnEntitySave.Enabled = false;
-            groupEntityDefaultCategory.Enabled = false;
+        }
 
+        public static DataTable ConvertToDataTable<T>(IList<T> data)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+            DataTable table = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
+            {
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            }
+
+            foreach (T item in data)
+            {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                {
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                }
+
+                table.Rows.Add(row);
+            }
+
+            return table;
+        }
+
+        private DataTable GetDataGridViewAsDataTable(DataGridView _DataGridView)
+        {
+            try
+            {
+                if (_DataGridView.ColumnCount == 0) return null;
+                DataTable dtSource = new DataTable();
+                //////create columns
+                foreach (DataGridViewColumn col in _DataGridView.Columns)
+                {
+                    if (col.ValueType == null) dtSource.Columns.Add(col.Name, typeof(string));
+                    else dtSource.Columns.Add(col.Name, col.ValueType);
+                    dtSource.Columns[col.Name].Caption = col.HeaderText;
+                }
+                ///////insert row data
+                foreach (DataGridViewRow row in _DataGridView.Rows)
+                {
+                    if (row.Cells[0].Value == null || row.Cells[0].Value.ToString() == "")
+                    {
+                        continue;
+                    }
+                    DataRow drNewRow = dtSource.NewRow();
+                    foreach (DataColumn col in dtSource.Columns)
+                    {
+                        drNewRow[col.ColumnName] = row.Cells[col.ColumnName].Value;
+                    }
+                    dtSource.Rows.Add(drNewRow);
+                }
+                return dtSource;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDifferentRecords(DataTable FirstDataTable, DataTable SecondDataTable)
+        {
+            FirstDataTable.Columns.Add("Method", typeof(String));
+            SecondDataTable.Columns.Add("Method", typeof(String));
+            //Create Empty Table 
+            DataTable ResultDataTable = new DataTable("ResultDataTable");
+
+            //use a Dataset to make use of a DataRelation object 
+            using (DataSet ds = new DataSet())
+            {
+
+                //Add tables 
+                ds.Tables.AddRange(new DataTable[] { FirstDataTable.Copy(), SecondDataTable.Copy() });
+
+                //Get Columns for DataRelation 
+                DataColumn[] firstColumns = new DataColumn[ds.Tables[0].Columns.Count];
+                for (int i = 0; i < firstColumns.Length; i++)
+                {
+                    firstColumns[i] = ds.Tables[0].Columns[i];
+                }
+
+                DataColumn[] secondColumns = new DataColumn[ds.Tables[1].Columns.Count];
+                for (int i = 0; i < secondColumns.Length; i++)
+                {
+                    secondColumns[i] = ds.Tables[1].Columns[i];
+                }
+
+                //Create DataRelation 
+                DataRelation r1 = new DataRelation(string.Empty, firstColumns, secondColumns, false);
+                ds.Relations.Add(r1);
+
+                DataRelation r2 = new DataRelation(string.Empty, secondColumns, firstColumns, false);
+                ds.Relations.Add(r2);
+
+                //Create columns for return table 
+                for (int i = 0; i < FirstDataTable.Columns.Count; i++)
+                {
+                    ResultDataTable.Columns.Add(FirstDataTable.Columns[i].ColumnName, FirstDataTable.Columns[i].DataType);
+                }
+
+                //If FirstDataTable Row not in SecondDataTable, Add to ResultDataTable. 
+                ResultDataTable.BeginLoadData();
+                foreach (DataRow parentrow in ds.Tables[0].Rows)
+                {
+                    DataRow[] childrows = parentrow.GetChildRows(r1);
+                    if (childrows == null || childrows.Length == 0) {
+                        parentrow["Method"] = "POST";
+                        ResultDataTable.LoadDataRow(parentrow.ItemArray, true);
+                    }
+                }
+
+                //If SecondDataTable Row not in FirstDataTable, Add to ResultDataTable. 
+                foreach (DataRow parentrow in ds.Tables[1].Rows)
+                {
+                    DataRow[] childrows = parentrow.GetChildRows(r2);
+                    if (childrows == null || childrows.Length == 0) {
+                        parentrow["Method"] = "DELETE";
+                        ResultDataTable.LoadDataRow(parentrow.ItemArray, true);
+                    }
+                }
+                ResultDataTable.EndLoadData();
+            }
+            return ResultDataTable;
         }
 
         private void btnEntitiesDelete_Click(object sender, EventArgs e)
@@ -482,14 +695,132 @@ namespace vCardPlatform
             groupDataEntity.Enabled = true;
             groupEntityDefaultCategory.Enabled = true;
             btnEntitySave.Enabled = true;
+            txtEntityEndpoint.BackColor = SystemColors.Window;
 
             btnEntitySave.Text = "Create";
 
-            tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
+            lblEntityStatusName.Text = "";
+
+            int c = groupEntityStatus.Controls.Count;
+            for (int i = c - 1; i >= 0; i--)
+                if (groupEntityStatus.Controls[i].Name == "")
+                    groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
+
+            dataGridViewEntityDefaultCategory.Rows.Clear();
+            dataGridViewEntityDefaultCategory.Refresh();
+
             txtEntityId.Text = "";
             txtEntityName.Text = "";
             txtEntityEndpoint.Text = "";
             numEntityMaxLimit.Value = 0;
+
+            tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
+        }
+
+        public void AppendTextBox(Label label, string value)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<Label,string>(AppendTextBox), new object[] { label, value });
+                return;
+            }
+            label.Text = value;
+        }
+
+        private void testEntityStatus(object endpoint)
+        {
+            try
+            {
+                #region Check Entity Reachability
+                AppendTextBox(lblEntityStatusName, endpoint.ToString());
+                RestClient clientTest = new RestClient(endpoint.ToString());
+
+                RestRequest request = new RestRequest("", Method.GET);
+
+                IRestResponse responseData = clientTest.Execute(request);
+
+                if (responseData.StatusCode != 0)
+                {
+                
+                    Label lblEntityStatusResponse = new Label();
+                    lblEntityStatusResponse.Location = new Point(99, 119);
+                    lblEntityStatusResponse.Text = "Success";
+                    AppendElemToGroup(groupEntityStatus, lblEntityStatusResponse);
+                    lblEntityStatusResponse.BackColor = Color.GreenYellow;
+
+                    request = new RestRequest("endpointssufixs", Method.GET);
+
+                    List<EndpointSufix> endpointSufixes = client.Execute<List<EndpointSufix>>(request).Data;
+
+                    int i = 0;
+                    foreach (EndpointSufix item in endpointSufixes)
+                    {
+                        Label namelabel = new Label();
+                        namelabel.Location = new Point(21, 186 + (i * 31));
+                        namelabel.Text = item.Content;
+                        AppendElemToGroup(groupEntityStatus, namelabel);
+
+                        request = new RestRequest(item.Content, Method.GET);
+
+                        responseData = clientTest.Execute(request);
+
+                        Label responselabel = new Label();
+                        responselabel.Location = new Point(192, 186 + (i * 31));
+                        responselabel.Text = item.Content;
+                        AppendElemToGroup(groupEntityStatus, responselabel);
+
+                        if (responseData.StatusCode != 0)
+                        {
+                            AppendTextBox(responselabel, "Success");
+                            responselabel.BackColor = Color.GreenYellow;
+                        }
+                        else
+                        {
+                            AppendTextBox(responselabel, "Unreachable");
+                            responselabel.BackColor = Color.MediumVioletRed;
+                        }
+                        i++;
+                    }
+                }
+                else
+                {
+                    Label lblEntityStatusResponse = new Label();
+                    lblEntityStatusResponse.Location = new Point(99, 119);
+                    lblEntityStatusResponse.Text = "Unreachable";
+                    AppendElemToGroup(groupEntityStatus, lblEntityStatusResponse);
+                    lblEntityStatusResponse.BackColor = Color.MediumVioletRed;
+                }
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, endpoint.ToString());
+            }
+        }
+
+        private void AppendElemToGroup(GroupBox group, Label label)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<GroupBox, Label>(AppendElemToGroup), new object[] { group, label });
+                return;
+            }
+            group.Controls.Add(label);
+        }
+
+        private void tabCEntities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEntityDefaultCategoriesRefresh_Click(object sender, EventArgs e)
+        {
+            if (txtEntityEndpoint.Text != "")
+            {
+                Thread thread1 = new Thread(loadEntityDefaultCategories);
+                thread1.Start();
+            }
         }
     }
 }

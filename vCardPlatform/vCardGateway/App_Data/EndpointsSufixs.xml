@@ -1,0 +1,5 @@
+<sufixs>
+  <sufix>/api/transactions</sufix>
+  <sufix>/api/defaultcategories</sufix>
+  <sufix>/api/categories</sufix>
+</sufixs>

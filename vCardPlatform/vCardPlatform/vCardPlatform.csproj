@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DefaultCategory.cs" />
+    <Compile Include="Models\EndpointSufix.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="FormChangePassword.cs">

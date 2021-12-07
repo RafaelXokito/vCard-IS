@@ -9,12 +9,18 @@
     <id>2</id>
     <name>MBWayAPI</name>
     <endpoint>http://localhost:55059</endpoint>
-    <maxlimit>5000,02</maxlimit>
+    <maxlimit>5000,01</maxlimit>
   </entity>
   <entity>
     <id>4e8d8e0f-f029-49c2-9357-afceaa4d40cd</id>
     <name>TesteAPI</name>
     <endpoint>http://localhost:63021</endpoint>
     <maxlimit>5000,0</maxlimit>
+  </entity>
+  <entity>
+    <id>876fba56-a1d5-4ae3-aba3-b4df50c7068d</id>
+    <name>endpoint</name>
+    <endpoint>http://localhost:55059</endpoint>
+    <maxlimit>0,06</maxlimit>
   </entity>
 </entities>

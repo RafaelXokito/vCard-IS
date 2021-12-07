@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace MBWayAPI.Controllers
@@ -56,7 +57,15 @@ namespace MBWayAPI.Controllers
         [Route("api/defaultcategories")]
         public IEnumerable<DefaultCategory> GetDefaultCategories()
         {
-            string queryString = "SELECT * FROM DefaultCategories";
+            string queryString = "SELECT * FROM DefaultCategories WHERE 1 = 1";
+            if (HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("name") != null)
+            {
+                queryString += " AND name = @name";
+            }
+            if (HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("type") != null)
+            {
+                queryString += " AND type = @type";
+            }
 
             List<DefaultCategory> categories = new List<DefaultCategory>();
 
@@ -67,6 +76,14 @@ namespace MBWayAPI.Controllers
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(queryString, connection);
+                    if (HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("name") != null)
+                    {
+                        command.Parameters.AddWithValue("@name", HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("name"));
+                    }
+                    if (HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("type") != null)
+                    {
+                        command.Parameters.AddWithValue("@type", HttpUtility.ParseQueryString(Request.RequestUri.Query).Get("type"));
+                    }
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -99,7 +116,7 @@ namespace MBWayAPI.Controllers
         [Route("api/defaultcategories")]
         public IHttpActionResult PostDefaultCategory(DefaultCategory category)
         {
-            string queryString = "INSERT INTO DefaultCategories(Name, Type) VALUES(@name, @type)";
+            string queryString = "INSERT INTO DefaultCategories(Name, Type) output INSERTED.ID VALUES(@name, @type)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -112,9 +129,10 @@ namespace MBWayAPI.Controllers
 
                     connection.Open();
 
-                    if (command.ExecuteNonQuery() > 0)
+                    int result = Convert.ToInt32(command.ExecuteScalar());
+                    if (result > 0)
                     {
-                        return Ok();
+                        return Ok(GetDefaultCategory(result));
                     }
 
                     connection.Close();

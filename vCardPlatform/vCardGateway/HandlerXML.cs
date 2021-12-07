@@ -194,5 +194,103 @@ namespace vCardGateway
             }
         }
         #endregion
+
+        #region ENDPOINTSSUFIXS
+        public List<EndpointSufix> GetEndpointSufixs()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            List<EndpointSufix> sufixs = new List<EndpointSufix>();
+            XmlNodeList nodeList = doc.SelectNodes("//sufix");
+
+            foreach (XmlNode node in nodeList)
+            {
+                EndpointSufix sufix = new EndpointSufix
+                {
+                    Content = node.InnerText,
+                };
+
+                sufixs.Add(sufix);
+            }
+            return sufixs;
+        }
+
+        public EndpointSufix GetEndpointSufix(string content)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+
+            if (node == null) return null;
+
+            EndpointSufix sufix = new EndpointSufix
+            {
+                Content = node.InnerText,
+            };
+
+            return sufix;
+        }
+
+        public void CreateEndpointSufix(EndpointSufix sufix)
+        {
+            if (GetEndpointSufix(sufix.Content) != null)
+            {
+                throw new Exception("A sufix like that already exists");
+            }
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode root = doc.SelectSingleNode($"/sufixs");
+
+            XmlElement newsufix = doc.CreateElement("sufix");
+            newsufix.InnerText = sufix.Content;
+            root.AppendChild(newsufix);
+
+            doc.Save(XmlFilePath);
+        }
+
+        public void UpdateEndpointSufix(string content, EndpointSufix sufix)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+
+            if (node == null)
+            {
+                throw new Exception("The sufix that you are looking for, does not exist");
+            }
+
+            if (sufix.Content != null)
+                node.InnerText = sufix.Content;
+
+            doc.Save(XmlFilePath);
+        }
+
+        public void DeleteEndpointSufix(string content)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+
+            if (node == null)
+            {
+                throw new Exception("The sufix that you are looking for, does not exist");
+            }
+
+            XmlNode root = node.ParentNode;
+
+            if (root.RemoveChild(node) == null)
+            {
+                throw new Exception("The sufix couldn't be deleted with success");
+            }
+
+            doc.Save(XmlFilePath);
+        }
+        #endregion
     }
 }
