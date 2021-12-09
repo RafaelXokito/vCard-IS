@@ -2,4 +2,5 @@
   <sufix>/api/transactions</sufix>
   <sufix>/api/defaultcategories</sufix>
   <sufix>/api/categories</sufix>
+  <sufix>/api/users</sufix>
 </sufixs>

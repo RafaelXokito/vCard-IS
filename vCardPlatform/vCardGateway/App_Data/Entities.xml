@@ -19,8 +19,8 @@
   </entity>
   <entity>
     <id>876fba56-a1d5-4ae3-aba3-b4df50c7068d</id>
-    <name>endpoint</name>
-    <endpoint>http://localhost:55059</endpoint>
-    <maxlimit>0,06</maxlimit>
+    <name>vCard</name>
+    <endpoint>http://172.22.21.95/</endpoint>
+    <maxlimit>5000</maxlimit>
   </entity>
 </entities>

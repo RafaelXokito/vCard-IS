@@ -82,6 +82,14 @@ namespace vCardPlatform
 
                 lblStatus.Text = "Tables loaded";
 
+                #region Setup panelEntityStatusResources for Scroll
+                panelEntityStatusResources.AutoScroll = false;
+                panelEntityStatusResources.HorizontalScroll.Enabled = false;
+                panelEntityStatusResources.HorizontalScroll.Visible = false;
+                panelEntityStatusResources.HorizontalScroll.Maximum = 0;
+                panelEntityStatusResources.AutoScroll = true;
+                #endregion
+
                 lblStatus.ForeColor = Color.Green;
                 lblStatus.Text = "Everything is up to go!";
 
@@ -283,36 +291,45 @@ namespace vCardPlatform
 
         private void dataGridViewEntities_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) {
 
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) {
                 int c = groupEntityStatus.Controls.Count;
                 for (int i = c - 1; i >= 0; i--)
                     if (groupEntityStatus.Controls[i].Name == "")
                         groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
 
+
+                c = panelEntityStatusResources.Controls.Count;
+                for (int i = c - 1; i >= 0; i--)
+                    if (panelEntityStatusResources.Controls[i].Name == "")
+                        panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
+                
                 #region Fill Necessary Fields
                 txtEntityName.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[1].Value.ToString();
                 txtEntityEndpoint.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[2].Value.ToString();
                 numEntityMaxLimit.Value = Decimal.Parse(dataGridViewEntities.Rows[e.RowIndex].Cells[3].Value.ToString());
                 #endregion
 
-                loadEntityDefaultCategories();
+                Thread thread = new Thread(loadEntityDefaultCategories);
+                thread.Start();
 
                 txtEntityId.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString();
                 groupDataEntity.Enabled = true;
                 groupEntityDefaultCategory.Enabled = true;
                 btnEntitySave.Enabled = true;
 
-
+                lblEntityStatusName.Text = "";
                 btnEntitySave.Text = "Update";
                 txtEntityEndpoint.BackColor = SystemColors.Window;
 
                 tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
             }
+
         }
 
         public void loadEntityDefaultCategories()
         {
+            
             RestClient client = new RestClient(txtEntityEndpoint.Text + "/api");
 
             RestRequest request = new RestRequest("defaultcategories", Method.GET);
@@ -321,6 +338,7 @@ namespace vCardPlatform
             //dataGridViewEntityDefaultCategory.DataSource = responseData;
 
             dataGridViewEntityDefaultCategorySetup(responseData);
+
         }
 
         private void dataGridViewEntityDefaultCategorySetup(List<DefaultCategory> responseData)
@@ -374,13 +392,16 @@ namespace vCardPlatform
 
         private void btnTestEndpoint_Click(object sender, EventArgs e)
         {
-            foreach (Label item in groupEntityStatus.Controls)
-            {
-                if (item.Name == "")
-                {
-                    groupEntityStatus.Controls.Remove(item);
-                }
-            }
+            int c = groupEntityStatus.Controls.Count;
+            for (int i = c - 1; i >= 0; i--)
+                if (groupEntityStatus.Controls[i].Name == "")
+                    groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
+
+            c = panelEntityStatusResources.Controls.Count;
+            for (int i = c - 1; i >= 0; i--)
+                if (panelEntityStatusResources.Controls[i].Name == "")
+                    panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
+
             if (txtEntityEndpoint.Text != "")
             {
                 Thread thread1 = new Thread(testEntityStatus);
@@ -727,6 +748,25 @@ namespace vCardPlatform
             label.Text = value;
         }
 
+        public void AppendStatusBar(int value, string message)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<int, string>(AppendStatusBar), new object[] { value, message });
+                return;
+            }
+            statusProgressBar.Value = value;
+            lblStatus.Text = message;
+            if (value != 100)
+            {
+                Application.UseWaitCursor = true;
+            }
+            else
+            {
+                Application.UseWaitCursor = false;
+            }
+        }
+
         private void testEntityStatus(object endpoint)
         {
             try
@@ -736,38 +776,42 @@ namespace vCardPlatform
                 RestClient clientTest = new RestClient(endpoint.ToString());
 
                 RestRequest request = new RestRequest("", Method.GET);
-
+                AppendStatusBar(0,"Trying to reach endpoint!");
                 IRestResponse responseData = clientTest.Execute(request);
+                AppendStatusBar(100, "Done!");
 
                 if (responseData.StatusCode != 0)
                 {
                 
                     Label lblEntityStatusResponse = new Label();
-                    lblEntityStatusResponse.Location = new Point(99, 119);
+                    lblEntityStatusResponse.Location = new Point(106, 49);
                     lblEntityStatusResponse.Text = "Success";
                     AppendElemToGroup(groupEntityStatus, lblEntityStatusResponse);
                     lblEntityStatusResponse.BackColor = Color.GreenYellow;
 
                     request = new RestRequest("endpointssufixs", Method.GET);
-
+                    AppendStatusBar(0, "Getting end-point sufixs!");
                     List<EndpointSufix> endpointSufixes = client.Execute<List<EndpointSufix>>(request).Data;
+                    AppendStatusBar(100, "Done!");
 
                     int i = 0;
                     foreach (EndpointSufix item in endpointSufixes)
                     {
+                        AppendStatusBar(100/endpointSufixes.Count, "Trying to reach endpoint sufixs!");
+
                         Label namelabel = new Label();
-                        namelabel.Location = new Point(21, 186 + (i * 31));
+                        namelabel.Location = new Point(21, 17 + (i * 31));
                         namelabel.Text = item.Content;
-                        AppendElemToGroup(groupEntityStatus, namelabel);
+                        AppendElemToPanel(panelEntityStatusResources, namelabel);
 
                         request = new RestRequest(item.Content, Method.GET);
 
                         responseData = clientTest.Execute(request);
 
                         Label responselabel = new Label();
-                        responselabel.Location = new Point(192, 186 + (i * 31));
+                        responselabel.Location = new Point(185, 17 + (i * 31));
                         responselabel.Text = item.Content;
-                        AppendElemToGroup(groupEntityStatus, responselabel);
+                        AppendElemToPanel(panelEntityStatusResources, responselabel);
 
                         if (responseData.StatusCode != 0)
                         {
@@ -787,9 +831,10 @@ namespace vCardPlatform
                     Label lblEntityStatusResponse = new Label();
                     lblEntityStatusResponse.Location = new Point(99, 119);
                     lblEntityStatusResponse.Text = "Unreachable";
-                    AppendElemToGroup(groupEntityStatus, lblEntityStatusResponse);
+                    AppendElemToPanel(panelEntityStatusResources, lblEntityStatusResponse);
                     lblEntityStatusResponse.BackColor = Color.MediumVioletRed;
                 }
+                AppendStatusBar(100, "Done!");
                 #endregion
 
             }
@@ -809,6 +854,16 @@ namespace vCardPlatform
             group.Controls.Add(label);
         }
 
+        private void AppendElemToPanel(Panel panel, Label label)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<Panel, Label>(AppendElemToPanel), new object[] { panel, label });
+                return;
+            }
+            panel.Controls.Add(label);
+        }
+
         private void tabCEntities_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -821,6 +876,40 @@ namespace vCardPlatform
                 Thread thread1 = new Thread(loadEntityDefaultCategories);
                 thread1.Start();
             }
+        }
+
+        private void btnEndPointsSufixsRefresh_Click(object sender, EventArgs e)
+         {
+            var request = new RestRequest("endpointssufixs", Method.GET);
+
+            var responseData = client.Execute<List<EndpointSufix>>(request).Data;
+
+            //You can assign the Column types while initializing
+            DataGridViewColumn d2 = new DataGridViewTextBoxColumn();
+
+            //Add Header Texts to be displayed on the Columns
+            d2.HeaderText = "Content";
+            d2.Name = "content";
+
+            dataGridViewEndPointsSufixs.Columns.Clear();
+            dataGridViewEndPointsSufixs.Columns.AddRange(d2);
+
+            dataGridViewEndPointsSufixs.Rows.Clear();
+
+            if (responseData != null)
+                foreach (EndpointSufix endpointSufix in responseData)
+                {
+                    int rowId = dataGridViewEndPointsSufixs.Rows.Add();
+                    DataGridViewRow row = dataGridViewEndPointsSufixs.Rows[rowId];
+                    row.Cells["content"].Value = endpointSufix.Content;
+                }
+        }
+
+
+
+        private void btnEndPointsSufixsSave_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
