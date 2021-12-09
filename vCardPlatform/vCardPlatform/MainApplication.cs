@@ -12,6 +12,9 @@ using RestSharp;
 using RestSharp.Authenticators;
 using vCardPlatform.Models;
 using System.Threading;
+using vCardGateway.Models;
+using Excel = Microsoft.Office.Interop.Excel;
+using ExcelAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat;
 
 namespace vCardPlatform
 {
@@ -34,6 +37,7 @@ namespace vCardPlatform
             if (response.IsSuccessful)
             {
                 administrator = response.Data;
+                labelAdministratorName.Text = administrator.Name;
                 return;
             }
 
@@ -47,7 +51,7 @@ namespace vCardPlatform
 
         private void buttonChangePassword_Click(object sender, EventArgs e)
         {
-            FormChangePassword fm = new FormChangePassword();
+            FormChangePassword fm = new FormChangePassword(administrator.Email);
             panelProfile.Controls.Clear();
             fm.TopLevel = false;
             fm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -78,6 +82,14 @@ namespace vCardPlatform
                 statusProgressBar.PerformStep();
 
                 lblStatus.Text = "Loaded Entities Table";
+                #endregion
+
+                #region Load Operations Table
+                loadOperations();
+
+                statusProgressBar.PerformStep();
+
+                lblStatus.Text = "Loaded Operations Table";
                 #endregion
 
                 lblStatus.Text = "Tables loaded";
@@ -112,6 +124,74 @@ namespace vCardPlatform
         private void groupBoxCreate_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonExportXml_Click(object sender, EventArgs e)
+        {
+            DataTable dt = GetDataGridViewAsDataTable(dataGridViewOperations);
+            DataSet ds = new DataSet();
+            ds.Tables.Add(dt);
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "XML|*.xml";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    ds.WriteXml(sfd.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+
+        private void copyAlltoClipboard()
+        {
+            dataGridViewOperations.SelectAll();
+            DataObject dataObj = dataGridViewOperations.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+
+        private void buttonExportExcel_Click(object sender, EventArgs e)
+        {
+            copyAlltoClipboard();
+            Excel.Application xlexcel;
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            object misValue = System.Reflection.Missing.Value;
+            xlexcel = new Excel.Application();
+            xlexcel.Visible = true;
+            xlWorkBook = xlexcel.Workbooks.Add(misValue);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            int c = dataGridViewOperations.Columns.Count;
+            for (int i = 1; i <= c; i++)
+            {
+                xlWorkSheet.Cells[1, i] = dataGridViewOperations.Columns[i-1].HeaderText;
+            }
+            for (int i = 0; i < dataGridViewOperations.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataGridViewOperations.Columns.Count; j++)
+                {
+                    xlWorkSheet.Cells[i + 2, j + 1] = dataGridViewOperations.Rows[i].Cells[j].Value.ToString();
+                }
+            }
+            xlexcel.ActiveCell.Worksheet.Cells[1, c].AutoFormat(ExcelAutoFormat.xlRangeAutoFormatList2);
+        }
+
+        private void buttonOperationsRefresh_Click(object sender, EventArgs e)
+        {
+            loadOperations();
+        }
+
+        private void loadOperations()
+        {
+            var request = new RestSharp.RestRequest("transactionlogs", RestSharp.Method.GET);
+
+            var result = client.Execute<List<TransactionLog>>(request).Data;
+
+            dataGridViewOperations.DataSource = result;
         }
 
         private void btnAdministratorsRefresh_Click(object sender, EventArgs e)
