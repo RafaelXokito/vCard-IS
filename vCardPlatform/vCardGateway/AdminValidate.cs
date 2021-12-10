@@ -16,7 +16,7 @@ namespace vCardGateway
         {
             string connectionString = vCardGateway.Properties.Settings.Default.ConnStr;
 
-            string queryString = "SELECT Password FROM Administrators WHERE Email = @email";
+            string queryString = "SELECT Password FROM Administrators WHERE Email = @email AND Disabled = 0";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

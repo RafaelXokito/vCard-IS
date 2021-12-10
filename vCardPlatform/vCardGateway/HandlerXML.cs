@@ -43,12 +43,20 @@ namespace vCardGateway
 
             foreach (XmlNode node in nodeList)
             {
+                XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
                 Entity entity = new Entity
                 {
                     Id = node["id"].InnerText,
                     Name = node["name"].InnerText,
                     Endpoint = node["endpoint"].InnerText,
                     MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
+                    EarningPercentage = Convert.ToDecimal(node["earningpercentage"].InnerText),
+                    Authentication = new Authentication
+                    {
+                        Token = authNode["token"].InnerText,
+                        Username = authNode["username"].InnerText,
+                        Password = authNode["password"].InnerText,
+                    }
                 };
 
                 entities.Add(entity);
@@ -62,6 +70,7 @@ namespace vCardGateway
             doc.Load(XmlFilePath);
 
             XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
 
             if (node == null) return null;
 
@@ -71,6 +80,41 @@ namespace vCardGateway
                 Name = node["name"].InnerText,
                 Endpoint = node["endpoint"].InnerText,
                 MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
+                EarningPercentage = Convert.ToDecimal(node["earningpercentage"].InnerText),
+                Authentication = new Authentication
+                {
+                    Token = authNode["token"].InnerText,
+                    Username = authNode["username"].InnerText,
+                    Password = authNode["password"].InnerText,
+                }
+            };
+
+            return entity;
+        }
+
+        public Entity GetEntityByCode(string code)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{code}']");
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[name='{node["name"].InnerText}']/authentication");
+
+            if (node == null) return null;
+
+            Entity entity = new Entity
+            {
+                Id = node["id"].InnerText,
+                Name = node["name"].InnerText,
+                Endpoint = node["endpoint"].InnerText,
+                MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
+                EarningPercentage = Convert.ToDecimal(node["earningpercentage"].InnerText),
+                Authentication = new Authentication
+                {
+                    Token = authNode["token"].InnerText,
+                    Username = authNode["username"].InnerText,
+                    Password = authNode["password"].InnerText,
+                }
             };
 
             return entity;
@@ -107,6 +151,22 @@ namespace vCardGateway
             maxlimit.InnerText = Convert.ToString(entity.MaxLimit);
             newEntity.AppendChild(maxlimit);
 
+            XmlElement earningpercentage = doc.CreateElement("earningpercentage");
+            earningpercentage.InnerText = Convert.ToString(entity.EarningPercentage);
+            newEntity.AppendChild(earningpercentage);
+
+            XmlElement authentication = doc.CreateElement("authentication");
+            XmlElement token = doc.CreateElement("token");
+            token.InnerText = Convert.ToString(entity.Authentication.Token);
+            authentication.AppendChild(token);
+            XmlElement username = doc.CreateElement("username");
+            username.InnerText = Convert.ToString(entity.Authentication.Username);
+            authentication.AppendChild(username);
+            XmlElement password = doc.CreateElement("password");
+            password.InnerText = Convert.ToString(entity.Authentication.Password);
+            authentication.AppendChild(password);
+            newEntity.AppendChild(authentication);
+
             doc.Save(XmlFilePath);
         }
 
@@ -130,6 +190,22 @@ namespace vCardGateway
 
             if (entity.MaxLimit != 0)
                 node["maxlimit"].InnerText = Convert.ToString(entity.MaxLimit);
+
+            if (entity.EarningPercentage != 0)
+                node["earningpercentage"].InnerText = Convert.ToString(entity.EarningPercentage);
+
+            if (entity.Authentication != null) { 
+                XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
+                
+                if (entity.Authentication.Token != null)
+                    authNode["token"].InnerText = Convert.ToString(entity.Authentication.Token);
+
+                if (entity.Authentication.Username != null)
+                    authNode["username"].InnerText = Convert.ToString(entity.Authentication.Username);
+
+                if (entity.Authentication.Password != null)
+                    authNode["password"].InnerText = Convert.ToString(entity.Authentication.Password);
+            }
 
             doc.Save(XmlFilePath);
         }
@@ -221,7 +297,7 @@ namespace vCardGateway
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+            XmlNode node = doc.SelectSingleNode($"//sufix[.='{content}']");
 
             if (node == null) return null;
 
@@ -257,7 +333,7 @@ namespace vCardGateway
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+            XmlNode node = doc.SelectSingleNode($"//sufix[.='{content}']");
 
             if (node == null)
             {
@@ -275,7 +351,7 @@ namespace vCardGateway
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/sufixs[sufix='{content}']");
+            XmlNode node = doc.SelectSingleNode($"//sufix[.='{content}']");
 
             if (node == null)
             {

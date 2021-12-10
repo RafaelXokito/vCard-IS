@@ -67,14 +67,30 @@ namespace vCardGateway.Controllers
             }
         }
 
-        [Route("api/endpointssufixs/{content}")]
-        public IHttpActionResult DeleteEndpointSufix(string content)
+        //[Route("api/endpointssufixs/{content}")]
+        //public IHttpActionResult DeleteEndpointSufix(string content)
+        //{
+        //    HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
+
+        //    try
+        //    {
+        //        handlerXML.DeleteEndpointSufix(content);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
+
+        [Route("api/endpointssufixs")]
+        public IHttpActionResult DeleteEndpointSufix(EndpointSufix endpointSufix)
         {
             HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
 
             try
             {
-                handlerXML.DeleteEndpointSufix(content);
+                handlerXML.DeleteEndpointSufix(endpointSufix.Content);
                 return Ok();
             }
             catch (Exception ex)

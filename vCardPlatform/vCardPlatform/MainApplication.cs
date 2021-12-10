@@ -15,6 +15,7 @@ using System.Threading;
 using vCardGateway.Models;
 using Excel = Microsoft.Office.Interop.Excel;
 using ExcelAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat;
+using System.Web.Helpers;
 
 namespace vCardPlatform
 {
@@ -92,6 +93,10 @@ namespace vCardPlatform
                 lblStatus.Text = "Loaded Operations Table";
                 #endregion
 
+                #region Load End Point Sufixs
+                loadEndPointSufixs();
+                #endregion
+
                 lblStatus.Text = "Tables loaded";
 
                 #region Setup panelEntityStatusResources for Scroll
@@ -113,17 +118,6 @@ namespace vCardPlatform
                 lblStatus.Text = ex.Message;
                 statusProgressBar.Value = 100;
             }
-        }
-
-
-        private void buttonGetAll_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBoxCreate_Enter(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonExportXml_Click(object sender, EventArgs e)
@@ -221,8 +215,10 @@ namespace vCardPlatform
             var request = new RestSharp.RestRequest("entities", RestSharp.Method.GET);
 
             var result = client.Execute<List<Entity>>(request).Data;
-
+            
             dataGridViewEntities.DataSource = result;
+
+            dataGridViewEntities.Columns["authentication"].Visible = false;
         }
 
         private void btnCreateAdmin_Click(object sender, EventArgs e)
@@ -325,7 +321,6 @@ namespace vCardPlatform
             fl.Show();
         }
 
-
         private void dataGridViewAdministrators_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (dataGridViewAdministrators.Columns[e.ColumnIndex].HeaderText == "Disabled" && e.RowIndex != -1)
@@ -383,17 +378,25 @@ namespace vCardPlatform
                 for (int i = c - 1; i >= 0; i--)
                     if (panelEntityStatusResources.Controls[i].Name == "")
                         panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
-                
+
                 #region Fill Necessary Fields
-                txtEntityName.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[1].Value.ToString();
-                txtEntityEndpoint.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[2].Value.ToString();
-                numEntityMaxLimit.Value = Decimal.Parse(dataGridViewEntities.Rows[e.RowIndex].Cells[3].Value.ToString());
+                var request = new RestSharp.RestRequest("entities/"+ dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString(), RestSharp.Method.GET);
+
+                var result = client.Execute<Entity>(request).Data;
+
+                txtEntityId.Text = result.Id;
+                txtEntityName.Text = result.Name;
+                txtEntityEndpoint.Text = result.Endpoint;
+                numEntityMaxLimit.Value = result.MaxLimit;
+                numEarningPercentage.Value = result.EarningPercentage;
+                txtEntityUsername.Text = result.Authentication.Username;
+                txtEntityPassword.Text = result.Authentication.Password;
                 #endregion
 
-                Thread thread = new Thread(loadEntityDefaultCategories);
+                dataGridViewEntityDefaultCategory.Rows.Clear();
+                Thread thread = new Thread(loadEntityDefaultCategoriesThread);
                 thread.Start();
 
-                txtEntityId.Text = dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString();
                 groupDataEntity.Enabled = true;
                 groupEntityDefaultCategory.Enabled = true;
                 btnEntitySave.Enabled = true;
@@ -401,24 +404,106 @@ namespace vCardPlatform
                 lblEntityStatusName.Text = "";
                 btnEntitySave.Text = "Update";
                 txtEntityEndpoint.BackColor = SystemColors.Window;
+                groupEntityAuth.BackColor = Color.Transparent;
 
                 tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
             }
 
         }
 
-        public void loadEntityDefaultCategories()
+        private void loadEntityDefaultCategoriesThread()
         {
-            
-            RestClient client = new RestClient(txtEntityEndpoint.Text + "/api");
+            loadEntityDefaultCategories();
+        }
 
-            RestRequest request = new RestRequest("defaultcategories", Method.GET);
+        public List<DefaultCategory> loadEntityDefaultCategories()
+        {
+            RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
 
-            var responseData = client.Execute<List<DefaultCategory>>(request).Data;
-            //dataGridViewEntityDefaultCategory.DataSource = responseData;
+            RestRequest request = new RestRequest("", Method.GET);
 
-            dataGridViewEntityDefaultCategorySetup(responseData);
+            IRestResponse response = clientTest.Execute(request);
+            if (response.StatusCode != 0)
+            {
+                clientTest = new RestClient(txtEntityEndpoint.Text + "/api");
 
+                request = new RestRequest("defaultcategories", Method.GET);
+
+                if (txtEntityId.Text != "")
+                {
+                    request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text, false));
+                }
+
+                IRestResponse<List<DefaultCategory>> responseData = clientTest.Execute<List<DefaultCategory>>(request);
+                if (txtEntityId.Text != "" && responseData.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text,true));
+                    responseData = client.Execute<List<DefaultCategory>>(request);
+                }
+                if (responseData.IsSuccessful)
+                {
+                    //dataGridViewEntityDefaultCategory.DataSource = responseData;
+                    dynamic dataDefaultCategory = Json.Decode(responseData.Content);
+                    List<DefaultCategory> auxList = new List<DefaultCategory>();
+                    if (dataDefaultCategory.data != null)
+                        dataDefaultCategory = dataDefaultCategory.data;
+                    foreach (var item in dataDefaultCategory)
+                    {
+                        auxList.Add(new DefaultCategory { 
+                            Id = item.id,
+                            Name = FirstCharToUpper(item.name),
+                            Type = item.type,
+                        });
+                    }
+                    dataGridViewEntityDefaultCategorySetup(auxList);
+                    return auxList;
+                }
+                else
+                {
+                    MessageBox.Show(responseData.ErrorMessage);
+                }
+            }
+            return null;
+        }
+
+        private string getAuthToken(string username, string password, bool force = false)
+        {
+            RestRequest requestEntity = new RestRequest("entities/" + txtEntityId.Text, Method.GET);
+            RestSharp.IRestResponse<Entity> responseEntity = client.Execute<Entity>(requestEntity);
+
+            if (responseEntity.Data.Authentication is null || responseEntity.Data.Authentication.Token == null || force)
+            {
+                RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
+
+                Authentication auth = new Authentication
+                {
+                    Username = username,
+                    Password = password,
+                };
+                RestRequest requestAuth = new RestRequest("api/signin", Method.POST, DataFormat.Json);
+                requestAuth.AddJsonBody(new { username = auth.Username, password = auth.Password });
+
+                IRestResponse responseAuth = clientTest.Execute(requestAuth);
+                if (responseAuth.IsSuccessful)
+                {
+                    dynamic data = Json.Decode(responseAuth.Content);
+                    auth.Token = data.user.token_type + " " + data.user.access_token;
+
+                    return auth.Token;
+                }
+                return null;
+            }
+            else
+            {
+                return responseEntity.Data.Authentication.Token;
+            }
+        }
+
+        public static string FirstCharToUpper(string input)
+        {
+            if (String.IsNullOrEmpty(input))
+                throw new ArgumentException("ARGH!");
+            return input.First().ToString().ToUpper() + input.Substring(1);
         }
 
         private void dataGridViewEntityDefaultCategorySetup(List<DefaultCategory> responseData)
@@ -502,12 +587,21 @@ namespace vCardPlatform
                 {
                     statusProgressBar.Value = 0;
 
+                    Authentication auth = new Authentication
+                    {
+                        Username = txtEntityUsername.Text,
+                        Password = txtEntityPassword.Text,
+                        Token = getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text) ?? ""
+                    };
+
                     #region Create Entity Model
                     Entity entity = new Entity
                     {
                         Name = txtEntityName.Text,
                         Endpoint = txtEntityEndpoint.Text,
-                        MaxLimit = numEntityMaxLimit.Value
+                        MaxLimit = numEntityMaxLimit.Value,
+                        EarningPercentage = numEarningPercentage.Value,
+                        Authentication = auth
                     };
                     #endregion
 
@@ -520,6 +614,7 @@ namespace vCardPlatform
                     {
                         request = new RestSharp.RestRequest("entities", RestSharp.Method.POST, DataFormat.Json);
                     }
+                    request.AddHeader("Authorization",entity.Authentication.Token);
                     request.AddJsonBody(entity);
 
                     RestSharp.IRestResponse<Entity> response = client.Execute<Entity>(request);
@@ -530,19 +625,18 @@ namespace vCardPlatform
                         
                         statusProgressBar.Value = 50;
 
-                        #region Get Default Categories From Endpoint & Prepare To Compare
-                        clientTest = new RestClient(response.Data.Endpoint + "/api");
-                    
-                        request = new RestRequest("defaultcategories", Method.GET);
 
-                        List<DefaultCategory> defaultCategories = clientTest.Execute<List<DefaultCategory>>(request).Data;
+                        DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
+                        dataTable2.Columns[0].ColumnName = FirstCharToUpper(dataTable2.Columns[0].ColumnName);
+                        dataTable2.Columns[1].ColumnName = FirstCharToUpper(dataTable2.Columns[1].ColumnName);
+
+                        #region Get Default Categories From Endpoint & Prepare To Compare
+                        List<DefaultCategory> defaultCategories = loadEntityDefaultCategories();
 
                         DataTable dataTable1 = ConvertToDataTable<DefaultCategory>(defaultCategories);
                         dataTable1.Columns.RemoveAt(0);
-                        
-                        #endregion
 
-                        DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
+                        #endregion
 
                         foreach (DataRow row in dataTable2.Rows)
                         {
@@ -571,7 +665,6 @@ namespace vCardPlatform
                             else if (row["Method"].ToString() == "DELETE") { 
                                 request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
                                 request.AddJsonBody(defaultCategory);
-
                             }
                             RestSharp.IRestResponse responseDELETE = client.Execute(request);
                             #endregion
@@ -693,7 +786,7 @@ namespace vCardPlatform
                 DataColumn[] firstColumns = new DataColumn[ds.Tables[0].Columns.Count];
                 for (int i = 0; i < firstColumns.Length; i++)
                 {
-                    firstColumns[i] = ds.Tables[0].Columns[i];
+                    firstColumns[i] =  ds.Tables[0].Columns[i];
                 }
 
                 DataColumn[] secondColumns = new DataColumn[ds.Tables[1].Columns.Count];
@@ -797,6 +890,7 @@ namespace vCardPlatform
             groupEntityDefaultCategory.Enabled = true;
             btnEntitySave.Enabled = true;
             txtEntityEndpoint.BackColor = SystemColors.Window;
+            groupEntityAuth.BackColor = Color.Transparent;
 
             btnEntitySave.Text = "Create";
 
@@ -953,13 +1047,18 @@ namespace vCardPlatform
         {
             if (txtEntityEndpoint.Text != "")
             {
-                Thread thread1 = new Thread(loadEntityDefaultCategories);
+                Thread thread1 = new Thread(loadEntityDefaultCategoriesThread);
                 thread1.Start();
             }
         }
 
         private void btnEndPointsSufixsRefresh_Click(object sender, EventArgs e)
-         {
+        {
+            loadEndPointSufixs();
+        }
+
+        private void loadEndPointSufixs()
+        {
             var request = new RestRequest("endpointssufixs", Method.GET);
 
             var responseData = client.Execute<List<EndpointSufix>>(request).Data;
@@ -985,11 +1084,69 @@ namespace vCardPlatform
                 }
         }
 
-
-
         private void btnEndPointsSufixsSave_Click(object sender, EventArgs e)
         {
+            #region Get End Point Sufixs From Endpoint & Prepare To Compare
 
+            var request = new RestRequest("endpointssufixs", Method.GET);
+
+            List<EndpointSufix> endpointSufixes = client.Execute<List<EndpointSufix>>(request).Data;
+
+            DataTable dataTable1 = ConvertToDataTable<EndpointSufix>(endpointSufixes);
+
+            #endregion
+
+            DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEndPointsSufixs);
+
+            DataTable dt = getDifferentRecords(dataTable2, dataTable1);
+
+            #region Handle Different Rows
+            foreach (DataRow row in dt.Rows)
+            {
+                EndpointSufix endpointSufix = new EndpointSufix
+                {
+                    Content = row["Content"].ToString(),
+                };
+
+                #region Create&Populate&Send Request
+                if (row["Method"].ToString() == "POST")
+                {
+                    request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.POST, DataFormat.Json);
+                    request.AddJsonBody(endpointSufix);
+                }
+                else if (row["Method"].ToString() == "DELETE")
+                {
+                    request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.DELETE);
+                    request.AddJsonBody(endpointSufix);
+
+                }
+                RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                #endregion
+            }
+            #endregion
+        }
+
+        private void btnEntityTestAuthentication_Click(object sender, EventArgs e)
+        {
+            RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
+
+            Authentication auth = new Authentication
+            {
+                Username = txtEntityUsername.Text,
+                Password = txtEntityPassword.Text,
+            };
+            RestRequest requestAuth = new RestRequest("api/signin", Method.POST, DataFormat.Json);
+            requestAuth.AddJsonBody(new { username = auth.Username, password = auth.Password });
+
+            IRestResponse responseAuth = clientTest.Execute(requestAuth);
+            if (responseAuth.IsSuccessful)
+            {
+                dynamic data = Json.Decode(responseAuth.Content);
+                auth.Token = data.user.token_type + " " + data.user.access_token;
+
+                groupEntityAuth.BackColor = Color.LightGreen;
+            }else
+                groupEntityAuth.BackColor = Color.IndianRed;
         }
     }
 }

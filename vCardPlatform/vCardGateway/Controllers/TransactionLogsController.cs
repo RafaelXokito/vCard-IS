@@ -11,7 +11,7 @@ namespace vCardGateway.Controllers
 {
     public class TransactionLogsController : ApiController
     {
-        string connectionString = Properties.Settings.Default.ConnStr;
+        static string connectionString = Properties.Settings.Default.ConnStr;
 
         public class Filter
         {
@@ -126,6 +126,51 @@ namespace vCardGateway.Controllers
         {
             //TODO
             return baseQueryString;
+        }
+
+        public static bool PostTransactionLog(TransactionLog transactionLog)
+        {
+
+            string queryString = @"INSERT INTO TransactionLogs
+                            (FromUser, FromEntity, ToUser, ToEntity, Amount, Status, Message, ErrorMessage, Timestamp) 
+                        VALUES
+                            (@fromuser, @fromentity, @touser, @toentity, @amount, @status, @message, @errormessage, @timestamp)";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@fromuser", transactionLog.FromUser);
+                    command.Parameters.AddWithValue("@fromentity", transactionLog.FromEntity);
+                    command.Parameters.AddWithValue("@touser", transactionLog.ToUser);
+                    command.Parameters.AddWithValue("@toentity", transactionLog.ToEntity);
+                    command.Parameters.AddWithValue("@amount", transactionLog.Amount);
+                    command.Parameters.AddWithValue("@status", transactionLog.Status);
+                    command.Parameters.AddWithValue("@message", transactionLog.Message);
+                    command.Parameters.AddWithValue("@errormessage", transactionLog.ErrorMessage ?? "");
+                    command.Parameters.AddWithValue("@timestamp", transactionLog.Timestamp);
+
+                    connection.Open();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+
+                    connection.Close();
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return false;
+                }
+            }
         }
     }
 }

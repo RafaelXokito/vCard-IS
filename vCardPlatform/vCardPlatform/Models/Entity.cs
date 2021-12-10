@@ -11,5 +11,7 @@ namespace vCardPlatform.Models
         public string Name { get; set; }
         public string Endpoint { get; set; }
         public decimal MaxLimit { get; set; }
+        public decimal EarningPercentage { get; set; }
+        public Authentication Authentication { get; set; }
     }
 }

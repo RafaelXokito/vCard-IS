@@ -126,11 +126,11 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [BasicAuthentication]
+        //[BasicAuthentication]
         [Route("api/transactions")]
         public IHttpActionResult PostTransaction(Transaction transaction)
         {
-            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization) ?? transaction.PhoneNumber;
 
             string queryStringUser = "SELECT * FROM Users WHERE PhoneNumber = @phonenumber";
             string queryStringTransaction = "INSERT INTO Transactions(PhoneNumber, Type, OldBalance, NewBalance, Value, PaymentType, PaymentReference) VALUES(@phonenumber, @type, @oldbalance, @newbalance, @value, @paymenttype, @paymentreference)";
@@ -169,7 +169,7 @@ namespace MBWayAPI.Controllers
                     command = new SqlCommand(queryStringTransaction, connection);
 
                     command.Parameters.AddWithValue("@phonenumber", phoneNumber);
-                    command.Parameters.AddWithValue("@type", transaction.Type);
+                    command.Parameters.AddWithValue("@type", transaction.Type[0]);
                     command.Parameters.AddWithValue("@oldbalance", user.Balance);
                     command.Parameters.AddWithValue("@newbalance", (transaction.Type == "C" ? 1 : -1) * transaction.Value + user.Balance);
                     command.Parameters.AddWithValue("@value", transaction.Value);
@@ -180,19 +180,23 @@ namespace MBWayAPI.Controllers
                     {
                         return BadRequest();
                     }
+                    if (transaction.Type == "D")
+                    {
+                        command = new SqlCommand(queryStringNewBalance, connection);
 
-                    command = new SqlCommand(queryStringNewBalance, connection);
+                        command.Parameters.AddWithValue("@phonenumber", phoneNumber);
+                        command.Parameters.AddWithValue("@balance", (transaction.Type == "C" ? 1 : -1) * transaction.Value + user.Balance);
 
-                    command.Parameters.AddWithValue("@phonenumber", phoneNumber);
-                    command.Parameters.AddWithValue("@balance", (transaction.Type == "C" ? 1 : -1) * transaction.Value + user.Balance);
-                    
-                    if (command.ExecuteNonQuery() > 0)
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            return Ok();
+                        }
+                    }
+                    else
                     {
                         return Ok();
                     }
-
-                    //TODO quando houver um erro no update do balance do user, remover a ultima transação
-
+                    
                     connection.Close();
                     return BadRequest();
 

@@ -48,12 +48,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=106.13.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.13.0\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,34 +83,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChangePassword.Designer.cs" />
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\DefaultCategory.cs" />
     <Compile Include="Models\EndpointSufix.cs" />
     <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Administrator.cs" />
-    <Compile Include="FormChangePassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormChangePassword.Designer.cs">
-      <DependentUpon>FormChangePassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLogin.Designer.cs">
-      <DependentUpon>FormLogin.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormManageAccounts.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormManageAccounts.Designer.cs">
-      <DependentUpon>FormManageAccounts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormRegister.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormRegister.Designer.cs">
-      <DependentUpon>FormRegister.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainApplication.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,17 +109,9 @@
     <Compile Include="Models\TransactionLog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormChangePassword.resx">
-      <DependentUpon>FormChangePassword.cs</DependentUpon>
-    </EmbeddedResource>
+    <EmbeddedResource Include="FormChangePassword.resx" />
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormManageAccounts.resx">
-      <DependentUpon>FormManageAccounts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormRegister.resx">
-      <DependentUpon>FormRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainApplication.resx">
       <DependentUpon>MainApplication.cs</DependentUpon>

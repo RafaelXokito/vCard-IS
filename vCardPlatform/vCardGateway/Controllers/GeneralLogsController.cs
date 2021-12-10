@@ -113,5 +113,6 @@ namespace vCardGateway.Controllers
             //TODO
             return baseQueryString;
         }
+
     }
 }

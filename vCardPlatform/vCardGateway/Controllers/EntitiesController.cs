@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,8 +66,8 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest("defaultcategories", Method.POST, DataFormat.Json);
 
-                request.AddJsonBody(defaultCategory);
-
+                request.AddJsonBody(new { name= defaultCategory.Name, type = defaultCategory.Type });
+                request.AddHeader("Authorization", entity.Authentication.Token);
                 IRestResponse<DefaultCategory> response = client.Execute<DefaultCategory>(request);
                 if (response.IsSuccessful)
                 {
@@ -91,20 +92,41 @@ namespace vCardGateway.Controllers
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
                 RestRequest requestGet = new RestRequest("defaultcategories", Method.GET);
+                requestGet.AddHeader("Authorization", entity.Authentication.Token);
                 requestGet.AddParameter("name", defaultCategory.Name);
                 requestGet.AddParameter("type", defaultCategory.Type);
-
+                
                 IRestResponse<List<DefaultCategory>> responseGet = client.Execute<List<DefaultCategory>>(requestGet);
+                dynamic dataDefaultCategory = JsonConvert.DeserializeObject(responseGet.Content); ;
+                List<DefaultCategory> auxList = new List<DefaultCategory>();
+                if (dataDefaultCategory.data != null)
+                    dataDefaultCategory = dataDefaultCategory.data;
+                foreach (var item in dataDefaultCategory)
+                {
+                    auxList.Add(new DefaultCategory
+                    {
+                        Id = item.id,
+                        Name = item.name,
+                        Type = item.type,
+                    });
+                }
                 if (responseGet.IsSuccessful)
                 {
-                    if (responseGet.Data.Count > 0)
+                    if (auxList.Count > 0)
                     {
-                        RestRequest requestDelete = new RestRequest("defaultcategories/"+ responseGet.Data[0].Id, Method.DELETE);
-
+                        RestRequest requestDelete = new RestRequest("defaultcategories/"+ auxList[0].Id, Method.DELETE);
+                        requestDelete.AddHeader("Authorization", entity.Authentication.Token);
                         IRestResponse responseDelete = client.Execute(requestDelete);
                         if (responseDelete.IsSuccessful)
                         {
-                            return Ok();
+                            RestRequest requestForceDelete = new RestRequest("defaultcategories/" + auxList[0].Id, Method.POST);
+                            requestForceDelete.AddHeader("Authorization", entity.Authentication.Token);
+                            IRestResponse responseForceDelete = client.Execute(requestForceDelete);
+                            if (responseDelete.IsSuccessful)
+                            {
+                                return Ok();
+                            }
+                            return BadRequest(responseGet.Content);
                         }
                         return BadRequest(responseGet.Content);
                     }
@@ -116,6 +138,7 @@ namespace vCardGateway.Controllers
                 return InternalServerError(ex);
             }
         }
+
 
         [Route("api/entities/{id}")]
         public IHttpActionResult PutEntity(string id, Entity entity)
