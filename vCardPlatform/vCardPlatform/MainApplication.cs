@@ -1,21 +1,18 @@
-﻿using System;
+﻿using RestSharp;
+using RestSharp.Authenticators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SqlClient;
-using RestSharp;
-using RestSharp.Authenticators;
-using vCardPlatform.Models;
 using System.Threading;
+using System.Web.Helpers;
+using System.Windows.Forms;
 using vCardGateway.Models;
+using vCardPlatform.Models;
 using Excel = Microsoft.Office.Interop.Excel;
 using ExcelAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat;
-using System.Web.Helpers;
 
 namespace vCardPlatform
 {
@@ -162,7 +159,7 @@ namespace vCardPlatform
             int c = dataGridViewOperations.Columns.Count;
             for (int i = 1; i <= c; i++)
             {
-                xlWorkSheet.Cells[1, i] = dataGridViewOperations.Columns[i-1].HeaderText;
+                xlWorkSheet.Cells[1, i] = dataGridViewOperations.Columns[i - 1].HeaderText;
             }
             for (int i = 0; i < dataGridViewOperations.Rows.Count; i++)
             {
@@ -172,6 +169,48 @@ namespace vCardPlatform
                 }
             }
             xlexcel.ActiveCell.Worksheet.Cells[1, c].AutoFormat(ExcelAutoFormat.xlRangeAutoFormatList2);
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            int c = dataGridViewOperations.Rows.Count;
+            for (int i = 0; i < c; i++)
+            {
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[9].Value.ToString());
+                DateTime date2 = DateTime.Parse(dateTimePicker1.Value.ToString());
+                DateTime date3 = DateTime.Parse(dateTimePicker2.Value.ToString());
+
+                if (date1.Date >= date2.Date && date1.Date <= date3.Date)
+                {
+                    dataGridViewOperations.Rows[i].Visible = true;
+                }
+                else
+                {
+                    dataGridViewOperations.CurrentCell = null;
+                    dataGridViewOperations.Rows[i].Visible = false;
+                }
+            }
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            int c = dataGridViewOperations.Rows.Count;
+            for (int i = 0; i < c; i++)
+            {
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[9].Value.ToString());
+                DateTime date2 = DateTime.Parse(dateTimePicker2.Value.ToString());
+                DateTime date3 = DateTime.Parse(dateTimePicker1.Value.ToString());
+
+                if (date1.Date <= date2.Date && date1.Date >= date3.Date)
+                {
+                    dataGridViewOperations.Rows[i].Visible = true;
+                }
+                else
+                {
+                    dataGridViewOperations.CurrentCell = null;
+                    dataGridViewOperations.Rows[i].Visible = false;
+                }
+            }
         }
 
         private void buttonOperationsRefresh_Click(object sender, EventArgs e)
@@ -192,7 +231,7 @@ namespace vCardPlatform
         {
             loadAdministrators();
         }
-        
+
         private void loadAdministrators()
         {
             var requestAdmin = new RestRequest("administrators", Method.GET);
@@ -215,7 +254,7 @@ namespace vCardPlatform
             var request = new RestSharp.RestRequest("entities", RestSharp.Method.GET);
 
             var result = client.Execute<List<Entity>>(request).Data;
-            
+
             dataGridViewEntities.DataSource = result;
 
             dataGridViewEntities.Columns["authentication"].Visible = false;
@@ -246,7 +285,7 @@ namespace vCardPlatform
             if (response.IsSuccessful)
             {
                 lblStatus.ForeColor = Color.Green;
-                lblStatus.Text = "Admin "+ txtAdministratorName.Text +" created!";
+                lblStatus.Text = "Admin " + txtAdministratorName.Text + " created!";
                 loadAdministrators();
                 tabCAdministrators.SelectedTab = tabCAdministrators.TabPages["tabTable"];
                 txtAdministratorName.Text = "";
@@ -275,7 +314,7 @@ namespace vCardPlatform
                     #region Ask User For Confirmation
                     string PK = dataGridViewAdministrators.SelectedRows[i].Cells[0].Value.ToString();
                     string email = dataGridViewAdministrators.SelectedRows[i].Cells[1].Value.ToString();
-                    var confirmResult = MessageBox.Show("Are you sure to delete this administrator "+ email + "?",
+                    var confirmResult = MessageBox.Show("Are you sure to delete this administrator " + email + "?",
                                      "Confirm Delete!!",
                                      MessageBoxButtons.YesNo);
                     #region Handle Confirmation Response
@@ -285,8 +324,8 @@ namespace vCardPlatform
                         var request = new RestSharp.RestRequest("administrators/" + PK, RestSharp.Method.DELETE);
 
                         IRestResponse response = client.Execute(request);
-                        
-                           
+
+
                         if (response.IsSuccessful)
                         {
                             lblStatus.Text = "Deleted " + email + " administrator!";
@@ -306,11 +345,11 @@ namespace vCardPlatform
                     #endregion
                 }
 
-                lblStatus.Text = "Deleted "+ counteDeleted + " administrators!";
+                lblStatus.Text = "Deleted " + counteDeleted + " administrators!";
                 lblStatus.ForeColor = Color.Green;
 
                 loadAdministrators();
-                   
+
             }
         }
 
@@ -367,7 +406,8 @@ namespace vCardPlatform
         private void dataGridViewEntities_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
                 int c = groupEntityStatus.Controls.Count;
                 for (int i = c - 1; i >= 0; i--)
                     if (groupEntityStatus.Controls[i].Name == "")
@@ -380,7 +420,7 @@ namespace vCardPlatform
                         panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
 
                 #region Fill Necessary Fields
-                var request = new RestSharp.RestRequest("entities/"+ dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString(), RestSharp.Method.GET);
+                var request = new RestSharp.RestRequest("entities/" + dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString(), RestSharp.Method.GET);
 
                 var result = client.Execute<Entity>(request).Data;
 
@@ -437,7 +477,7 @@ namespace vCardPlatform
                 IRestResponse<List<DefaultCategory>> responseData = clientTest.Execute<List<DefaultCategory>>(request);
                 if (txtEntityId.Text != "" && responseData.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text,true));
+                    request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text, true));
                     responseData = client.Execute<List<DefaultCategory>>(request);
                 }
                 if (responseData.IsSuccessful)
@@ -449,7 +489,8 @@ namespace vCardPlatform
                         dataDefaultCategory = dataDefaultCategory.data;
                     foreach (var item in dataDefaultCategory)
                     {
-                        auxList.Add(new DefaultCategory { 
+                        auxList.Add(new DefaultCategory
+                        {
                             Id = item.id,
                             Name = FirstCharToUpper(item.name),
                             Type = item.type,
@@ -614,7 +655,7 @@ namespace vCardPlatform
                     {
                         request = new RestSharp.RestRequest("entities", RestSharp.Method.POST, DataFormat.Json);
                     }
-                    request.AddHeader("Authorization",entity.Authentication.Token);
+                    request.AddHeader("Authorization", entity.Authentication.Token);
                     request.AddJsonBody(entity);
 
                     RestSharp.IRestResponse<Entity> response = client.Execute<Entity>(request);
@@ -622,7 +663,7 @@ namespace vCardPlatform
                     #region Handle Request Response
                     if (response.IsSuccessful)
                     {
-                        
+
                         statusProgressBar.Value = 50;
 
 
@@ -658,11 +699,13 @@ namespace vCardPlatform
                             };
 
                             #region Create&Populate&Send Request
-                            if (row["Method"].ToString() == "POST") { 
-                                request = new RestSharp.RestRequest("entities/"+response.Data.Id+"/defaultcategories", RestSharp.Method.POST, DataFormat.Json);
+                            if (row["Method"].ToString() == "POST")
+                            {
+                                request = new RestSharp.RestRequest("entities/" + response.Data.Id + "/defaultcategories", RestSharp.Method.POST, DataFormat.Json);
                                 request.AddJsonBody(defaultCategory);
                             }
-                            else if (row["Method"].ToString() == "DELETE") { 
+                            else if (row["Method"].ToString() == "DELETE")
+                            {
                                 request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
                                 request.AddJsonBody(defaultCategory);
                             }
@@ -786,7 +829,7 @@ namespace vCardPlatform
                 DataColumn[] firstColumns = new DataColumn[ds.Tables[0].Columns.Count];
                 for (int i = 0; i < firstColumns.Length; i++)
                 {
-                    firstColumns[i] =  ds.Tables[0].Columns[i];
+                    firstColumns[i] = ds.Tables[0].Columns[i];
                 }
 
                 DataColumn[] secondColumns = new DataColumn[ds.Tables[1].Columns.Count];
@@ -813,7 +856,8 @@ namespace vCardPlatform
                 foreach (DataRow parentrow in ds.Tables[0].Rows)
                 {
                     DataRow[] childrows = parentrow.GetChildRows(r1);
-                    if (childrows == null || childrows.Length == 0) {
+                    if (childrows == null || childrows.Length == 0)
+                    {
                         parentrow["Method"] = "POST";
                         ResultDataTable.LoadDataRow(parentrow.ItemArray, true);
                     }
@@ -823,7 +867,8 @@ namespace vCardPlatform
                 foreach (DataRow parentrow in ds.Tables[1].Rows)
                 {
                     DataRow[] childrows = parentrow.GetChildRows(r2);
-                    if (childrows == null || childrows.Length == 0) {
+                    if (childrows == null || childrows.Length == 0)
+                    {
                         parentrow["Method"] = "DELETE";
                         ResultDataTable.LoadDataRow(parentrow.ItemArray, true);
                     }
@@ -916,7 +961,7 @@ namespace vCardPlatform
         {
             if (InvokeRequired)
             {
-                this.Invoke(new Action<Label,string>(AppendTextBox), new object[] { label, value });
+                this.Invoke(new Action<Label, string>(AppendTextBox), new object[] { label, value });
                 return;
             }
             label.Text = value;
@@ -950,13 +995,13 @@ namespace vCardPlatform
                 RestClient clientTest = new RestClient(endpoint.ToString());
 
                 RestRequest request = new RestRequest("", Method.GET);
-                AppendStatusBar(0,"Trying to reach endpoint!");
+                AppendStatusBar(0, "Trying to reach endpoint!");
                 IRestResponse responseData = clientTest.Execute(request);
                 AppendStatusBar(100, "Done!");
 
                 if (responseData.StatusCode != 0)
                 {
-                
+
                     Label lblEntityStatusResponse = new Label();
                     lblEntityStatusResponse.Location = new Point(106, 49);
                     lblEntityStatusResponse.Text = "Success";
@@ -971,7 +1016,7 @@ namespace vCardPlatform
                     int i = 0;
                     foreach (EndpointSufix item in endpointSufixes)
                     {
-                        AppendStatusBar(100/endpointSufixes.Count, "Trying to reach endpoint sufixs!");
+                        AppendStatusBar(100 / endpointSufixes.Count, "Trying to reach endpoint sufixs!");
 
                         Label namelabel = new Label();
                         namelabel.Location = new Point(21, 17 + (i * 31));
@@ -1145,7 +1190,8 @@ namespace vCardPlatform
                 auth.Token = data.user.token_type + " " + data.user.access_token;
 
                 groupEntityAuth.BackColor = Color.LightGreen;
-            }else
+            }
+            else
                 groupEntityAuth.BackColor = Color.IndianRed;
         }
     }
