@@ -176,7 +176,7 @@ namespace vCardPlatform
             int c = dataGridViewOperations.Rows.Count;
             for (int i = 0; i < c; i++)
             {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[9].Value.ToString());
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
                 DateTime date2 = DateTime.Parse(dateTimePicker1.Value.ToString());
                 DateTime date3 = DateTime.Parse(dateTimePicker2.Value.ToString());
 
@@ -197,7 +197,7 @@ namespace vCardPlatform
             int c = dataGridViewOperations.Rows.Count;
             for (int i = 0; i < c; i++)
             {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[9].Value.ToString());
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
                 DateTime date2 = DateTime.Parse(dateTimePicker2.Value.ToString());
                 DateTime date3 = DateTime.Parse(dateTimePicker1.Value.ToString());
 
@@ -223,8 +223,10 @@ namespace vCardPlatform
             var request = new RestSharp.RestRequest("transactionlogs", RestSharp.Method.GET);
 
             var result = client.Execute<List<TransactionLog>>(request).Data;
-
             dataGridViewOperations.DataSource = result;
+
+            dataGridViewOperations.Columns["NewBalance"].Visible = false;
+            dataGridViewOperations.Columns["OldBalance"].Visible = false;
         }
 
         private void btnAdministratorsRefresh_Click(object sender, EventArgs e)
@@ -405,50 +407,59 @@ namespace vCardPlatform
 
         private void dataGridViewEntities_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            try
             {
-                int c = groupEntityStatus.Controls.Count;
-                for (int i = c - 1; i >= 0; i--)
-                    if (groupEntityStatus.Controls[i].Name == "")
-                        groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+                {
+                    int c = groupEntityStatus.Controls.Count;
+                    for (int i = c - 1; i >= 0; i--)
+                        if (groupEntityStatus.Controls[i].Name == "")
+                            groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
 
+                    c = panelEntityStatusResources.Controls.Count;
+                    for (int i = c - 1; i >= 0; i--)
+                        if (panelEntityStatusResources.Controls[i].Name == "")
+                            panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
 
-                c = panelEntityStatusResources.Controls.Count;
-                for (int i = c - 1; i >= 0; i--)
-                    if (panelEntityStatusResources.Controls[i].Name == "")
-                        panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
+                    #region Fill Necessary Fields
+                    var request = new RestSharp.RestRequest("entities/" + dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString(), RestSharp.Method.GET);
 
-                #region Fill Necessary Fields
-                var request = new RestSharp.RestRequest("entities/" + dataGridViewEntities.Rows[e.RowIndex].Cells[0].Value.ToString(), RestSharp.Method.GET);
+                    IRestResponse<Entity> result = client.Execute<Entity>(request);
 
-                var result = client.Execute<Entity>(request).Data;
+                    if (!result.IsSuccessful)
+                    {
+                        MessageBox.Show("Error in: " + request.Resource + "\n" + result.StatusCode.ToString(), "Error Opening Entity", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    txtEntityId.Text = result.Data.Id;
+                    txtEntityName.Text = result.Data.Name;
+                    txtEntityEndpoint.Text = result.Data.Endpoint;
+                    numEntityMaxLimit.Value = result.Data.MaxLimit;
+                    numEarningPercentage.Value = result.Data.EarningPercentage;
+                    txtEntityUsername.Text = result.Data.Authentication.Username;
+                    txtEntityPassword.Text = result.Data.Authentication.Password;
+                    #endregion
 
-                txtEntityId.Text = result.Id;
-                txtEntityName.Text = result.Name;
-                txtEntityEndpoint.Text = result.Endpoint;
-                numEntityMaxLimit.Value = result.MaxLimit;
-                numEarningPercentage.Value = result.EarningPercentage;
-                txtEntityUsername.Text = result.Authentication.Username;
-                txtEntityPassword.Text = result.Authentication.Password;
-                #endregion
+                    dataGridViewEntityDefaultCategory.Rows.Clear();
+                    Thread thread = new Thread(loadEntityDefaultCategoriesThread);
+                    thread.Start();
 
-                dataGridViewEntityDefaultCategory.Rows.Clear();
-                Thread thread = new Thread(loadEntityDefaultCategoriesThread);
-                thread.Start();
+                    groupDataEntity.Enabled = true;
+                    groupEntityDefaultCategory.Enabled = true;
+                    btnEntitySave.Enabled = true;
 
-                groupDataEntity.Enabled = true;
-                groupEntityDefaultCategory.Enabled = true;
-                btnEntitySave.Enabled = true;
+                    lblEntityStatusName.Text = "";
+                    btnEntitySave.Text = "Update";
+                    txtEntityEndpoint.BackColor = SystemColors.Window;
+                    groupEntityAuth.BackColor = Color.Transparent;
 
-                lblEntityStatusName.Text = "";
-                btnEntitySave.Text = "Update";
-                txtEntityEndpoint.BackColor = SystemColors.Window;
-                groupEntityAuth.BackColor = Color.Transparent;
-
-                tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
+                    tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error Opening Entity", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void loadEntityDefaultCategoriesThread()
@@ -1193,6 +1204,21 @@ namespace vCardPlatform
             }
             else
                 groupEntityAuth.BackColor = Color.IndianRed;
+        }
+
+        private void dataGridViewOperations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex >= 0)
+                {
+                    MessageBox.Show("User: " + dataGridViewOperations.Rows[e.RowIndex].Cells["FromUser"].Value.ToString() + "\nOld Balance: " + dataGridViewOperations.Rows[e.RowIndex].Cells["OldBalance"].Value.ToString() + "\nNew Balance: " + dataGridViewOperations.Rows[e.RowIndex].Cells["NewBalance"].Value.ToString(), "Balance", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

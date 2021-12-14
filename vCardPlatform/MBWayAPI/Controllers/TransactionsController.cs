@@ -15,7 +15,7 @@ namespace MBWayAPI.Controllers
 
         [BasicAuthentication]
         [Route("api/transactions/{id:int}")]
-        public IHttpActionResult GetTransaction(int id)
+        public IHttpActionResult GetTransactionAPI(int id)
         {
             string queryString = "SELECT * FROM Transactions WHERE Id = @id";
 
@@ -56,7 +56,6 @@ namespace MBWayAPI.Controllers
                     }
 
                     reader.Close();
-
                 }
                 catch (Exception)
                 {
@@ -66,6 +65,53 @@ namespace MBWayAPI.Controllers
                     }
                 }
                 return NotFound();
+            }
+        }
+
+        private Transaction GetTransaction(int id)
+        {
+            string queryString = "SELECT * FROM Transactions WHERE Id = @id";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.Parameters.AddWithValue("@id", id);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Transaction transaction = new Transaction()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            PhoneNumber = (string)reader["PhoneNumber"],
+                            Date = (DateTime)reader["Date"],
+                            Type = (string)reader["Type"],
+                            Value = (decimal)reader["Value"],
+                            OldBalance = (decimal)reader["OldBalance"],
+                            NewBalance = (decimal)reader["NewBalance"],
+                            PaymentType = (string)reader["PaymentType"],
+                            PaymentReference = (string)reader["PaymentReference"],
+                            ClassificationId = reader["ClassificationId"].ToString(),
+                            Description = reader["Description"].ToString()
+                        };
+
+                        return transaction;
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+                return null;
             }
         }
 
@@ -133,7 +179,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization) ?? transaction.PhoneNumber;
 
             string queryStringUser = "SELECT * FROM Users WHERE PhoneNumber = @phonenumber";
-            string queryStringTransaction = "INSERT INTO Transactions(PhoneNumber, Type, OldBalance, NewBalance, Value, PaymentType, PaymentReference) VALUES(@phonenumber, @type, @oldbalance, @newbalance, @value, @paymenttype, @paymentreference)";
+            string queryStringTransaction = "INSERT INTO Transactions(PhoneNumber, Type, OldBalance, NewBalance, Value, PaymentType, PaymentReference) VALUES(@phonenumber, @type, @oldbalance, @newbalance, @value, @paymenttype, @paymentreference);SELECT SCOPE_IDENTITY();";
             string queryStringNewBalance = "UPDATE Users SET Balance = @balance WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -176,7 +222,8 @@ namespace MBWayAPI.Controllers
                     command.Parameters.AddWithValue("@paymenttype", transaction.PaymentType);
                     command.Parameters.AddWithValue("@paymentreference", transaction.PaymentReference);
 
-                    if (command.ExecuteNonQuery() == 0)
+                    string insertedID = command.ExecuteScalar().ToString();
+                    if (insertedID == null)
                     {
                         return BadRequest();
                     }
@@ -189,12 +236,12 @@ namespace MBWayAPI.Controllers
 
                         if (command.ExecuteNonQuery() > 0)
                         {
-                            return Ok();
+                            return Ok(GetTransaction(Convert.ToInt32(insertedID)));
                         }
                     }
                     else
                     {
-                        return Ok();
+                        return Ok(GetTransaction(Convert.ToInt32(insertedID)));
                     }
                     
                     connection.Close();

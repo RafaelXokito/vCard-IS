@@ -13,6 +13,8 @@ namespace vCardGateway.Models
         public string ToUser { get; set; }
         public string ToEntity { get; set; }
         public decimal Amount { get; set; }
+        public decimal NewBalance { get; set; }
+        public decimal OldBalance { get; set; }
         public string Status { get; set; }
         public string Message { get; set; }
         public string ErrorMessage { get; set; }

@@ -17,11 +17,11 @@ namespace vCardGateway.Controllers
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
 
         [Route("api/entities")]
-        public IEnumerable<Entity> GetEntities()
+        public IEnumerable<Entity> GetEntities([FromUri] string name = null)
         {
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
-            return handlerXML.GetEntities();
+            return handlerXML.GetEntities(name);
         }
 
         [Route("api/entities/{id}")]
@@ -171,5 +171,6 @@ namespace vCardGateway.Controllers
                 return InternalServerError(ex);
             }
         }
+
     }
 }

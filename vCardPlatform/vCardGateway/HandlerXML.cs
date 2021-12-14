@@ -33,13 +33,18 @@ namespace vCardGateway
         }
 
         #region ENTITIES
-        public List<Entity> GetEntities()
+        public List<Entity> GetEntities(string name = null)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
             
             List<Entity> entities = new List<Entity>();
-            XmlNodeList nodeList = doc.SelectNodes("/entities/entity");
+            string query = "/entities/entity";
+            if (name != null)
+            {
+                query += $"[name= '{name}']";
+            }
+            XmlNodeList nodeList = doc.SelectNodes(query);
 
             foreach (XmlNode node in nodeList)
             {
@@ -70,9 +75,38 @@ namespace vCardGateway
             doc.Load(XmlFilePath);
 
             XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
-            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
 
             if (node == null) return null;
+
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
+
+            Entity entity = new Entity
+            {
+                Id = node["id"].InnerText,
+                Name = node["name"].InnerText,
+                Endpoint = node["endpoint"].InnerText,
+                MaxLimit = Convert.ToDecimal(node["maxlimit"].InnerText),
+                EarningPercentage = Convert.ToDecimal(node["earningpercentage"].InnerText),
+                Authentication = new Authentication
+                {
+                    Token = authNode["token"].InnerText,
+                    Username = authNode["username"].InnerText,
+                    Password = authNode["password"].InnerText,
+                }
+            };
+
+            return entity;
+        }
+        
+        public Entity GetEntityByName(string name)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{name}']");
+
+            if (node == null) return null;
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
 
             Entity entity = new Entity
             {
@@ -92,15 +126,15 @@ namespace vCardGateway
             return entity;
         }
 
-        public Entity GetEntityByCode(string code)
+        public Entity GetEntityByEndPoint(string endpoint)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(XmlFilePath);
 
-            XmlNode node = doc.SelectSingleNode($"/entities/entity[name='{code}']");
-            XmlNode authNode = node.SelectSingleNode($"/entities/entity[name='{node["name"].InnerText}']/authentication");
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[endpoint='{endpoint}']");
 
             if (node == null) return null;
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
 
             Entity entity = new Entity
             {

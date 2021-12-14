@@ -27,7 +27,7 @@ namespace vCardGateway.Controllers
         [Route("api/transactionlogs")]
         public IEnumerable<TransactionLog> GetTransactionLogs()
         {
-            string queryString = GetFilterQueryString("SELECT * FROM TransactionLogs");
+            string queryString = GetFilterQueryString("SELECT * FROM TransactionLogs ORDER BY Timestamp DESC");
 
             List<TransactionLog> logs = new List<TransactionLog>();
 
@@ -50,6 +50,8 @@ namespace vCardGateway.Controllers
                             ToUser = (string)reader["ToUser"],
                             ToEntity = (string)reader["ToEntity"],
                             Amount = (decimal)reader["Amount"],
+                            OldBalance = (decimal)reader["OldBalance"],
+                            NewBalance = (decimal)reader["NewBalance"],
                             Status = (string)reader["Status"],
                             Message = reader["Message"].ToString(),
                             ErrorMessage = reader["ErrorMessage"].ToString(),
@@ -100,6 +102,8 @@ namespace vCardGateway.Controllers
                             ToUser = (string)reader["ToUser"],
                             ToEntity = (string)reader["ToEntity"],
                             Amount = (decimal)reader["Amount"],
+                            OldBalance = (decimal)reader["OldBalance"],
+                            NewBalance = (decimal)reader["NewBalance"],
                             Status = (string)reader["Status"],
                             Message = reader["Message"].ToString(),
                             ErrorMessage = reader["ErrorMessage"].ToString(),
@@ -132,9 +136,9 @@ namespace vCardGateway.Controllers
         {
 
             string queryString = @"INSERT INTO TransactionLogs
-                            (FromUser, FromEntity, ToUser, ToEntity, Amount, Status, Message, ErrorMessage, Timestamp) 
+                            (FromUser, FromEntity, ToUser, ToEntity, Amount, NewBalance, OldBalance, Status, Message, ErrorMessage, Timestamp) 
                         VALUES
-                            (@fromuser, @fromentity, @touser, @toentity, @amount, @status, @message, @errormessage, @timestamp)";
+                            (@fromuser, @fromentity, @touser, @toentity, @amount, @newbalance, @oldbalance, @status, @message, @errormessage, @timestamp)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -147,6 +151,8 @@ namespace vCardGateway.Controllers
                     command.Parameters.AddWithValue("@touser", transactionLog.ToUser);
                     command.Parameters.AddWithValue("@toentity", transactionLog.ToEntity);
                     command.Parameters.AddWithValue("@amount", transactionLog.Amount);
+                    command.Parameters.AddWithValue("@oldbalance", transactionLog.OldBalance);
+                    command.Parameters.AddWithValue("@newbalance", transactionLog.NewBalance);
                     command.Parameters.AddWithValue("@status", transactionLog.Status);
                     command.Parameters.AddWithValue("@message", transactionLog.Message);
                     command.Parameters.AddWithValue("@errormessage", transactionLog.ErrorMessage ?? "");
@@ -162,7 +168,7 @@ namespace vCardGateway.Controllers
                     connection.Close();
                     return false;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (connection.State == System.Data.ConnectionState.Open)
                     {

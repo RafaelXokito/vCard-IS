@@ -107,6 +107,7 @@
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\Secret.cs" />
     <Compile Include="Models\TransactionLog.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormChangePassword.resx" />
