@@ -20,9 +20,9 @@ namespace vCardGateway.Controllers
         {
             if (AdminValidate.Login(credentials.Email, credentials.Password))
             {
-                return Ok();
+                return Ok(credentials.Email + " Success");
             }
-
+            GeneralLogsController.PostGeneralLog("Authentication", credentials.Email, "Gateway", HttpStatusCode.BadRequest.ToString(), $"Failed to Authenticate with {credentials.Email}", "Invalid Email and/or Password", DateTime.Now);
             return BadRequest("Invalid Email and/or Password");
         }
 

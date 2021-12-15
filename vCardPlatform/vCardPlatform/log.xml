@@ -1,6 +1,2 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
-<log>
-	<message>Credit transaction of 10.00 € to MBWay-910000000 from vCard-920000000</message>
-	<status>Success</status>
-	<timestamp>2021-12-14 20:47:40</timestamp>
-</log>
+<log><message>Credit transaction of 10.00 € to MBWay-910000000 from vCard-920000000</message><status>Success</status><timestamp>2021-12-14 20:47:40</timestamp></log>

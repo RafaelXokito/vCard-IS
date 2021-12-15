@@ -2,12 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 
 namespace MBWayAPI.Controllers
 {
@@ -42,7 +46,7 @@ namespace MBWayAPI.Controllers
                     {
                         User user = new User()
                         {
-                            PhoneNumber = (string)reader["PhoneNumber"],
+                            Username = (string)reader["PhoneNumber"],
                             Name = (string)reader["Name"],
                             Email = (string)reader["Email"],
                             MaximumLimit = (decimal)reader["MaximumLimit"],
@@ -63,6 +67,49 @@ namespace MBWayAPI.Controllers
                     }
                 }
                 return NotFound();
+            }
+        }
+
+        public User GetUserByNumber(string number)
+        {
+            string queryString = "SELECT * FROM Users WHERE PhoneNumber = @number";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@number", number);
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        User user = new User()
+                        {
+                            Username = (string)reader["PhoneNumber"],
+                            Name = (string)reader["Name"],
+                            Email = (string)reader["Email"],
+                            MaximumLimit = (decimal)reader["MaximumLimit"],
+                            Balance = (decimal)reader["Balance"],
+                            Photo = reader["Photo"].ToString()
+                        };
+                        return user;
+                    }
+
+                    reader.Close();
+
+                }
+                catch (Exception)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+                return null;
             }
         }
 
@@ -87,7 +134,7 @@ namespace MBWayAPI.Controllers
                     {
                         User user = new User()
                         {
-                            PhoneNumber = (string)reader["PhoneNumber"],
+                            Username = (string)reader["PhoneNumber"],
                             Name = (string)reader["Name"],
                             Email = (string)reader["Email"],
                             MaximumLimit = (decimal)reader["MaximumLimit"],
@@ -113,6 +160,53 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        [Route("api/users/{phonenumber}/photo")]
+        public IHttpActionResult PostUserPhoto(string phonenumber, User input)
+        {
+            string queryString = "UPDATE Users SET Photo = @photo WHERE PhoneNumber = @phonenumber";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", phonenumber);
+
+                    byte[] imageBytes = Convert.FromBase64String(input.Photo);
+                    // Convert byte[] to Image
+                    Image image;
+                    using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+                    {
+                        image = Image.FromStream(ms, true);
+                    }
+
+                    string startupPath = AppDomain.CurrentDomain.BaseDirectory + "Resources" + $"\\{phonenumber}.jpg";
+                    var i2 = new Bitmap(image);
+                    i2.Save(startupPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                    command.Parameters.AddWithValue("@photo", $"/Resources/{phonenumber}.jpg");
+
+                    connection.Open();
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return Ok();
+                    }
+                    connection.Close();
+
+                    return NotFound();
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
         [Route("api/users")]
         public IHttpActionResult PostUser(User user)
         {
@@ -127,7 +221,7 @@ namespace MBWayAPI.Controllers
                     #region CREATE USER
                     SqlCommand command = new SqlCommand(queryStringUser, connection);
 
-                    command.Parameters.AddWithValue("@phonenumber", user.PhoneNumber);
+                    command.Parameters.AddWithValue("@phonenumber", user.Username);
                     command.Parameters.AddWithValue("@name", user.Name);
                     command.Parameters.AddWithValue("@email", user.Email);
 
@@ -182,7 +276,7 @@ namespace MBWayAPI.Controllers
 
                         command.Parameters.AddWithValue("@name", defaultCategory.Name);
                         command.Parameters.AddWithValue("@type", defaultCategory.Type);
-                        command.Parameters.AddWithValue("@owner", user.PhoneNumber);
+                        command.Parameters.AddWithValue("@owner", user.Username);
 
                         if (command.ExecuteNonQuery() == 0)
                         {
@@ -194,7 +288,7 @@ namespace MBWayAPI.Controllers
                     connection.Close();
                     #endregion
 
-                    return Ok();
+                    return Ok(GetUserByNumber(user.Username));
                 }
                 catch (Exception ex)
                 {

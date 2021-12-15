@@ -47,7 +47,6 @@ namespace vCardPlatform
             this.groupDataEntity = new System.Windows.Forms.GroupBox();
             this.groupEntityAuth = new System.Windows.Forms.GroupBox();
             this.btnEntityTestAuthentication = new System.Windows.Forms.Button();
-            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.lblEntityUsername = new System.Windows.Forms.Label();
             this.txtEntityUsername = new System.Windows.Forms.TextBox();
             this.lblEntityPassword = new System.Windows.Forms.Label();
@@ -67,6 +66,7 @@ namespace vCardPlatform
             this.btnEntityDefaultCategoriesRefresh = new System.Windows.Forms.Button();
             this.btnEntityDCRemoveRow = new System.Windows.Forms.Button();
             this.dataGridViewEntityDefaultCategory = new System.Windows.Forms.DataGridView();
+            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.groupEntityStatus = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.panelEntityStatusResources = new System.Windows.Forms.Panel();
@@ -101,13 +101,22 @@ namespace vCardPlatform
             this.buttonExportExcel = new System.Windows.Forms.Button();
             this.buttonExportXml = new System.Windows.Forms.Button();
             this.buttonOperationsRefresh = new System.Windows.Forms.Button();
+            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridViewRealtime = new System.Windows.Forms.DataGridView();
-            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageTransactionLogs = new System.Windows.Forms.TabPage();
+            this.tabPageGeralLogs = new System.Windows.Forms.TabPage();
+            this.dataGridViewGeralLogs = new System.Windows.Forms.DataGridView();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabCMain.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabEntities.SuspendLayout();
@@ -130,10 +139,14 @@ namespace vCardPlatform
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAdministrators)).BeginInit();
             this.tabCreate.SuspendLayout();
             this.tabOperations.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPageTransactionLogs.SuspendLayout();
+            this.tabPageGeralLogs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeralLogs)).BeginInit();
             this.SuspendLayout();
             // 
             // labelAdministratorName
@@ -160,18 +173,16 @@ namespace vCardPlatform
             // 
             // tabCMain
             // 
-            this.tabCMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabCMain.Controls.Add(this.tabProfile);
             this.tabCMain.Controls.Add(this.tabEntities);
             this.tabCMain.Controls.Add(this.tabAdmistrators);
             this.tabCMain.Controls.Add(this.tabOperations);
             this.tabCMain.Controls.Add(this.tabPage1);
-            this.tabCMain.Location = new System.Drawing.Point(0, 1);
+            this.tabCMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabCMain.Location = new System.Drawing.Point(0, 0);
             this.tabCMain.Name = "tabCMain";
             this.tabCMain.SelectedIndex = 0;
-            this.tabCMain.Size = new System.Drawing.Size(946, 498);
+            this.tabCMain.Size = new System.Drawing.Size(944, 527);
             this.tabCMain.TabIndex = 4;
             // 
             // tabProfile
@@ -182,7 +193,7 @@ namespace vCardPlatform
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(938, 472);
+            this.tabProfile.Size = new System.Drawing.Size(936, 501);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
             this.tabProfile.UseVisualStyleBackColor = true;
@@ -201,7 +212,7 @@ namespace vCardPlatform
             this.tabEntities.Location = new System.Drawing.Point(4, 22);
             this.tabEntities.Name = "tabEntities";
             this.tabEntities.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEntities.Size = new System.Drawing.Size(938, 472);
+            this.tabEntities.Size = new System.Drawing.Size(936, 501);
             this.tabEntities.TabIndex = 1;
             this.tabEntities.Text = "Entities";
             this.tabEntities.UseVisualStyleBackColor = true;
@@ -296,7 +307,7 @@ namespace vCardPlatform
             // 
             this.tabEntity.Controls.Add(this.btnEntitySave);
             this.tabEntity.Controls.Add(this.groupDataEntity);
-            this.tabEntity.Controls.Add(this.groupEntityDefaultCategory); 
+            this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
             this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.groupEntityStatus);
             this.tabEntity.Location = new System.Drawing.Point(4, 22);
@@ -305,19 +316,6 @@ namespace vCardPlatform
             this.tabEntity.TabIndex = 2;
             this.tabEntity.Text = "Entity";
             this.tabEntity.UseVisualStyleBackColor = true;
-            // btnEntityUsers
-            // 
-            this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntityUsers.Enabled = false;
-            this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
-            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
-            this.btnEntityUsers.Name = "btnEntityUsers";
-            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
-            this.btnEntityUsers.TabIndex = 4;
-            this.btnEntityUsers.Text = "Users";
-            this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntityUsers.UseVisualStyleBackColor = true;
-            this.btnEntityUsers.Click += new System.EventHandler(this.btnEntityUsers_Click);
             // 
             // btnEntitySave
             // 
@@ -592,6 +590,20 @@ namespace vCardPlatform
             this.dataGridViewEntityDefaultCategory.Size = new System.Drawing.Size(287, 339);
             this.dataGridViewEntityDefaultCategory.TabIndex = 0;
             // 
+            // btnEntityUsers
+            // 
+            this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntityUsers.Enabled = false;
+            this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
+            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
+            this.btnEntityUsers.Name = "btnEntityUsers";
+            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
+            this.btnEntityUsers.TabIndex = 4;
+            this.btnEntityUsers.Text = "Users";
+            this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntityUsers.UseVisualStyleBackColor = true;
+            this.btnEntityUsers.Click += new System.EventHandler(this.btnEntityUsers_Click);
+            // 
             // groupEntityStatus
             // 
             this.groupEntityStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -708,7 +720,7 @@ namespace vCardPlatform
             this.tabAdmistrators.Controls.Add(this.tabCAdministrators);
             this.tabAdmistrators.Location = new System.Drawing.Point(4, 22);
             this.tabAdmistrators.Name = "tabAdmistrators";
-            this.tabAdmistrators.Size = new System.Drawing.Size(938, 472);
+            this.tabAdmistrators.Size = new System.Drawing.Size(936, 501);
             this.tabAdmistrators.TabIndex = 2;
             this.tabAdmistrators.Text = "Administrators";
             this.tabAdmistrators.UseVisualStyleBackColor = true;
@@ -723,7 +735,7 @@ namespace vCardPlatform
             this.tabCAdministrators.Location = new System.Drawing.Point(8, 3);
             this.tabCAdministrators.Name = "tabCAdministrators";
             this.tabCAdministrators.SelectedIndex = 0;
-            this.tabCAdministrators.Size = new System.Drawing.Size(927, 456);
+            this.tabCAdministrators.Size = new System.Drawing.Size(925, 485);
             this.tabCAdministrators.TabIndex = 29;
             // 
             // tabTable
@@ -734,7 +746,7 @@ namespace vCardPlatform
             this.tabTable.Location = new System.Drawing.Point(4, 22);
             this.tabTable.Name = "tabTable";
             this.tabTable.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTable.Size = new System.Drawing.Size(919, 430);
+            this.tabTable.Size = new System.Drawing.Size(917, 459);
             this.tabTable.TabIndex = 0;
             this.tabTable.Text = "Table";
             this.tabTable.UseVisualStyleBackColor = true;
@@ -744,7 +756,7 @@ namespace vCardPlatform
             this.btnAdministratorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdministratorsDelete.Image = global::vCardPlatform.Properties.Resources.delete;
             this.btnAdministratorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsDelete.Location = new System.Drawing.Point(745, 6);
+            this.btnAdministratorsDelete.Location = new System.Drawing.Point(743, 6);
             this.btnAdministratorsDelete.Name = "btnAdministratorsDelete";
             this.btnAdministratorsDelete.Size = new System.Drawing.Size(75, 23);
             this.btnAdministratorsDelete.TabIndex = 22;
@@ -758,7 +770,7 @@ namespace vCardPlatform
             this.btnAdministratorsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdministratorsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.btnAdministratorsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(826, 6);
+            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(824, 6);
             this.btnAdministratorsRefresh.Name = "btnAdministratorsRefresh";
             this.btnAdministratorsRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnAdministratorsRefresh.TabIndex = 21;
@@ -776,7 +788,7 @@ namespace vCardPlatform
             this.dataGridViewAdministrators.Location = new System.Drawing.Point(6, 35);
             this.dataGridViewAdministrators.Name = "dataGridViewAdministrators";
             this.dataGridViewAdministrators.RowHeadersWidth = 45;
-            this.dataGridViewAdministrators.Size = new System.Drawing.Size(907, 392);
+            this.dataGridViewAdministrators.Size = new System.Drawing.Size(905, 421);
             this.dataGridViewAdministrators.TabIndex = 20;
             this.dataGridViewAdministrators.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAdministrators_CellValueChanged);
             // 
@@ -792,7 +804,7 @@ namespace vCardPlatform
             this.tabCreate.Location = new System.Drawing.Point(4, 22);
             this.tabCreate.Name = "tabCreate";
             this.tabCreate.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCreate.Size = new System.Drawing.Size(919, 430);
+            this.tabCreate.Size = new System.Drawing.Size(917, 459);
             this.tabCreate.TabIndex = 1;
             this.tabCreate.Text = "Create";
             this.tabCreate.UseVisualStyleBackColor = true;
@@ -865,25 +877,17 @@ namespace vCardPlatform
             // 
             // tabOperations
             // 
-            this.tabOperations.Controls.Add(this.textBoxFromUser);
-            this.tabOperations.Controls.Add(this.label8);
-            this.tabOperations.Controls.Add(this.label7);
-            this.tabOperations.Controls.Add(this.dateTimePickerEnd);
-            this.tabOperations.Controls.Add(this.dateTimePickerStart);
-            this.tabOperations.Controls.Add(this.comboBoxType);
-            this.tabOperations.Controls.Add(this.buttonExportExcel);
-            this.tabOperations.Controls.Add(this.buttonExportXml);
-            this.tabOperations.Controls.Add(this.buttonOperationsRefresh);
+            this.tabOperations.Controls.Add(this.tabControl1);
             this.tabOperations.Location = new System.Drawing.Point(4, 22);
             this.tabOperations.Name = "tabOperations";
-            this.tabOperations.Size = new System.Drawing.Size(938, 472);
+            this.tabOperations.Size = new System.Drawing.Size(936, 501);
             this.tabOperations.TabIndex = 3;
             this.tabOperations.Text = "Operations";
             this.tabOperations.UseVisualStyleBackColor = true;
             // 
             // textBoxFromUser
             // 
-            this.textBoxFromUser.Location = new System.Drawing.Point(8, 33);
+            this.textBoxFromUser.Location = new System.Drawing.Point(6, 43);
             this.textBoxFromUser.Name = "textBoxFromUser";
             this.textBoxFromUser.Size = new System.Drawing.Size(121, 20);
             this.textBoxFromUser.TabIndex = 31;
@@ -892,7 +896,7 @@ namespace vCardPlatform
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(132, 17);
+            this.label8.Location = new System.Drawing.Point(130, 27);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(33, 15);
             this.label8.TabIndex = 30;
@@ -901,7 +905,7 @@ namespace vCardPlatform
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 17);
+            this.label7.Location = new System.Drawing.Point(3, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(62, 15);
             this.label7.TabIndex = 29;
@@ -909,7 +913,7 @@ namespace vCardPlatform
             // 
             // dateTimePickerEnd
             // 
-            this.dateTimePickerEnd.Location = new System.Drawing.Point(469, 34);
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(471, 43);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
             this.dateTimePickerEnd.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerEnd.TabIndex = 28;
@@ -918,7 +922,7 @@ namespace vCardPlatform
             // 
             // dateTimePickerStart
             // 
-            this.dateTimePickerStart.Location = new System.Drawing.Point(263, 33);
+            this.dateTimePickerStart.Location = new System.Drawing.Point(265, 42);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
             this.dateTimePickerStart.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerStart.TabIndex = 27;
@@ -929,7 +933,7 @@ namespace vCardPlatform
             // 
             this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxType.FormattingEnabled = true;
-            this.comboBoxType.Location = new System.Drawing.Point(135, 33);
+            this.comboBoxType.Location = new System.Drawing.Point(137, 42);
             this.comboBoxType.Name = "comboBoxType";
             this.comboBoxType.Size = new System.Drawing.Size(121, 21);
             this.comboBoxType.TabIndex = 26;
@@ -940,7 +944,7 @@ namespace vCardPlatform
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
             this.buttonExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExportExcel.Location = new System.Drawing.Point(650, 3);
+            this.buttonExportExcel.Location = new System.Drawing.Point(634, 3);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(102, 23);
             this.buttonExportExcel.TabIndex = 24;
@@ -954,7 +958,7 @@ namespace vCardPlatform
             this.buttonExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
             this.buttonExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExportXml.Location = new System.Drawing.Point(758, 3);
+            this.buttonExportXml.Location = new System.Drawing.Point(742, 3);
             this.buttonExportXml.Name = "buttonExportXml";
             this.buttonExportXml.Size = new System.Drawing.Size(97, 23);
             this.buttonExportXml.TabIndex = 23;
@@ -968,7 +972,7 @@ namespace vCardPlatform
             this.buttonOperationsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOperationsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.buttonOperationsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonOperationsRefresh.Location = new System.Drawing.Point(860, 3);
+            this.buttonOperationsRefresh.Location = new System.Drawing.Point(844, 3);
             this.buttonOperationsRefresh.Name = "buttonOperationsRefresh";
             this.buttonOperationsRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonOperationsRefresh.TabIndex = 22;
@@ -977,12 +981,28 @@ namespace vCardPlatform
             this.buttonOperationsRefresh.UseVisualStyleBackColor = true;
             this.buttonOperationsRefresh.Click += new System.EventHandler(this.buttonOperationsRefresh_Click);
             // 
+            // dataGridViewOperations
+            // 
+            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOperations.Location = new System.Drawing.Point(4, 68);
+            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewOperations.Name = "dataGridViewOperations";
+            this.dataGridViewOperations.ReadOnly = true;
+            this.dataGridViewOperations.RowHeadersWidth = 51;
+            this.dataGridViewOperations.RowTemplate.Height = 24;
+            this.dataGridViewOperations.Size = new System.Drawing.Size(913, 381);
+            this.dataGridViewOperations.TabIndex = 0;
+            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.dataGridViewRealtime);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(938, 472);
+            this.tabPage1.Size = new System.Drawing.Size(936, 501);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Realtime";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1002,22 +1022,6 @@ namespace vCardPlatform
             this.dataGridViewRealtime.RowHeadersWidth = 45;
             this.dataGridViewRealtime.Size = new System.Drawing.Size(940, 444);
             this.dataGridViewRealtime.TabIndex = 0;
-            // 
-            // dataGridViewOperations
-            // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
-            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridViewOperations.Name = "dataGridViewOperations";
-            this.dataGridViewOperations.ReadOnly = true;
-            this.dataGridViewOperations.RowHeadersWidth = 51;
-            this.dataGridViewOperations.RowTemplate.Height = 24;
-            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 413);
-            this.dataGridViewOperations.TabIndex = 0;
-            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // statusStrip1
             // 
@@ -1056,6 +1060,122 @@ namespace vCardPlatform
             this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPageTransactionLogs);
+            this.tabControl1.Controls.Add(this.tabPageGeralLogs);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(930, 475);
+            this.tabControl1.TabIndex = 32;
+            // 
+            // tabPageTransactionLogs
+            // 
+            this.tabPageTransactionLogs.Controls.Add(this.buttonOperationsRefresh);
+            this.tabPageTransactionLogs.Controls.Add(this.textBoxFromUser);
+            this.tabPageTransactionLogs.Controls.Add(this.buttonExportXml);
+            this.tabPageTransactionLogs.Controls.Add(this.label8);
+            this.tabPageTransactionLogs.Controls.Add(this.buttonExportExcel);
+            this.tabPageTransactionLogs.Controls.Add(this.label7);
+            this.tabPageTransactionLogs.Controls.Add(this.dataGridViewOperations);
+            this.tabPageTransactionLogs.Controls.Add(this.dateTimePickerEnd);
+            this.tabPageTransactionLogs.Controls.Add(this.dateTimePickerStart);
+            this.tabPageTransactionLogs.Controls.Add(this.comboBoxType);
+            this.tabPageTransactionLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTransactionLogs.Name = "tabPageTransactionLogs";
+            this.tabPageTransactionLogs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTransactionLogs.Size = new System.Drawing.Size(922, 449);
+            this.tabPageTransactionLogs.TabIndex = 0;
+            this.tabPageTransactionLogs.Text = "Transaction Logs";
+            this.tabPageTransactionLogs.UseVisualStyleBackColor = true;
+            // 
+            // tabPageGeralLogs
+            // 
+            this.tabPageGeralLogs.Controls.Add(this.button1);
+            this.tabPageGeralLogs.Controls.Add(this.button2);
+            this.tabPageGeralLogs.Controls.Add(this.button3);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker1);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker2);
+            this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
+            this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGeralLogs.Name = "tabPageGeralLogs";
+            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageGeralLogs.Size = new System.Drawing.Size(922, 449);
+            this.tabPageGeralLogs.TabIndex = 1;
+            this.tabPageGeralLogs.Text = "Geral Logs";
+            this.tabPageGeralLogs.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewGeralLogs
+            // 
+            this.dataGridViewGeralLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewGeralLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGeralLogs.Location = new System.Drawing.Point(6, 43);
+            this.dataGridViewGeralLogs.Name = "dataGridViewGeralLogs";
+            this.dataGridViewGeralLogs.RowHeadersWidth = 45;
+            this.dataGridViewGeralLogs.Size = new System.Drawing.Size(910, 400);
+            this.dataGridViewGeralLogs.TabIndex = 0;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(212, 18);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 30;
+            this.dateTimePicker1.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(6, 17);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker2.TabIndex = 29;
+            this.dateTimePicker2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(841, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 31;
+            this.button1.Text = "Refresh";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Image = global::vCardPlatform.Properties.Resources.xml;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button2.Location = new System.Drawing.Point(739, 14);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(97, 23);
+            this.button2.TabIndex = 32;
+            this.button2.Text = "Export to Xml";
+            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.Image = global::vCardPlatform.Properties.Resources.excel;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button3.Location = new System.Drawing.Point(631, 14);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(102, 23);
+            this.button3.TabIndex = 33;
+            this.button3.Text = "Export to Excel";
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button3.UseVisualStyleBackColor = true;
             // 
             // FormMainApplication
             // 
@@ -1099,12 +1219,16 @@ namespace vCardPlatform
             this.tabCreate.ResumeLayout(false);
             this.tabCreate.PerformLayout();
             this.tabOperations.ResumeLayout(false);
-            this.tabOperations.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).EndInit();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPageTransactionLogs.ResumeLayout(false);
+            this.tabPageTransactionLogs.PerformLayout();
+            this.tabPageGeralLogs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGeralLogs)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1189,5 +1313,14 @@ namespace vCardPlatform
         private System.Windows.Forms.TextBox textBoxFromUser;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPageTransactionLogs;
+        private System.Windows.Forms.TabPage tabPageGeralLogs;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DataGridView dataGridViewGeralLogs;
     }
 }

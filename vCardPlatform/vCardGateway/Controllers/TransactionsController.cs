@@ -23,7 +23,6 @@ namespace vCardGateway.Controllers
         {
             try
             {
-
                 HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
                 #region Find Debit Entity
@@ -31,7 +30,15 @@ namespace vCardGateway.Controllers
 
                 if (entityDebit == null)
                 {
-                    return NotFound();
+                    GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.FromEntity}", "Invalid Entity", DateTime.Now);
+                    return Content(HttpStatusCode.NotFound, $"{transaction.FromEntity} entity does not exist.");
+                }
+                #endregion
+
+                #region Verify Max Limit Of Entity
+                if (transaction.Value > entityDebit.MaxLimit)
+                {
+                    return BadRequest($"Value of transaction invalid, need to be lower than {entityDebit.MaxLimit.ToString()}");
                 }
                 #endregion
 
@@ -40,7 +47,8 @@ namespace vCardGateway.Controllers
 
                 if (entityCredit == null)
                 {
-                    return NotFound();
+                    GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.Payment_Type}", "Invalid Entity", DateTime.Now);
+                    return Content(HttpStatusCode.NotFound, $"{transaction.Payment_Type} entity does not exist.");
                 }
                 #endregion
 
@@ -56,7 +64,7 @@ namespace vCardGateway.Controllers
                     value=transaction.Value, 
                     description=transaction.Description,
                     payment_type=transaction.Payment_Type,
-                    category=transaction.Category,
+                    category=transaction.Category == 0 ? "" : transaction.Category.ToString(),
                     type=transaction.Type.ToString(),
                 });
                 requestDebit.AddHeader("Authorization", Request.Headers.Authorization.ToString());
@@ -71,6 +79,7 @@ namespace vCardGateway.Controllers
                     ToUser = transaction.Payment_Reference,
                     ToEntity = transaction.Payment_Type,
                     Amount = transaction.Value,
+                    Type = "D"
                 };
                 #endregion
 
@@ -106,6 +115,7 @@ namespace vCardGateway.Controllers
                         ToUser = transaction.FromUser,
                         ToEntity = transaction.FromEntity,
                         Amount = transaction.Value,
+                        Type = "C"
                     };
                     #endregion
 
@@ -176,6 +186,7 @@ namespace vCardGateway.Controllers
                             ToUser = transaction.FromUser,
                             ToEntity = transaction.FromEntity,
                             Amount = Math.Round(transaction.Value * (entityDebit.EarningPercentage / 100), 2),
+                            Type = "E"
                         };
                         #endregion
 
@@ -210,6 +221,7 @@ namespace vCardGateway.Controllers
                             earningBackTransactionLog.Message = responseCredit.Content.ToString();
                             earningBackTransactionLog.Timestamp = DateTime.Now;
 
+                            GeneralLogsController.PostGeneralLog("Transaction", earningBackTransactionLog.ToUser, earningBackTransactionLog.ToEntity, responseEarningBack.StatusCode.ToString(), $"Earning Back money [{earningBackTransactionLog.ToUser} FROM {earningBackTransactionLog.ToEntity} - {earningBackTransactionLog.Amount} €] WAS NOT sent back [E]", "Earning Back money WAS NOT sent back", DateTime.Now);
                             TransactionLogsController.PostTransactionLog(earningBackTransactionLog);
                             #endregion
                         }
@@ -267,10 +279,13 @@ namespace vCardGateway.Controllers
                             creditTransactionLog.ErrorMessage = "Response Credit: " + responseCredit.Content + "\n Response Credit Back" + responseCreditBack.Content;
                             creditTransactionLog.Message = responseCredit.Content.ToString();
                             creditTransactionLog.Timestamp = DateTime.Now;
-
+                            
+                            GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.ToUser, creditTransactionLog.ToEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.ToUser} FROM {creditTransactionLog.ToEntity} - {creditTransactionLog.Amount} €] WAS NOT sent back [C]", "! Money WAS NOT sent back", DateTime.Now);
                             TransactionLogsController.PostTransactionLog(creditTransactionLog);
                             #endregion
                         }
+                        GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.FromUser, creditTransactionLog.FromEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.FromUser} FROM {creditTransactionLog.FromEntity} - {creditTransactionLog.Amount} €] WAS NOT sent [C]", "! Money WAS NOT sent", DateTime.Now);
+
                         return InternalServerError(new Exception(responseCredit.StatusCode.ToString()));
                     }
 
@@ -283,6 +298,7 @@ namespace vCardGateway.Controllers
                     debitTransactionLog.Message = responseDebit.Content.ToString();
                     debitTransactionLog.Timestamp = DateTime.Now;
 
+                    GeneralLogsController.PostGeneralLog("Transaction", debitTransactionLog.FromUser, debitTransactionLog.FromEntity, responseDebit.StatusCode.ToString(), $"Money [{debitTransactionLog.FromUser} FROM {debitTransactionLog.FromEntity} - {debitTransactionLog.Amount} €] WAS NOT sent [D]", "! Money WAS NOT sent", DateTime.Now);
                     TransactionLogsController.PostTransactionLog(debitTransactionLog);
                     #endregion
 
@@ -292,6 +308,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.InternalServerError.ToString(), $"Fatal error", ex.Message, DateTime.Now);
                 return InternalServerError(new Exception(ex.Message));
             }
         }

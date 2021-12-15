@@ -18,6 +18,7 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
+using System.Net;
 
 namespace vCardPlatform
 {
@@ -32,7 +33,7 @@ namespace vCardPlatform
         //MQTT Variables
         bool valid = true;
         const String STR_CHANNEL_NAME = "logs";
-        MqttClient m_cClient = new MqttClient("127.0.0.1");
+        MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
         string[] m_strTopicsInfo = { STR_CHANNEL_NAME };
 
         public FormMainApplication(string username, string password)
@@ -85,7 +86,7 @@ namespace vCardPlatform
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
-                m_cClient.Disconnect();
+                //m_cClient.Disconnect();
             }
 
             Application.Exit();
@@ -131,6 +132,7 @@ namespace vCardPlatform
                 comboSource.Add("A", "Any");
                 comboSource.Add("C", "Credit");
                 comboSource.Add("D", "Debit");
+                comboSource.Add("E", "Earning %");
 
                 comboBoxType.DataSource = new BindingSource(comboSource, null);
                 comboBoxType.DisplayMember = "Value";
@@ -269,7 +271,7 @@ namespace vCardPlatform
             int c = dataGridViewOperations.Rows.Count;
             for (int i = 0; i < c; i++)
             {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells["Timestamp"].Value.ToString());
                 DateTime date2 = DateTime.Parse(dateTimePickerStart.Value.ToString());
                 DateTime date3 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
 
@@ -290,7 +292,7 @@ namespace vCardPlatform
             int c = dataGridViewOperations.Rows.Count;
             for (int i = 0; i < c; i++)
             {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
+                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells["Timestamp"].Value.ToString());
                 DateTime date2 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
                 DateTime date3 = DateTime.Parse(dateTimePickerStart.Value.ToString());
 

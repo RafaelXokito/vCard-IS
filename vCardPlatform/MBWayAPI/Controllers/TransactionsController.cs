@@ -207,7 +207,7 @@ namespace MBWayAPI.Controllers
                     reader.Close();
 
                     //VERIFY BALANCE AND VALUE LIMITS
-                    if (transaction.Value > user.MaximumLimit || transaction.Value > user.Balance)
+                    if (transaction.Value > user.MaximumLimit || (transaction.Type == "D" && transaction.Value > user.Balance))
                     {
                         return BadRequest("The value of the transaction is invalid");
                     }

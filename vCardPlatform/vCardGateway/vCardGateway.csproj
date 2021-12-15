@@ -115,6 +115,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HandlerXML.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Models\Administrator.cs" />
     <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\Credentials.cs" />

@@ -5,14 +5,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using uPLibrary.Networking.M2Mqtt;
 using vCardGateway.Models;
 
 namespace vCardGateway.Controllers
 {
     public class GeneralLogsController : ApiController
     {
-        string connectionString = Properties.Settings.Default.ConnStr;
+        static string connectionString = Properties.Settings.Default.ConnStr;
 
+        //MQTT Variables
+        static bool valid = true;
+        const String STR_CHANNEL_NAME = "logs";
+        static MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
         [BasicAuthentication]
         [Route("api/generallogs")]
         public IEnumerable<GeneralLog> GetGeneralLogs()
@@ -36,7 +41,7 @@ namespace vCardGateway.Controllers
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Type = (string)reader["Type"],
-                            User = (string)reader["User"],
+                            Username = (string)reader["Username"],
                             Entity = (string)reader["Entity"],
                             Status = (string)reader["Status"],
                             Message = reader["ErrorMessage"].ToString(),
@@ -84,7 +89,7 @@ namespace vCardGateway.Controllers
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Type = (string)reader["Type"],
-                            User = (string)reader["User"],
+                            Username = (string)reader["Username"],
                             Entity = (string)reader["Entity"],
                             Status = (string)reader["Status"],
                             Message = reader["ErrorMessage"].ToString(),
@@ -107,6 +112,67 @@ namespace vCardGateway.Controllers
                 return NotFound();
             }
         }
+
+        public static GeneralLog PostGeneralLog(string Type, string Username, string Entity, string Status, string Message, string ErrorMessage, DateTime Timestamp)
+        {
+            GeneralLog generalLog = new GeneralLog { 
+                Type = Type,
+                Username = Username,
+                Entity = Entity,
+                Status = Status,
+                Message = Message,
+                ErrorMessage = ErrorMessage,
+                Timestamp = Timestamp,
+            };
+            return PostGeneralLog(generalLog);
+        }
+
+        public static GeneralLog PostGeneralLog(GeneralLog general)
+        {
+
+            string queryString = @"INSERT INTO GeneralLogs
+                            (Type, Username, Entity, Status, Message, ErrorMessage, Timestamp) 
+                        VALUES
+                            (@type, @username, @entity, @status, @message, @errormessage, @timestamp)";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@type", general.Type);
+                    command.Parameters.AddWithValue("@username", general.Username ?? "");
+                    command.Parameters.AddWithValue("@entity", general.Entity ?? "");
+                    command.Parameters.AddWithValue("@status", general.Status);
+                    command.Parameters.AddWithValue("@message", general.Message);
+                    command.Parameters.AddWithValue("@errormessage", general.ErrorMessage);
+                    command.Parameters.AddWithValue("@timestamp", general.Timestamp);
+
+                    connection.Open();
+
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        m_cClient.Connect(Guid.NewGuid().ToString());
+                        Log.SendMessage(m_cClient, STR_CHANNEL_NAME, Log.BuildMessage(general.Message, general.Status, general.Timestamp));
+                        return general;
+                    }
+
+                    connection.Close();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return null;
+                }
+            }
+        }
+
+
 
         private string GetFilterQueryString(string baseQueryString)
         {

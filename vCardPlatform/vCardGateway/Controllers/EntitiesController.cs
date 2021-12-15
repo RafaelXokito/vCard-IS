@@ -54,6 +54,60 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [Route("api/entities/{id}/users/{username}/photo")]
+        public IHttpActionResult PostEntityUserPhoto(string id, string username,User user)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest($"users/{username}/photo", Method.POST, DataFormat.Json);
+
+                request.AddHeader("Authorization", entity.Authentication.Token);
+                request.AddBody(user);
+                IRestResponse response = client.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Content);
+                }
+                return BadRequest(response.Content);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("api/entities/{id}/users")]
+        public IHttpActionResult PostEntityUsers(string id, User user)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest("users", Method.POST, DataFormat.Json);
+
+                request.AddHeader("Authorization", entity.Authentication.Token);
+                request.AddJsonBody(user);
+                IRestResponse<User> response = client.Execute<User>(request);
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Data);
+                }
+                return BadRequest(response.Content);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("api/entities/{id}/users")]
         public IHttpActionResult GetEntityUsers(string id)
         {
