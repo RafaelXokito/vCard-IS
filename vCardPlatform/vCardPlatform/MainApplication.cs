@@ -13,6 +13,11 @@ using vCardGateway.Models;
 using vCardPlatform.Models;
 using Excel = Microsoft.Office.Interop.Excel;
 using ExcelAutoFormat = Microsoft.Office.Interop.Excel.XlRangeAutoFormat;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Text;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace vCardPlatform
 {
@@ -23,6 +28,12 @@ namespace vCardPlatform
 
         RestClient client = new RestClient("http://localhost:59458/api");
         Administrator administrator = null;
+
+        //MQTT Variables
+        bool valid = true;
+        const String STR_CHANNEL_NAME = "logs";
+        MqttClient m_cClient = new MqttClient("127.0.0.1");
+        string[] m_strTopicsInfo = { STR_CHANNEL_NAME };
 
         public FormMainApplication(string username, string password)
         {
@@ -42,8 +53,41 @@ namespace vCardPlatform
             MessageBox.Show("Error: " + response.ErrorMessage);
         }
 
+        void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {         
+            //EXTRACT FIELDS
+            String strTemp = Encoding.UTF8.GetString(e.Message);
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(strTemp);
+
+            doc.Schemas.Add(null, "log.xsd");
+            ValidationEventHandler eventValidate = new ValidationEventHandler(validateXml);
+            doc.Validate(eventValidate);
+
+            //PACK INFO
+            string[] arr = new string[3];
+            arr[0] = doc.SelectSingleNode("/log/message").InnerText;
+            arr[1] = doc.SelectSingleNode("/log/status").InnerText;
+            arr[2] = doc.SelectSingleNode("/log/timestamp").InnerText;
+
+            //INSERT INTO DATALISTVIEW
+            dataGridViewRealtime.BeginInvoke((MethodInvoker)delegate { dataGridViewRealtime.Rows.Add(arr[2], arr[1], arr[0]); });
+        }
+
+        private void validateXml(object sender, ValidationEventArgs e)
+        {
+            valid = false;
+        }
+
         private void FormMainApplication_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (m_cClient.IsConnected)
+            {
+                m_cClient.Unsubscribe(m_strTopicsInfo);
+                m_cClient.Disconnect();
+            }
+
             Application.Exit();
         }
 
@@ -83,7 +127,28 @@ namespace vCardPlatform
                 #endregion
 
                 #region Load Operations Table
+                Dictionary<string, string> comboSource = new Dictionary<string, string>();
+                comboSource.Add("A", "Any");
+                comboSource.Add("C", "Credit");
+                comboSource.Add("D", "Debit");
+
+                comboBoxType.DataSource = new BindingSource(comboSource, null);
+                comboBoxType.DisplayMember = "Value";
+                comboBoxType.ValueMember = "Key";
+
+                comboBoxType.SelectedIndex = 0;
+
                 loadOperations();
+
+                foreach (DataGridViewColumn column in dataGridViewOperations.Columns) {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
+
+                dataGridViewOperations.Columns["NewBalance"].Visible = false;
+                dataGridViewOperations.Columns["OldBalance"].Visible = false;
+
+                dateTimePickerEnd.Value = DateTime.Now;
+                dateTimePickerStart.Value = DateTime.Now.AddDays(-1);
 
                 statusProgressBar.PerformStep();
 
@@ -92,6 +157,31 @@ namespace vCardPlatform
 
                 #region Load End Point Sufixs
                 loadEndPointSufixs();
+                #endregion
+
+                #region Realtime Table Setup
+
+                dataGridViewRealtime.Columns.Clear();
+
+                dataGridViewRealtime.Columns.Add("timestamp", "Timestamp");
+                dataGridViewRealtime.Columns.Add("status", "Status");
+                dataGridViewRealtime.Columns.Add("msg", "Message");
+
+                dataGridViewRealtime.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridViewRealtime.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                dataGridViewRealtime.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                m_cClient.Connect(Guid.NewGuid().ToString());
+                if (!m_cClient.IsConnected)
+                {
+                    MessageBox.Show("Error connecting to message broker...");
+                }
+
+                m_cClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+
+                byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
+                m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
+
                 #endregion
 
                 lblStatus.Text = "Tables loaded";
@@ -177,8 +267,8 @@ namespace vCardPlatform
             for (int i = 0; i < c; i++)
             {
                 DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
-                DateTime date2 = DateTime.Parse(dateTimePicker1.Value.ToString());
-                DateTime date3 = DateTime.Parse(dateTimePicker2.Value.ToString());
+                DateTime date2 = DateTime.Parse(dateTimePickerStart.Value.ToString());
+                DateTime date3 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
 
                 if (date1.Date >= date2.Date && date1.Date <= date3.Date)
                 {
@@ -198,8 +288,8 @@ namespace vCardPlatform
             for (int i = 0; i < c; i++)
             {
                 DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells[11].Value.ToString());
-                DateTime date2 = DateTime.Parse(dateTimePicker2.Value.ToString());
-                DateTime date3 = DateTime.Parse(dateTimePicker1.Value.ToString());
+                DateTime date2 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
+                DateTime date3 = DateTime.Parse(dateTimePickerStart.Value.ToString());
 
                 if (date1.Date <= date2.Date && date1.Date >= date3.Date)
                 {
@@ -220,13 +310,17 @@ namespace vCardPlatform
 
         private void loadOperations()
         {
-            var request = new RestSharp.RestRequest("transactionlogs", RestSharp.Method.GET);
+            var request = new RestRequest("transactionlogs", Method.GET);
+
+            if (comboBoxType.SelectedIndex != 0)
+            {
+                request.AddParameter("Type", ((KeyValuePair<string, string>)comboBoxType.SelectedItem).Key);
+            }
+
+            request.AddParameter("FromUser", textBoxFromUser.Text);
 
             var result = client.Execute<List<TransactionLog>>(request).Data;
             dataGridViewOperations.DataSource = result;
-
-            dataGridViewOperations.Columns["NewBalance"].Visible = false;
-            dataGridViewOperations.Columns["OldBalance"].Visible = false;
         }
 
         private void btnAdministratorsRefresh_Click(object sender, EventArgs e)
@@ -829,14 +923,14 @@ namespace vCardPlatform
             //Create Empty Table 
             DataTable ResultDataTable = new DataTable("ResultDataTable");
 
-            //use a Dataset to make use of a DataRelation object 
+            //use a Dataset to make use of a DataRelation object
             using (DataSet ds = new DataSet())
             {
 
-                //Add tables 
+                //Add tables
                 ds.Tables.AddRange(new DataTable[] { FirstDataTable.Copy(), SecondDataTable.Copy() });
 
-                //Get Columns for DataRelation 
+                //Get Columns for DataRelation
                 DataColumn[] firstColumns = new DataColumn[ds.Tables[0].Columns.Count];
                 for (int i = 0; i < firstColumns.Length; i++)
                 {
@@ -1219,6 +1313,16 @@ namespace vCardPlatform
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void textBoxFromUser_TextChanged(object sender, EventArgs e)
+        {
+            loadOperations();
+        }
+
+        private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadOperations();
         }
     }
 }

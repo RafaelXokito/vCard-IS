@@ -15,19 +15,15 @@ namespace vCardGateway.Controllers
 
         public class Filter
         {
-            public string FromEntity { get; set; }
-            public string FromNewBalance { get; set; }
-            public string ToEntity { get; set; }
-            public bool Successful { get; set; }
-
-            //TODO
+            public string FromUser { get; set; }
+            public string Type { get; set; }
         }
 
         [BasicAuthentication]
         [Route("api/transactionlogs")]
-        public IEnumerable<TransactionLog> GetTransactionLogs()
+        public IEnumerable<TransactionLog> GetTransactionLogs([FromUri] Filter filter)
         {
-            string queryString = GetFilterQueryString("SELECT * FROM TransactionLogs ORDER BY Timestamp DESC");
+            string queryString = GetFilterQueryString("SELECT * FROM TransactionLogs", filter);
 
             List<TransactionLog> logs = new List<TransactionLog>();
 
@@ -35,9 +31,22 @@ namespace vCardGateway.Controllers
             {
                 try
                 {
-                    connection.Open();
 
                     SqlCommand command = new SqlCommand(queryString, connection);
+                    
+                    if (filter != null)
+                    {
+                        if (filter.FromUser != null)
+                        {
+                            command.Parameters.AddWithValue("@fromuser", filter.FromUser);
+                        }
+                        if (filter.Type != null)
+                        {
+                            command.Parameters.AddWithValue("@type", filter.Type);
+                        }
+                    }
+
+                    connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -49,6 +58,7 @@ namespace vCardGateway.Controllers
                             FromEntity = (string)reader["FromEntity"],
                             ToUser = (string)reader["ToUser"],
                             ToEntity = (string)reader["ToEntity"],
+                            Type = (string)reader["Type"],
                             Amount = (decimal)reader["Amount"],
                             OldBalance = (decimal)reader["OldBalance"],
                             NewBalance = (decimal)reader["NewBalance"],
@@ -65,7 +75,7 @@ namespace vCardGateway.Controllers
                     connection.Close();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
@@ -101,6 +111,7 @@ namespace vCardGateway.Controllers
                             FromEntity = (string)reader["FromEntity"],
                             ToUser = (string)reader["ToUser"],
                             ToEntity = (string)reader["ToEntity"],
+                            Type = (string)reader["Type"],
                             Amount = (decimal)reader["Amount"],
                             OldBalance = (decimal)reader["OldBalance"],
                             NewBalance = (decimal)reader["NewBalance"],
@@ -126,19 +137,35 @@ namespace vCardGateway.Controllers
             }
         }
 
-        private string GetFilterQueryString(string baseQueryString)
+        private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
-            //TODO
-            return baseQueryString;
+            if (filter == null || ((filter.Type == null || filter.Type.Trim().Length == 0) && (filter.FromUser == null || filter.FromUser.Trim().Length == 0)))
+            {
+                return baseQueryString + " ORDER BY Timestamp DESC";
+            }
+
+            string queryString = baseQueryString + " WHERE ";
+            
+            if (filter.FromUser != null && filter.Type != null)
+            {
+                return queryString + "Type = @type AND FromUser LIKE '%' + @fromuser + '%' ORDER BY Timestamp DESC";
+            }
+
+            if (filter.FromUser != null)
+            {
+                return queryString + "FromUser LIKE '%' + @fromuser + '%' ORDER BY Timestamp DESC";
+            }
+
+            return queryString + "Type = @type ORDER BY Timestamp DESC";
         }
 
         public static bool PostTransactionLog(TransactionLog transactionLog)
         {
 
             string queryString = @"INSERT INTO TransactionLogs
-                            (FromUser, FromEntity, ToUser, ToEntity, Amount, NewBalance, OldBalance, Status, Message, ErrorMessage, Timestamp) 
+                            (FromUser, FromEntity, ToUser, ToEntity, Type, Amount, NewBalance, OldBalance, Status, Message, ErrorMessage, Timestamp) 
                         VALUES
-                            (@fromuser, @fromentity, @touser, @toentity, @amount, @newbalance, @oldbalance, @status, @message, @errormessage, @timestamp)";
+                            (@fromuser, @fromentity, @touser, @toentity, @type, @amount, @newbalance, @oldbalance, @status, @message, @errormessage, @timestamp)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -150,6 +177,7 @@ namespace vCardGateway.Controllers
                     command.Parameters.AddWithValue("@fromentity", transactionLog.FromEntity);
                     command.Parameters.AddWithValue("@touser", transactionLog.ToUser);
                     command.Parameters.AddWithValue("@toentity", transactionLog.ToEntity);
+                    command.Parameters.AddWithValue("@type", transactionLog.Type);
                     command.Parameters.AddWithValue("@amount", transactionLog.Amount);
                     command.Parameters.AddWithValue("@oldbalance", transactionLog.OldBalance);
                     command.Parameters.AddWithValue("@newbalance", transactionLog.NewBalance);
