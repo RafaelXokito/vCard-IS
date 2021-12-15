@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using uPLibrary.Networking.M2Mqtt;
 using vCardGateway.Models;
@@ -16,8 +17,10 @@ namespace vCardGateway.Controllers
 
         //MQTT Variables
         static bool valid = true;
-        const String STR_CHANNEL_NAME = "logs";
+        static String STR_CHANNEL_NAME = "logs";
         static MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
+
+
         [BasicAuthentication]
         [Route("api/generallogs")]
         public IEnumerable<GeneralLog> GetGeneralLogs()
@@ -154,7 +157,11 @@ namespace vCardGateway.Controllers
                     if (command.ExecuteNonQuery() > 0)
                     {
                         m_cClient.Connect(Guid.NewGuid().ToString());
-                        Log.SendMessage(m_cClient, STR_CHANNEL_NAME, Log.BuildMessage(general.Message, general.Status, general.Timestamp));
+
+                        if (m_cClient.IsConnected)
+                        {
+                            m_cClient.Publish("logs", Encoding.UTF8.GetBytes(Log.BuildMessage(general.Message, general.Status, general.Timestamp)));
+                        }
                         return general;
                     }
 
@@ -171,8 +178,6 @@ namespace vCardGateway.Controllers
                 }
             }
         }
-
-
 
         private string GetFilterQueryString(string baseQueryString)
         {

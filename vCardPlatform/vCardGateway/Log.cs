@@ -33,25 +33,5 @@ namespace vCardGateway
 
             return doc.OuterXml;
         }
-
-        public static bool SendMessage(MqttClient m_cClient, string topic, string message)
-        {
-            if (!m_cClient.IsConnected)
-            {
-                m_cClient.Connect(Guid.NewGuid().ToString());
-                if (!m_cClient.IsConnected)
-                {
-                    return false;
-                }
-            }
-
-            if (message.Trim().Length <= 0)
-            {
-                return false;
-            }
-            m_cClient.Publish(topic, Encoding.UTF8.GetBytes(message));
-
-            return true;
-        }
     }
 }

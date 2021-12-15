@@ -32,7 +32,7 @@ namespace vCardPlatform
 
         //MQTT Variables
         bool valid = true;
-        const String STR_CHANNEL_NAME = "logs";
+        const string STR_CHANNEL_NAME = "logs";
         MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
         string[] m_strTopicsInfo = { STR_CHANNEL_NAME };
 
@@ -86,7 +86,7 @@ namespace vCardPlatform
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
-                //m_cClient.Disconnect();
+                m_cClient.Disconnect();
             }
 
             Application.Exit();
@@ -179,7 +179,7 @@ namespace vCardPlatform
                 m_cClient.Connect(Guid.NewGuid().ToString());
                 if (!m_cClient.IsConnected)
                 {
-                    MessageBox.Show("Error connecting to message broker...");
+                    lblStatus.Text = "Error connecting to message broker...";
                 }
 
                 m_cClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
