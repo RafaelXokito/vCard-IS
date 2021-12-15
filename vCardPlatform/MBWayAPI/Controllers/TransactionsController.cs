@@ -227,19 +227,13 @@ namespace MBWayAPI.Controllers
                     {
                         return BadRequest();
                     }
-                    if (transaction.Type == "D")
-                    {
-                        command = new SqlCommand(queryStringNewBalance, connection);
 
-                        command.Parameters.AddWithValue("@phonenumber", phoneNumber);
-                        command.Parameters.AddWithValue("@balance", (transaction.Type == "C" ? 1 : -1) * transaction.Value + user.Balance);
+                    command = new SqlCommand(queryStringNewBalance, connection);
 
-                        if (command.ExecuteNonQuery() > 0)
-                        {
-                            return Ok(GetTransaction(Convert.ToInt32(insertedID)));
-                        }
-                    }
-                    else
+                    command.Parameters.AddWithValue("@phonenumber", phoneNumber);
+                    command.Parameters.AddWithValue("@balance", (transaction.Type == "C" ? 1 : -1) * transaction.Value + user.Balance);
+
+                    if (command.ExecuteNonQuery() > 0)
                     {
                         return Ok(GetTransaction(Convert.ToInt32(insertedID)));
                     }

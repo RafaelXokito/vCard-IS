@@ -54,6 +54,58 @@ namespace vCardGateway.Controllers
             }
         }
 
+        [Route("api/entities/{id}/users")]
+        public IHttpActionResult GetEntityUsers(string id)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest("users", Method.GET);
+
+                request.AddHeader("Authorization", entity.Authentication.Token);
+                IRestResponse response = client.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Content);
+                }
+                return BadRequest(response.Content);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("api/entities/{id}/defaultcategories")]
+        public IHttpActionResult GetEntityDefaultCategories(string id)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest("defaultcategories", Method.GET);
+
+                request.AddHeader("Authorization", entity.Authentication.Token);
+                IRestResponse response = client.Execute(request);
+                if (response.IsSuccessful)
+                {
+                    return Ok(response.Content);
+                }
+                return BadRequest(response.Content);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         [Route("api/entities/{id}/defaultcategories")]
         public IHttpActionResult PostEntityDefaultCategories(string id, DefaultCategory defaultCategory)
         {

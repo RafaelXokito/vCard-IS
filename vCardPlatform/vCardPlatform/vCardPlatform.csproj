@@ -86,7 +86,12 @@
     <Compile Include="FormChangePassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormChangePassword.Designer.cs" />
+    <Compile Include="FormEntityUsers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEntityUsers.Designer.cs">
+      <DependentUpon>FormEntityUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,7 +115,12 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormChangePassword.resx" />
+    <EmbeddedResource Include="FormChangePassword.resx">
+      <DependentUpon>FormChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEntityUsers.resx">
+      <DependentUpon>FormEntityUsers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -211,6 +221,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\xml.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

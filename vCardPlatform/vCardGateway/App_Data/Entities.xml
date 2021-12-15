@@ -21,7 +21,8 @@
     <maxlimit>5000,02</maxlimit>
     <earningpercentage>2</earningpercentage>
     <authentication type="User">
-      <token></token>
+      <token>
+      </token>
       <username>
       </username>
       <password>

@@ -66,7 +66,7 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
+        //[BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {

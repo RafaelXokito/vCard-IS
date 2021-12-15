@@ -447,6 +447,7 @@ namespace vCardPlatform
                     groupDataEntity.Enabled = true;
                     groupEntityDefaultCategory.Enabled = true;
                     btnEntitySave.Enabled = true;
+                    btnEntityUsers.Enabled = true;
 
                     lblEntityStatusName.Text = "";
                     btnEntitySave.Text = "Update";
@@ -469,23 +470,18 @@ namespace vCardPlatform
 
         public List<DefaultCategory> loadEntityDefaultCategories()
         {
-            RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
-
-            RestRequest request = new RestRequest("", Method.GET);
-
-            IRestResponse response = clientTest.Execute(request);
-            if (response.StatusCode != 0)
+            try
             {
-                clientTest = new RestClient(txtEntityEndpoint.Text + "/api");
 
-                request = new RestRequest("defaultcategories", Method.GET);
+                IRestRequest request = new RestRequest($"entities/{txtEntityId.Text}/defaultcategories", Method.GET);
 
                 if (txtEntityId.Text != "")
                 {
                     request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text, false));
                 }
 
-                IRestResponse<List<DefaultCategory>> responseData = clientTest.Execute<List<DefaultCategory>>(request);
+                IRestResponse responseData = client.Execute(request);
+                string content = responseData.Content.Replace("\\", "");
                 if (txtEntityId.Text != "" && responseData.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     request.AddHeader("Authorization", getAuthToken(txtEntityUsername.Text, txtEntityPassword.Text, true));
@@ -494,7 +490,7 @@ namespace vCardPlatform
                 if (responseData.IsSuccessful)
                 {
                     //dataGridViewEntityDefaultCategory.DataSource = responseData;
-                    dynamic dataDefaultCategory = Json.Decode(responseData.Content);
+                    dynamic dataDefaultCategory = Json.Decode(content.Substring(1,content.Length-2));
                     List<DefaultCategory> auxList = new List<DefaultCategory>();
                     if (dataDefaultCategory.data != null)
                         dataDefaultCategory = dataDefaultCategory.data;
@@ -514,6 +510,11 @@ namespace vCardPlatform
                 {
                     MessageBox.Show(responseData.ErrorMessage);
                 }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error Loading Entities");
             }
             return null;
         }
@@ -734,6 +735,7 @@ namespace vCardPlatform
                             lblStatus.Text = "Entity " + txtEntityName.Text + " created!";
                         else
                             lblStatus.Text = "Entity " + txtEntityName.Text + " updated!";
+
                         loadEntities();
                         tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntityTable"];
                         txtEntityId.Text = "";
@@ -950,6 +952,8 @@ namespace vCardPlatform
 
             btnEntitySave.Text = "Create";
 
+            groupEntityDefaultCategory.Enabled = false;
+
             lblEntityStatusName.Text = "";
 
             int c = groupEntityStatus.Controls.Count;
@@ -964,6 +968,11 @@ namespace vCardPlatform
             txtEntityName.Text = "";
             txtEntityEndpoint.Text = "";
             numEntityMaxLimit.Value = 0;
+            numEarningPercentage.Value = 0;
+
+            btnEntityUsers.Enabled = false;
+            txtEntityUsername.Text = "";
+            txtEntityPassword.Text = "";
 
             tabCEntities.SelectedTab = tabCEntities.TabPages["tabEntity"];
         }
@@ -1220,5 +1229,26 @@ namespace vCardPlatform
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void btnEntityUsers_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var request = new RestSharp.RestRequest("entities/" + txtEntityId.Text, RestSharp.Method.GET);
+
+                IRestResponse<Entity> result = client.Execute<Entity>(request);
+                if (result.IsSuccessful)
+                {
+                    FormEntityUsers form = new FormEntityUsers(result.Data, client);
+                    form.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error Loading Entity", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
+
     }
 }

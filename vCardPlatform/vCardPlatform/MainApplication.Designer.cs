@@ -43,6 +43,7 @@ namespace vCardPlatform
             this.btnEntitiesRefresh = new System.Windows.Forms.Button();
             this.dataGridViewEntities = new System.Windows.Forms.DataGridView();
             this.tabEntity = new System.Windows.Forms.TabPage();
+            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.btnEntitySave = new System.Windows.Forms.Button();
             this.groupDataEntity = new System.Windows.Forms.GroupBox();
             this.groupEntityAuth = new System.Windows.Forms.GroupBox();
@@ -95,10 +96,10 @@ namespace vCardPlatform
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.buttonExportExcel = new System.Windows.Forms.Button();
             this.buttonExportXml = new System.Windows.Forms.Button();
             this.buttonOperationsRefresh = new System.Windows.Forms.Button();
-            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -143,7 +144,7 @@ namespace vCardPlatform
             // buttonChangePassword
             // 
             this.buttonChangePassword.Location = new System.Drawing.Point(227, 7);
-            this.buttonChangePassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonChangePassword.Margin = new System.Windows.Forms.Padding(2);
             this.buttonChangePassword.Name = "buttonChangePassword";
             this.buttonChangePassword.Size = new System.Drawing.Size(102, 24);
             this.buttonChangePassword.TabIndex = 2;
@@ -173,7 +174,7 @@ namespace vCardPlatform
             this.tabProfile.Controls.Add(this.labelAdministratorName);
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
             this.tabProfile.Size = new System.Drawing.Size(938, 473);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
@@ -192,7 +193,7 @@ namespace vCardPlatform
             this.tabEntities.Controls.Add(this.tabCEntities);
             this.tabEntities.Location = new System.Drawing.Point(4, 22);
             this.tabEntities.Name = "tabEntities";
-            this.tabEntities.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEntities.Padding = new System.Windows.Forms.Padding(3);
             this.tabEntities.Size = new System.Drawing.Size(938, 473);
             this.tabEntities.TabIndex = 1;
             this.tabEntities.Text = "Entities";
@@ -221,7 +222,7 @@ namespace vCardPlatform
             this.tabEntityTable.Controls.Add(this.dataGridViewEntities);
             this.tabEntityTable.Location = new System.Drawing.Point(4, 22);
             this.tabEntityTable.Name = "tabEntityTable";
-            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(3);
             this.tabEntityTable.Size = new System.Drawing.Size(919, 430);
             this.tabEntityTable.TabIndex = 0;
             this.tabEntityTable.Text = "Table";
@@ -286,6 +287,7 @@ namespace vCardPlatform
             // 
             // tabEntity
             // 
+            this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.btnEntitySave);
             this.tabEntity.Controls.Add(this.groupDataEntity);
             this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
@@ -296,6 +298,20 @@ namespace vCardPlatform
             this.tabEntity.TabIndex = 2;
             this.tabEntity.Text = "Entity";
             this.tabEntity.UseVisualStyleBackColor = true;
+            // 
+            // btnEntityUsers
+            // 
+            this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntityUsers.Enabled = false;
+            this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
+            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
+            this.btnEntityUsers.Name = "btnEntityUsers";
+            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
+            this.btnEntityUsers.TabIndex = 4;
+            this.btnEntityUsers.Text = "Users";
+            this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntityUsers.UseVisualStyleBackColor = true;
+            this.btnEntityUsers.Click += new System.EventHandler(this.btnEntityUsers_Click);
             // 
             // btnEntitySave
             // 
@@ -642,7 +658,7 @@ namespace vCardPlatform
             this.tabEndPointsSufixs.Controls.Add(this.dataGridViewEndPointsSufixs);
             this.tabEndPointsSufixs.Location = new System.Drawing.Point(4, 22);
             this.tabEndPointsSufixs.Name = "tabEndPointsSufixs";
-            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(3);
             this.tabEndPointsSufixs.Size = new System.Drawing.Size(919, 430);
             this.tabEndPointsSufixs.TabIndex = 3;
             this.tabEndPointsSufixs.Text = "EndPoints Sufixs";
@@ -711,7 +727,7 @@ namespace vCardPlatform
             this.tabTable.Controls.Add(this.dataGridViewAdministrators);
             this.tabTable.Location = new System.Drawing.Point(4, 22);
             this.tabTable.Name = "tabTable";
-            this.tabTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabTable.Padding = new System.Windows.Forms.Padding(3);
             this.tabTable.Size = new System.Drawing.Size(919, 430);
             this.tabTable.TabIndex = 0;
             this.tabTable.Text = "Table";
@@ -769,7 +785,7 @@ namespace vCardPlatform
             this.tabCreate.Controls.Add(this.btnCreateAdmin);
             this.tabCreate.Location = new System.Drawing.Point(4, 22);
             this.tabCreate.Name = "tabCreate";
-            this.tabCreate.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabCreate.Padding = new System.Windows.Forms.Padding(3);
             this.tabCreate.Size = new System.Drawing.Size(919, 430);
             this.tabCreate.TabIndex = 1;
             this.tabCreate.Text = "Create";
@@ -808,7 +824,7 @@ namespace vCardPlatform
             // txtAdministratorName
             // 
             this.txtAdministratorName.Location = new System.Drawing.Point(317, 138);
-            this.txtAdministratorName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorName.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorName.Name = "txtAdministratorName";
             this.txtAdministratorName.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorName.TabIndex = 21;
@@ -816,7 +832,7 @@ namespace vCardPlatform
             // txtAdministratorPassword
             // 
             this.txtAdministratorPassword.Location = new System.Drawing.Point(317, 214);
-            this.txtAdministratorPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorPassword.Name = "txtAdministratorPassword";
             this.txtAdministratorPassword.PasswordChar = '*';
             this.txtAdministratorPassword.Size = new System.Drawing.Size(350, 20);
@@ -825,7 +841,7 @@ namespace vCardPlatform
             // txtAdministratorEmail
             // 
             this.txtAdministratorEmail.Location = new System.Drawing.Point(317, 174);
-            this.txtAdministratorEmail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorEmail.Name = "txtAdministratorEmail";
             this.txtAdministratorEmail.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorEmail.TabIndex = 22;
@@ -833,7 +849,7 @@ namespace vCardPlatform
             // btnCreateAdmin
             // 
             this.btnCreateAdmin.Location = new System.Drawing.Point(422, 269);
-            this.btnCreateAdmin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCreateAdmin.Margin = new System.Windows.Forms.Padding(2);
             this.btnCreateAdmin.Name = "btnCreateAdmin";
             this.btnCreateAdmin.Size = new System.Drawing.Size(61, 23);
             this.btnCreateAdmin.TabIndex = 20;
@@ -847,10 +863,10 @@ namespace vCardPlatform
             this.tabOperations.Controls.Add(this.dateTimePicker1);
             this.tabOperations.Controls.Add(this.comboBox2);
             this.tabOperations.Controls.Add(this.comboBox1);
+            this.tabOperations.Controls.Add(this.dataGridViewOperations);
             this.tabOperations.Controls.Add(this.buttonExportExcel);
             this.tabOperations.Controls.Add(this.buttonExportXml);
             this.tabOperations.Controls.Add(this.buttonOperationsRefresh);
-            this.tabOperations.Controls.Add(this.dataGridViewOperations);
             this.tabOperations.Location = new System.Drawing.Point(4, 22);
             this.tabOperations.Name = "tabOperations";
             this.tabOperations.Size = new System.Drawing.Size(938, 473);
@@ -891,6 +907,22 @@ namespace vCardPlatform
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 25;
+            // 
+            // dataGridViewOperations
+            // 
+            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
+            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewOperations.Name = "dataGridViewOperations";
+            this.dataGridViewOperations.ReadOnly = true;
+            this.dataGridViewOperations.RowHeadersWidth = 51;
+            this.dataGridViewOperations.RowTemplate.Height = 24;
+            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 414);
+            this.dataGridViewOperations.TabIndex = 0;
+            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // buttonExportExcel
             // 
@@ -934,22 +966,6 @@ namespace vCardPlatform
             this.buttonOperationsRefresh.UseVisualStyleBackColor = true;
             this.buttonOperationsRefresh.Click += new System.EventHandler(this.buttonOperationsRefresh_Click);
             // 
-            // dataGridViewOperations
-            // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
-            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.dataGridViewOperations.Name = "dataGridViewOperations";
-            this.dataGridViewOperations.ReadOnly = true;
-            this.dataGridViewOperations.RowHeadersWidth = 51;
-            this.dataGridViewOperations.RowTemplate.Height = 24;
-            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 414);
-            this.dataGridViewOperations.TabIndex = 0;
-            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
-            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(18, 18);
@@ -979,7 +995,7 @@ namespace vCardPlatform
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
             this.btnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLogout.Location = new System.Drawing.Point(873, 503);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(69, 25);
             this.btnLogout.TabIndex = 6;
@@ -997,7 +1013,7 @@ namespace vCardPlatform
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabCMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(960, 566);
             this.Name = "FormMainApplication";
             this.Text = "MainApplication";
@@ -1105,12 +1121,13 @@ namespace vCardPlatform
         private System.Windows.Forms.GroupBox groupEntityAuth;
         private System.Windows.Forms.Button btnEntityTestAuthentication;
         private System.Windows.Forms.Label lblEntityUsername;
-        private System.Windows.Forms.TextBox txtEntityUsername;
         private System.Windows.Forms.Label lblEntityPassword;
         private System.Windows.Forms.TextBox txtEntityPassword;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button btnEntityUsers;
+        private System.Windows.Forms.TextBox txtEntityUsername;
     }
 }
