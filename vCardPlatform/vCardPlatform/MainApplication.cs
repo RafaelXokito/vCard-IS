@@ -144,8 +144,11 @@ namespace vCardPlatform
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 }
 
-                dataGridViewOperations.Columns["NewBalance"].Visible = false;
-                dataGridViewOperations.Columns["OldBalance"].Visible = false;
+                if (dataGridViewOperations.Columns.Count > 0)
+                {
+                    dataGridViewOperations.Columns["NewBalance"].Visible = false;
+                    dataGridViewOperations.Columns["OldBalance"].Visible = false;
+                }
 
                 dateTimePickerEnd.Value = DateTime.Now;
                 dateTimePickerStart.Value = DateTime.Now.AddDays(-1);

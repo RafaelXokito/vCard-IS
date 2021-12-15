@@ -43,11 +43,11 @@ namespace vCardPlatform
             this.btnEntitiesRefresh = new System.Windows.Forms.Button();
             this.dataGridViewEntities = new System.Windows.Forms.DataGridView();
             this.tabEntity = new System.Windows.Forms.TabPage();
-            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.btnEntitySave = new System.Windows.Forms.Button();
             this.groupDataEntity = new System.Windows.Forms.GroupBox();
             this.groupEntityAuth = new System.Windows.Forms.GroupBox();
             this.btnEntityTestAuthentication = new System.Windows.Forms.Button();
+            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.lblEntityUsername = new System.Windows.Forms.Label();
             this.txtEntityUsername = new System.Windows.Forms.TextBox();
             this.lblEntityPassword = new System.Windows.Forms.Label();
@@ -101,9 +101,9 @@ namespace vCardPlatform
             this.buttonExportExcel = new System.Windows.Forms.Button();
             this.buttonExportXml = new System.Windows.Forms.Button();
             this.buttonOperationsRefresh = new System.Windows.Forms.Button();
-            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridViewRealtime = new System.Windows.Forms.DataGridView();
+            this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
@@ -130,9 +130,9 @@ namespace vCardPlatform
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAdministrators)).BeginInit();
             this.tabCreate.SuspendLayout();
             this.tabOperations.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,7 +143,7 @@ namespace vCardPlatform
             this.labelAdministratorName.Location = new System.Drawing.Point(10, 9);
             this.labelAdministratorName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAdministratorName.Name = "labelAdministratorName";
-            this.labelAdministratorName.Size = new System.Drawing.Size(160, 20);
+            this.labelAdministratorName.Size = new System.Drawing.Size(180, 22);
             this.labelAdministratorName.TabIndex = 1;
             this.labelAdministratorName.Text = "Administrator\'s Name";
             // 
@@ -182,7 +182,7 @@ namespace vCardPlatform
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
-            this.tabProfile.Size = new System.Drawing.Size(938, 473);
+            this.tabProfile.Size = new System.Drawing.Size(938, 472);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
             this.tabProfile.UseVisualStyleBackColor = true;
@@ -201,7 +201,7 @@ namespace vCardPlatform
             this.tabEntities.Location = new System.Drawing.Point(4, 22);
             this.tabEntities.Name = "tabEntities";
             this.tabEntities.Padding = new System.Windows.Forms.Padding(3);
-            this.tabEntities.Size = new System.Drawing.Size(938, 473);
+            this.tabEntities.Size = new System.Drawing.Size(938, 472);
             this.tabEntities.TabIndex = 1;
             this.tabEntities.Text = "Entities";
             this.tabEntities.UseVisualStyleBackColor = true;
@@ -294,10 +294,10 @@ namespace vCardPlatform
             // 
             // tabEntity
             // 
-            this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.btnEntitySave);
             this.tabEntity.Controls.Add(this.groupDataEntity);
-            this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
+            this.tabEntity.Controls.Add(this.groupEntityDefaultCategory); 
+            this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.groupEntityStatus);
             this.tabEntity.Location = new System.Drawing.Point(4, 22);
             this.tabEntity.Name = "tabEntity";
@@ -305,7 +305,6 @@ namespace vCardPlatform
             this.tabEntity.TabIndex = 2;
             this.tabEntity.Text = "Entity";
             this.tabEntity.UseVisualStyleBackColor = true;
-            // 
             // btnEntityUsers
             // 
             this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -393,7 +392,7 @@ namespace vCardPlatform
             this.lblEntityUsername.AutoSize = true;
             this.lblEntityUsername.Location = new System.Drawing.Point(6, 29);
             this.lblEntityUsername.Name = "lblEntityUsername";
-            this.lblEntityUsername.Size = new System.Drawing.Size(32, 13);
+            this.lblEntityUsername.Size = new System.Drawing.Size(36, 15);
             this.lblEntityUsername.TabIndex = 13;
             this.lblEntityUsername.Text = "User:";
             // 
@@ -413,7 +412,7 @@ namespace vCardPlatform
             this.lblEntityPassword.AutoSize = true;
             this.lblEntityPassword.Location = new System.Drawing.Point(5, 63);
             this.lblEntityPassword.Name = "lblEntityPassword";
-            this.lblEntityPassword.Size = new System.Drawing.Size(33, 13);
+            this.lblEntityPassword.Size = new System.Drawing.Size(37, 15);
             this.lblEntityPassword.TabIndex = 11;
             this.lblEntityPassword.Text = "Pass:";
             // 
@@ -441,7 +440,7 @@ namespace vCardPlatform
             this.lblEarningPercentage.AutoSize = true;
             this.lblEarningPercentage.Location = new System.Drawing.Point(3, 219);
             this.lblEarningPercentage.Name = "lblEarningPercentage";
-            this.lblEarningPercentage.Size = new System.Drawing.Size(54, 13);
+            this.lblEarningPercentage.Size = new System.Drawing.Size(64, 15);
             this.lblEarningPercentage.TabIndex = 10;
             this.lblEarningPercentage.Text = "Earning %";
             // 
@@ -452,7 +451,7 @@ namespace vCardPlatform
             this.lblEntityID.AutoSize = true;
             this.lblEntityID.Location = new System.Drawing.Point(3, 24);
             this.lblEntityID.Name = "lblEntityID";
-            this.lblEntityID.Size = new System.Drawing.Size(16, 13);
+            this.lblEntityID.Size = new System.Drawing.Size(17, 15);
             this.lblEntityID.TabIndex = 9;
             this.lblEntityID.Text = "Id";
             // 
@@ -501,7 +500,7 @@ namespace vCardPlatform
             this.lblEntityMaxLimit.AutoSize = true;
             this.lblEntityMaxLimit.Location = new System.Drawing.Point(3, 165);
             this.lblEntityMaxLimit.Name = "lblEntityMaxLimit";
-            this.lblEntityMaxLimit.Size = new System.Drawing.Size(51, 13);
+            this.lblEntityMaxLimit.Size = new System.Drawing.Size(61, 15);
             this.lblEntityMaxLimit.TabIndex = 5;
             this.lblEntityMaxLimit.Text = "Max Limit";
             // 
@@ -512,7 +511,7 @@ namespace vCardPlatform
             this.lblEntityEndpoint.AutoSize = true;
             this.lblEntityEndpoint.Location = new System.Drawing.Point(3, 114);
             this.lblEntityEndpoint.Name = "lblEntityEndpoint";
-            this.lblEntityEndpoint.Size = new System.Drawing.Size(49, 13);
+            this.lblEntityEndpoint.Size = new System.Drawing.Size(56, 15);
             this.lblEntityEndpoint.TabIndex = 3;
             this.lblEntityEndpoint.Text = "Endpoint";
             // 
@@ -532,7 +531,7 @@ namespace vCardPlatform
             this.lblEntityName.AutoSize = true;
             this.lblEntityName.Location = new System.Drawing.Point(3, 62);
             this.lblEntityName.Name = "lblEntityName";
-            this.lblEntityName.Size = new System.Drawing.Size(35, 13);
+            this.lblEntityName.Size = new System.Drawing.Size(41, 15);
             this.lblEntityName.TabIndex = 1;
             this.lblEntityName.Text = "Name";
             // 
@@ -615,7 +614,7 @@ namespace vCardPlatform
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(28, 96);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 13);
+            this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Resources: ";
             // 
@@ -636,7 +635,7 @@ namespace vCardPlatform
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(31, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 13);
+            this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 3;
             this.label5.Text = "Response: ";
             // 
@@ -645,7 +644,7 @@ namespace vCardPlatform
             this.lblEntityStatusName.AutoSize = true;
             this.lblEntityStatusName.Location = new System.Drawing.Point(106, 26);
             this.lblEntityStatusName.Name = "lblEntityStatusName";
-            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 13);
+            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 15);
             this.lblEntityStatusName.TabIndex = 2;
             // 
             // label4
@@ -804,7 +803,7 @@ namespace vCardPlatform
             this.label1.Location = new System.Drawing.Point(251, 217);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(64, 15);
             this.label1.TabIndex = 26;
             this.label1.Text = "Password:";
             // 
@@ -814,7 +813,7 @@ namespace vCardPlatform
             this.label2.Location = new System.Drawing.Point(251, 178);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.Size = new System.Drawing.Size(46, 15);
             this.label2.TabIndex = 25;
             this.label2.Text = "E-mail:";
             // 
@@ -824,7 +823,7 @@ namespace vCardPlatform
             this.label3.Location = new System.Drawing.Point(251, 141);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.Size = new System.Drawing.Size(44, 15);
             this.label3.TabIndex = 24;
             this.label3.Text = "Name:";
             // 
@@ -895,7 +894,7 @@ namespace vCardPlatform
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(132, 17);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.Size = new System.Drawing.Size(33, 15);
             this.label8.TabIndex = 30;
             this.label8.Text = "Type";
             // 
@@ -904,7 +903,7 @@ namespace vCardPlatform
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(5, 17);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(52, 13);
+            this.label7.Size = new System.Drawing.Size(62, 15);
             this.label7.TabIndex = 29;
             this.label7.Text = "FromUser";
             // 
@@ -935,22 +934,6 @@ namespace vCardPlatform
             this.comboBoxType.Size = new System.Drawing.Size(121, 21);
             this.comboBoxType.TabIndex = 26;
             this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
-            // 
-            // dataGridViewOperations
-            // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
-            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridViewOperations.Name = "dataGridViewOperations";
-            this.dataGridViewOperations.ReadOnly = true;
-            this.dataGridViewOperations.RowHeadersWidth = 51;
-            this.dataGridViewOperations.RowTemplate.Height = 24;
-            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 414);
-            this.dataGridViewOperations.TabIndex = 0;
-            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // buttonExportExcel
             // 
@@ -994,22 +977,6 @@ namespace vCardPlatform
             this.buttonOperationsRefresh.UseVisualStyleBackColor = true;
             this.buttonOperationsRefresh.Click += new System.EventHandler(this.buttonOperationsRefresh_Click);
             // 
-            // dataGridViewOperations
-            // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
-            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridViewOperations.Name = "dataGridViewOperations";
-            this.dataGridViewOperations.ReadOnly = true;
-            this.dataGridViewOperations.RowHeadersWidth = 51;
-            this.dataGridViewOperations.RowTemplate.Height = 24;
-            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 413);
-            this.dataGridViewOperations.TabIndex = 0;
-            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.dataGridViewRealtime);
@@ -1032,8 +999,25 @@ namespace vCardPlatform
             this.dataGridViewRealtime.Location = new System.Drawing.Point(0, 30);
             this.dataGridViewRealtime.Name = "dataGridViewRealtime";
             this.dataGridViewRealtime.ReadOnly = true;
+            this.dataGridViewRealtime.RowHeadersWidth = 45;
             this.dataGridViewRealtime.Size = new System.Drawing.Size(940, 444);
             this.dataGridViewRealtime.TabIndex = 0;
+            // 
+            // dataGridViewOperations
+            // 
+            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewOperations.Location = new System.Drawing.Point(2, 59);
+            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewOperations.Name = "dataGridViewOperations";
+            this.dataGridViewOperations.ReadOnly = true;
+            this.dataGridViewOperations.RowHeadersWidth = 51;
+            this.dataGridViewOperations.RowTemplate.Height = 24;
+            this.dataGridViewOperations.Size = new System.Drawing.Size(933, 413);
+            this.dataGridViewOperations.TabIndex = 0;
+            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // statusStrip1
             // 
@@ -1050,7 +1034,7 @@ namespace vCardPlatform
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(67, 19);
+            this.lblStatus.Size = new System.Drawing.Size(79, 19);
             this.lblStatus.Text = "StatusLabel";
             // 
             // statusProgressBar
@@ -1116,9 +1100,9 @@ namespace vCardPlatform
             this.tabCreate.PerformLayout();
             this.tabOperations.ResumeLayout(false);
             this.tabOperations.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).EndInit();
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewOperations)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1194,6 +1178,8 @@ namespace vCardPlatform
         private System.Windows.Forms.Button btnEntityTestAuthentication;
         private System.Windows.Forms.Label lblEntityUsername;
         private System.Windows.Forms.Label lblEntityPassword;
+        private System.Windows.Forms.TextBox txtEntityUsername;
+        private System.Windows.Forms.Button btnEntityUsers;
         private System.Windows.Forms.TextBox txtEntityPassword;
         private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
         private System.Windows.Forms.DateTimePicker dateTimePickerStart;
