@@ -73,7 +73,7 @@ namespace vCardPlatform
             arr[2] = doc.SelectSingleNode("/log/timestamp").InnerText;
 
             //INSERT INTO DATALISTVIEW
-            dataGridViewRealtime.BeginInvoke((MethodInvoker)delegate { dataGridViewRealtime.Rows.Add(arr[2], arr[1], arr[0]); });
+            dataGridViewRealtime.BeginInvoke((MethodInvoker)delegate { dataGridViewRealtime.Rows.Add(arr[2], arr[1], arr[0]); dataGridViewRealtime.Sort(dataGridViewRealtime.Columns["Timestamp"], ListSortDirection.Descending); });
         }
 
         private void validateXml(object sender, ValidationEventArgs e)
@@ -86,7 +86,7 @@ namespace vCardPlatform
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
-                m_cClient.Disconnect();
+                //m_cClient.Disconnect();
             }
 
             Application.Exit();
@@ -158,6 +158,15 @@ namespace vCardPlatform
                 statusProgressBar.PerformStep();
 
                 lblStatus.Text = "Loaded Operations Table";
+                #endregion
+
+                #region Load General Logs
+                loadGeralLogs();
+
+                foreach (DataGridViewColumn column in dataGridViewGeralLogs.Columns)
+                {
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
                 #endregion
 
                 #region Load End Point Sufixs
@@ -232,7 +241,7 @@ namespace vCardPlatform
             }
         }
 
-        private void copyAlltoClipboard()
+        private void copyAllTlogstoClipboard()
         {
             dataGridViewOperations.SelectAll();
             DataObject dataObj = dataGridViewOperations.GetClipboardContent();
@@ -242,7 +251,7 @@ namespace vCardPlatform
 
         private void buttonExportExcel_Click(object sender, EventArgs e)
         {
-            copyAlltoClipboard();
+            copyAllTlogstoClipboard();
             Excel.Application xlexcel;
             Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet;
@@ -1357,6 +1366,72 @@ namespace vCardPlatform
         private void comboBoxType_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadOperations();
+        }
+
+        private void loadGeralLogs()
+        {
+            var request = new RestRequest("generallogs", Method.GET);
+
+            var result = client.Execute<List<GeneralLog>>(request).Data;
+            dataGridViewGeralLogs.DataSource = result;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            loadGeralLogs();
+        }
+
+        private void copyAllGlogstoClipboard()
+        {
+            dataGridViewGeralLogs.SelectAll();
+            DataObject dataObj = dataGridViewGeralLogs.GetClipboardContent();
+            if (dataObj != null)
+                Clipboard.SetDataObject(dataObj);
+        }
+        private void buttonGLogsExportExcel_Click(object sender, EventArgs e)
+        {
+            copyAllGlogstoClipboard();
+            Excel.Application xlexcel;
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            object misValue = System.Reflection.Missing.Value;
+            xlexcel = new Excel.Application();
+            xlexcel.Visible = true;
+            xlWorkBook = xlexcel.Workbooks.Add(misValue);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            int c = dataGridViewGeralLogs.Columns.Count;
+            for (int i = 1; i <= c; i++)
+            {
+                xlWorkSheet.Cells[1, i] = dataGridViewGeralLogs.Columns[i - 1].HeaderText;
+            }
+            for (int i = 0; i < dataGridViewGeralLogs.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataGridViewGeralLogs.Columns.Count; j++)
+                {
+                    xlWorkSheet.Cells[i + 2, j + 1] = dataGridViewGeralLogs.Rows[i].Cells[j].Value.ToString();
+                }
+            }
+            xlexcel.ActiveCell.Worksheet.Cells[1, c].AutoFormat(ExcelAutoFormat.xlRangeAutoFormatList2);
+        }
+
+        private void buttonGLogsExportXml_Click(object sender, EventArgs e)
+        {
+            DataTable dt = GetDataGridViewAsDataTable(dataGridViewGeralLogs);
+            DataSet ds = new DataSet();
+            ds.Tables.Add(dt);
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "XML|*.xml";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    ds.WriteXml(sfd.FileName);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
         }
     }
 }
