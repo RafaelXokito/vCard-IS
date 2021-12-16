@@ -13,6 +13,11 @@ namespace MBWayAPI.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
+        /// <summary>
+        /// Search for a category based on given ID
+        /// </summary>
+        /// <param name="id">Category ID</param>
+        /// <returns>Category founded</returns>
         [BasicAuthentication]
         [Route("api/categories/{id:int}")]
         public IHttpActionResult GetCategory(int id)
@@ -59,6 +64,10 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Search for all categories
+        /// </summary>
+        /// <returns>A list of all categories</returns>
         [BasicAuthentication]
         [Route("api/categories")]
         public IEnumerable<Category> GetCategories()

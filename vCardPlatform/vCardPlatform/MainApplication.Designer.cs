@@ -96,18 +96,17 @@ namespace vCardPlatform
             this.tabPageTransactionLogs = new System.Windows.Forms.TabPage();
             this.buttonOperationsRefresh = new System.Windows.Forms.Button();
             this.textBoxFromUser = new System.Windows.Forms.TextBox();
-            this.buttonExportXml = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.buttonExportExcel = new System.Windows.Forms.Button();
+            this.buttonTLogsExportExcel = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
-            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.comboBoxType = new System.Windows.Forms.ComboBox();
             this.tabPageGeralLogs = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.buttonGLogsExportXml = new System.Windows.Forms.Button();
+            this.buttonGLogsExportExcel = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewGeralLogs = new System.Windows.Forms.DataGridView();
@@ -905,6 +904,9 @@ namespace vCardPlatform
             this.tabPageTransactionLogs.Controls.Add(this.buttonExportXml);
             this.tabPageTransactionLogs.Controls.Add(this.label8);
             this.tabPageTransactionLogs.Controls.Add(this.buttonExportExcel);
+            this.tabPageTransactionLogs.Controls.Add(this.buttonTLogsExportXml);
+            this.tabPageTransactionLogs.Controls.Add(this.label8);
+            this.tabPageTransactionLogs.Controls.Add(this.buttonTLogsExportExcel);
             this.tabPageTransactionLogs.Controls.Add(this.label7);
             this.tabPageTransactionLogs.Controls.Add(this.dataGridViewOperations);
             this.tabPageTransactionLogs.Controls.Add(this.dateTimePickerEnd);
@@ -940,22 +942,19 @@ namespace vCardPlatform
             this.textBoxFromUser.TabIndex = 31;
             this.textBoxFromUser.TextChanged += new System.EventHandler(this.textBoxFromUser_TextChanged);
             // 
-            // buttonExportXml
-            // 
-            this.buttonExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
-            this.buttonExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonExportXml.Location = new System.Drawing.Point(742, 3);
-            this.buttonExportXml.Name = "buttonExportXml";
-            this.buttonExportXml.Size = new System.Drawing.Size(97, 23);
-            this.buttonExportXml.TabIndex = 23;
-            this.buttonExportXml.Text = "Export to Xml";
-            this.buttonExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonExportXml.UseVisualStyleBackColor = true;
-            this.buttonExportXml.Click += new System.EventHandler(this.buttonExportXml_Click);
+            this.buttonTLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
+            this.buttonTLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonTLogsExportXml.Location = new System.Drawing.Point(742, 3);
+            this.buttonTLogsExportXml.Name = "buttonTLogsExportXml";
+            this.buttonTLogsExportXml.Size = new System.Drawing.Size(97, 23);
+            this.buttonTLogsExportXml.TabIndex = 23;
+            this.buttonTLogsExportXml.Text = "Export to Xml";
+            this.buttonTLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonTLogsExportXml.UseVisualStyleBackColor = true;
+            this.buttonTLogsExportXml.Click += new System.EventHandler(this.buttonExportXml_Click);
             // 
             // label8
-            // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(130, 27);
             this.label8.Name = "label8";
@@ -976,37 +975,35 @@ namespace vCardPlatform
             this.buttonExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonExportExcel.UseVisualStyleBackColor = true;
             this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
+            // buttonTLogsExportExcel
+            // 
+            this.buttonTLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
+            this.buttonTLogsExportExcel.Text = "Export to Excel";
+            this.buttonTLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonTLogsExportExcel.UseVisualStyleBackColor = true;
+            this.buttonTLogsExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 27);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 29;
-            this.label7.Text = "FromUser";
             // 
-            // dataGridViewOperations
             // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewOperations.Location = new System.Drawing.Point(4, 68);
             this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridViewOperations.Name = "dataGridViewOperations";
             this.dataGridViewOperations.ReadOnly = true;
             this.dataGridViewOperations.RowHeadersWidth = 51;
-            this.dataGridViewOperations.RowTemplate.Height = 24;
             this.dataGridViewOperations.Size = new System.Drawing.Size(913, 381);
             this.dataGridViewOperations.TabIndex = 0;
-            this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // dateTimePickerEnd
-            // 
             this.dateTimePickerEnd.Location = new System.Drawing.Point(471, 43);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
-            this.dateTimePickerEnd.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerEnd.TabIndex = 28;
             this.dateTimePickerEnd.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
             this.dateTimePickerEnd.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
@@ -1031,7 +1028,6 @@ namespace vCardPlatform
             this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
             // 
             // tabPageGeralLogs
-            // 
             this.tabPageGeralLogs.Controls.Add(this.button1);
             this.tabPageGeralLogs.Controls.Add(this.button2);
             this.tabPageGeralLogs.Controls.Add(this.button3);
@@ -1085,9 +1081,64 @@ namespace vCardPlatform
             this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button3.UseVisualStyleBackColor = true;
             // 
+            // 
+            this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportXml);
+            this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportExcel);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker1);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker2);
+            this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
+            this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGeralLogs.Name = "tabPageGeralLogs";
+            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageGeralLogs.Size = new System.Drawing.Size(922, 449);
+            this.tabPageGeralLogs.TabIndex = 1;
+            this.tabPageGeralLogs.Text = "Geral Logs";
+            this.tabPageGeralLogs.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(841, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 31;
+            this.button1.Text = "Refresh";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // buttonGLogsExportXml
+            // 
+            this.buttonGLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
+            this.buttonGLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonGLogsExportXml.Location = new System.Drawing.Point(739, 14);
+            this.buttonGLogsExportXml.Name = "buttonGLogsExportXml";
+            this.buttonGLogsExportXml.Size = new System.Drawing.Size(97, 23);
+            this.buttonGLogsExportXml.TabIndex = 32;
+            this.buttonGLogsExportXml.Text = "Export to Xml";
+            this.buttonGLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonGLogsExportXml.UseVisualStyleBackColor = true;
+            this.buttonGLogsExportXml.Click += new System.EventHandler(this.buttonGLogsExportXml_Click);
+            // 
+            // buttonGLogsExportExcel
+            // 
+            this.buttonGLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
+            this.buttonGLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonGLogsExportExcel.Location = new System.Drawing.Point(631, 14);
+            this.buttonGLogsExportExcel.Name = "buttonGLogsExportExcel";
+            this.buttonGLogsExportExcel.Size = new System.Drawing.Size(102, 23);
+            this.buttonGLogsExportExcel.TabIndex = 33;
+            this.buttonGLogsExportExcel.Text = "Export to Excel";
+            this.buttonGLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonGLogsExportExcel.UseVisualStyleBackColor = true;
+            this.buttonGLogsExportExcel.Click += new System.EventHandler(this.buttonGLogsExportExcel_Click);
+            // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(212, 18);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 30;
@@ -1293,9 +1344,9 @@ namespace vCardPlatform
         private System.Windows.Forms.Button btnEndPointsSufixsRefresh;
         private System.Windows.Forms.Panel panelEntityStatusResources;
         private System.Windows.Forms.DataGridView dataGridViewOperations;
-        private System.Windows.Forms.Button buttonExportXml;
+        private System.Windows.Forms.Button buttonTLogsExportXml;
         private System.Windows.Forms.Button buttonOperationsRefresh;
-        private System.Windows.Forms.Button buttonExportExcel;
+        private System.Windows.Forms.Button buttonTLogsExportExcel;
         private System.Windows.Forms.NumericUpDown numEarningPercentage;
         private System.Windows.Forms.Label lblEarningPercentage;
         private System.Windows.Forms.GroupBox groupEntityAuth;
@@ -1317,8 +1368,8 @@ namespace vCardPlatform
         private System.Windows.Forms.TabPage tabPageTransactionLogs;
         private System.Windows.Forms.TabPage tabPageGeralLogs;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonGLogsExportXml;
+        private System.Windows.Forms.Button buttonGLogsExportExcel;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DataGridView dataGridViewGeralLogs;

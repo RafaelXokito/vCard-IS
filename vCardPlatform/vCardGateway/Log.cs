@@ -23,7 +23,7 @@ namespace vCardGateway
             status.InnerText = strStatus;
 
             XmlElement timestamp = doc.CreateElement("timestamp");
-            timestamp.InnerText = dateTimestamp.ToString("g");
+            timestamp.InnerText = dateTimestamp.ToString("G");
 
             doc.AppendChild(root);
 
