@@ -122,6 +122,7 @@
     <Compile Include="Models\DefaultCategory.cs" />
     <Compile Include="Models\EndpointSufix.cs" />
     <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\GeneralLog.cs" />
     <Compile Include="Models\Secret.cs" />
     <Compile Include="Models\Transaction.cs" />

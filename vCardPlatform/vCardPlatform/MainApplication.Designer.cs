@@ -108,8 +108,8 @@ namespace vCardPlatform
             this.button1 = new System.Windows.Forms.Button();
             this.buttonGLogsExportXml = new System.Windows.Forms.Button();
             this.buttonGLogsExportExcel = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerEnd2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerStart2 = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewGeralLogs = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridViewRealtime = new System.Windows.Forms.DataGridView();
@@ -156,7 +156,7 @@ namespace vCardPlatform
             this.labelAdministratorName.Location = new System.Drawing.Point(10, 9);
             this.labelAdministratorName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAdministratorName.Name = "labelAdministratorName";
-            this.labelAdministratorName.Size = new System.Drawing.Size(180, 22);
+            this.labelAdministratorName.Size = new System.Drawing.Size(160, 20);
             this.labelAdministratorName.TabIndex = 1;
             this.labelAdministratorName.Text = "Administrator\'s Name";
             // 
@@ -390,7 +390,7 @@ namespace vCardPlatform
             this.lblEntityUsername.AutoSize = true;
             this.lblEntityUsername.Location = new System.Drawing.Point(6, 29);
             this.lblEntityUsername.Name = "lblEntityUsername";
-            this.lblEntityUsername.Size = new System.Drawing.Size(36, 15);
+            this.lblEntityUsername.Size = new System.Drawing.Size(32, 13);
             this.lblEntityUsername.TabIndex = 13;
             this.lblEntityUsername.Text = "User:";
             // 
@@ -410,7 +410,7 @@ namespace vCardPlatform
             this.lblEntityPassword.AutoSize = true;
             this.lblEntityPassword.Location = new System.Drawing.Point(5, 63);
             this.lblEntityPassword.Name = "lblEntityPassword";
-            this.lblEntityPassword.Size = new System.Drawing.Size(37, 15);
+            this.lblEntityPassword.Size = new System.Drawing.Size(33, 13);
             this.lblEntityPassword.TabIndex = 11;
             this.lblEntityPassword.Text = "Pass:";
             // 
@@ -438,7 +438,7 @@ namespace vCardPlatform
             this.lblEarningPercentage.AutoSize = true;
             this.lblEarningPercentage.Location = new System.Drawing.Point(3, 219);
             this.lblEarningPercentage.Name = "lblEarningPercentage";
-            this.lblEarningPercentage.Size = new System.Drawing.Size(64, 15);
+            this.lblEarningPercentage.Size = new System.Drawing.Size(54, 13);
             this.lblEarningPercentage.TabIndex = 10;
             this.lblEarningPercentage.Text = "Earning %";
             // 
@@ -449,7 +449,7 @@ namespace vCardPlatform
             this.lblEntityID.AutoSize = true;
             this.lblEntityID.Location = new System.Drawing.Point(3, 24);
             this.lblEntityID.Name = "lblEntityID";
-            this.lblEntityID.Size = new System.Drawing.Size(17, 15);
+            this.lblEntityID.Size = new System.Drawing.Size(16, 13);
             this.lblEntityID.TabIndex = 9;
             this.lblEntityID.Text = "Id";
             // 
@@ -498,7 +498,7 @@ namespace vCardPlatform
             this.lblEntityMaxLimit.AutoSize = true;
             this.lblEntityMaxLimit.Location = new System.Drawing.Point(3, 165);
             this.lblEntityMaxLimit.Name = "lblEntityMaxLimit";
-            this.lblEntityMaxLimit.Size = new System.Drawing.Size(61, 15);
+            this.lblEntityMaxLimit.Size = new System.Drawing.Size(51, 13);
             this.lblEntityMaxLimit.TabIndex = 5;
             this.lblEntityMaxLimit.Text = "Max Limit";
             // 
@@ -509,7 +509,7 @@ namespace vCardPlatform
             this.lblEntityEndpoint.AutoSize = true;
             this.lblEntityEndpoint.Location = new System.Drawing.Point(3, 114);
             this.lblEntityEndpoint.Name = "lblEntityEndpoint";
-            this.lblEntityEndpoint.Size = new System.Drawing.Size(56, 15);
+            this.lblEntityEndpoint.Size = new System.Drawing.Size(49, 13);
             this.lblEntityEndpoint.TabIndex = 3;
             this.lblEntityEndpoint.Text = "Endpoint";
             // 
@@ -529,7 +529,7 @@ namespace vCardPlatform
             this.lblEntityName.AutoSize = true;
             this.lblEntityName.Location = new System.Drawing.Point(3, 62);
             this.lblEntityName.Name = "lblEntityName";
-            this.lblEntityName.Size = new System.Drawing.Size(41, 15);
+            this.lblEntityName.Size = new System.Drawing.Size(35, 13);
             this.lblEntityName.TabIndex = 1;
             this.lblEntityName.Text = "Name";
             // 
@@ -626,7 +626,7 @@ namespace vCardPlatform
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(28, 96);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 13);
+            this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Resources: ";
             // 
@@ -647,7 +647,7 @@ namespace vCardPlatform
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(31, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.Size = new System.Drawing.Size(60, 13);
             this.label5.TabIndex = 3;
             this.label5.Text = "Response: ";
             // 
@@ -656,7 +656,7 @@ namespace vCardPlatform
             this.lblEntityStatusName.AutoSize = true;
             this.lblEntityStatusName.Location = new System.Drawing.Point(106, 26);
             this.lblEntityStatusName.Name = "lblEntityStatusName";
-            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 15);
+            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 13);
             this.lblEntityStatusName.TabIndex = 2;
             // 
             // label4
@@ -815,7 +815,7 @@ namespace vCardPlatform
             this.label1.Location = new System.Drawing.Point(251, 217);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 15);
+            this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 26;
             this.label1.Text = "Password:";
             // 
@@ -825,7 +825,7 @@ namespace vCardPlatform
             this.label2.Location = new System.Drawing.Point(251, 178);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 15);
+            this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 25;
             this.label2.Text = "E-mail:";
             // 
@@ -835,7 +835,7 @@ namespace vCardPlatform
             this.label3.Location = new System.Drawing.Point(251, 141);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 15);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 24;
             this.label3.Text = "Name:";
             // 
@@ -959,7 +959,7 @@ namespace vCardPlatform
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(130, 27);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(33, 15);
+            this.label8.Size = new System.Drawing.Size(31, 13);
             this.label8.TabIndex = 30;
             this.label8.Text = "Type";
             // 
@@ -982,7 +982,7 @@ namespace vCardPlatform
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 27);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(62, 15);
+            this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 29;
             this.label7.Text = "FromUser";
             // 
@@ -1035,8 +1035,8 @@ namespace vCardPlatform
             this.tabPageGeralLogs.Controls.Add(this.button1);
             this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportXml);
             this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportExcel);
-            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker1);
-            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker2);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePickerEnd2);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePickerStart2);
             this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
             this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeralLogs.Name = "tabPageGeralLogs";
@@ -1088,21 +1088,23 @@ namespace vCardPlatform
             this.buttonGLogsExportExcel.UseVisualStyleBackColor = true;
             this.buttonGLogsExportExcel.Click += new System.EventHandler(this.buttonGLogsExportExcel_Click);
             // 
-            // dateTimePicker1
+            // dateTimePickerEnd2
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(212, 18);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 30;
-            this.dateTimePicker1.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerEnd2.Location = new System.Drawing.Point(212, 18);
+            this.dateTimePickerEnd2.Name = "dateTimePickerEnd2";
+            this.dateTimePickerEnd2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerEnd2.TabIndex = 30;
+            this.dateTimePickerEnd2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerEnd2.ValueChanged += new System.EventHandler(this.dateTimePickerEnd2_ValueChanged);
             // 
-            // dateTimePicker2
+            // dateTimePickerStart2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(6, 17);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker2.TabIndex = 29;
-            this.dateTimePicker2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerStart2.Location = new System.Drawing.Point(6, 17);
+            this.dateTimePickerStart2.Name = "dateTimePickerStart2";
+            this.dateTimePickerStart2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerStart2.TabIndex = 29;
+            this.dateTimePickerStart2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerStart2.ValueChanged += new System.EventHandler(this.dateTimePickerStart2_ValueChanged);
             // 
             // dataGridViewGeralLogs
             // 
@@ -1157,7 +1159,7 @@ namespace vCardPlatform
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(79, 19);
+            this.lblStatus.Size = new System.Drawing.Size(67, 19);
             this.lblStatus.Text = "StatusLabel";
             // 
             // statusProgressBar
@@ -1322,8 +1324,8 @@ namespace vCardPlatform
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonGLogsExportXml;
         private System.Windows.Forms.Button buttonGLogsExportExcel;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd2;
+        private System.Windows.Forms.DateTimePicker dateTimePickerStart2;
         private System.Windows.Forms.DataGridView dataGridViewGeralLogs;
     }
 }
