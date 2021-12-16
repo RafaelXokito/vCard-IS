@@ -244,6 +244,29 @@ namespace vCardGateway
             doc.Save(XmlFilePath);
         }
 
+        public void UpdateEntityAuth(string id, Authentication authentication)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(XmlFilePath);
+
+            XmlNode node = doc.SelectSingleNode($"/entities/entity[id='{id}']");
+
+            if (node == null)
+            {
+                throw new Exception("The entity that you are looking for, does not exist");
+            }
+
+            XmlNode authNode = node.SelectSingleNode($"/entities/entity[id='{node["id"].InnerText}']/authentication");
+
+            authNode["token"].InnerText = Convert.ToString(authentication.Token);
+
+            authNode["username"].InnerText = Convert.ToString(authentication.Username);
+
+            authNode["password"].InnerText = Convert.ToString(authentication.Password);
+
+            doc.Save(XmlFilePath);
+        }
+
         public void DeleteEntity(string id)
         {
             XmlDocument doc = new XmlDocument();
@@ -287,6 +310,7 @@ namespace vCardGateway
             }
             return isValid;
         }
+
 
         private void MyValidateMethod(object sender, ValidationEventArgs args)
         {

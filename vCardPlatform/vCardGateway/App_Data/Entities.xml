@@ -21,8 +21,7 @@
     <maxlimit>5000,02</maxlimit>
     <earningpercentage>2</earningpercentage>
     <authentication type="User">
-      <token>
-      </token>
+      <token>Basic R0FURVdBWToxMjM0</token>
       <username>GATEWAY</username>
       <password>1234</password>
     </authentication>

@@ -24,7 +24,7 @@ namespace MBWayAPI.Controllers
         {
             if (UserValidate.Login(credentials.Username, credentials.Password)) { 
                 string encoded = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(credentials.Username + ":" + credentials.Password));
-                return Ok(encoded);
+                return Ok(new { user=new { token_type = "Basic", access_token = encoded} });
             }
             return Content(HttpStatusCode.BadRequest, $"Invalid Credentials");
         }
@@ -36,7 +36,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
             {
-                return Unauthorized();
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
             string queryString = "SELECT * FROM Users WHERE PhoneNumber = @number";
@@ -123,56 +123,71 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        //[BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
+        [BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {
-            string queryString = "SELECT * FROM Users";
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
-            List<User> users = new List<User>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (phoneNumber == "GATEWAY")
             {
-                try
+                string queryString = "SELECT * FROM Users";
+
+                List<User> users = new List<User>();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand(queryString, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    try
                     {
-                        User user = new User()
+                        connection.Open();
+
+                        SqlCommand command = new SqlCommand(queryString, connection);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        while (reader.Read())
                         {
-                            Username = (string)reader["PhoneNumber"],
-                            Name = (string)reader["Name"],
-                            Email = (string)reader["Email"],
-                            MaximumLimit = (decimal)reader["MaximumLimit"],
-                            Balance = (decimal)reader["Balance"],
-                            Photo = reader["Photo"] == null ? "" : (string)reader["Photo"],
-                        };
+                            User user = new User()
+                            {
+                                Username = (string)reader["PhoneNumber"],
+                                Name = (string)reader["Name"],
+                                Email = (string)reader["Email"],
+                                MaximumLimit = (decimal)reader["MaximumLimit"],
+                                Balance = (decimal)reader["Balance"],
+                                Photo = reader["Photo"] == null ? "" : (string)reader["Photo"],
+                            };
 
-                        users.Add(user);
-                    }
-                    reader.Close();
+                            users.Add(user);
+                        }
+                        reader.Close();
 
-                    connection.Close();
-
-                }
-                catch (Exception)
-                {
-                    if (connection.State == System.Data.ConnectionState.Open)
-                    {
                         connection.Close();
+
                     }
+                    catch (Exception)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                    return users;
                 }
-                return users;
+            }
+            else
+            {
+                return null;
             }
         }
 
         [Route("api/users/{phonenumber}/photo")]
         public IHttpActionResult PostUserPhoto(string phonenumber, User input)
         {
+            string phoneNumberAuth = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
+            if (phoneNumberAuth != "GATEWAY" && phoneNumberAuth != phonenumber)
+            {
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {phonenumber}. Or you are not authorized to change this user photo.");
+            }
             string queryString = "UPDATE Users SET Photo = @photo WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -318,7 +333,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
             {
-                return Unauthorized();
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
             string queryString = "UPDATE Users SET Name = @name, Email = @email, Photo = @photo WHERE PhoneNumber = @phonenumber";
@@ -370,7 +385,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
             {
-                return Unauthorized();
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
             string queryString = "UPDATE Users SET Password = @newpassword WHERE PhoneNumber = @phonenumber AND Password = @password";
@@ -419,7 +434,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
             {
-                return Unauthorized();
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
             string queryString = "UPDATE Users SET ConfirmationCode = @newconfirmationcode WHERE PhoneNumber = @phonenumber AND Password = @password";
@@ -468,7 +483,7 @@ namespace MBWayAPI.Controllers
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
             {
-                return Unauthorized();
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
             string queryStringGetUser = "SELECT * FROM Users WHERE PhoneNumber = @phonenumber";

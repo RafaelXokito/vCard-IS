@@ -203,19 +203,48 @@ namespace MBWayAPI.Controllers
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
+            string queryStringGetCategory = "SELECT * FROM Categories WHERE Name = @name AND Type = @type AND Owner = @owner;";
+
             string queryString = "INSERT INTO Categories(Name, Type, Owner) VALUES(@name, @type, @owner);SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
+                    SqlCommand command = new SqlCommand(queryStringGetCategory, connection);
+                    command.Parameters.AddWithValue("@name", category.Name);
+                    command.Parameters.AddWithValue("@type", category.Type);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            return BadRequest($"Duplicated category with Id: {reader["Id"].ToString()}");
+                        }
+
+                        reader.Close();
+
+                    }
+                    catch (Exception)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+
+                    command = new SqlCommand(queryString, connection);
 
                     command.Parameters.AddWithValue("@name", category.Name);
                     command.Parameters.AddWithValue("@type", category.Type);
                     command.Parameters.AddWithValue("@owner", phoneNumber);
 
-                    connection.Open();
+                    //Done Before
+                    //connection.Open();
 
                     int insertedID = Convert.ToInt32(command.ExecuteScalar().ToString());
                     if (insertedID > 0)
@@ -267,11 +296,40 @@ namespace MBWayAPI.Controllers
 
             if (policy != null && policy.Owner == phoneNumber)
             {
+                string queryStringGetCategory = "SELECT * FROM Categories WHERE Name = @name AND Type = @type AND Owner = @owner;";
+
                 string queryString = "UPDATE Categories SET Name = @name, Type = @type WHERE Id = @id AND Owner = @owner";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    SqlCommand command = new SqlCommand(queryStringGetCategory, connection);
+                    command.Parameters.AddWithValue("@name", category.Name);
+                    command.Parameters.AddWithValue("@type", category.Type);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            return BadRequest($"Duplicated category with Id: {reader["Id"].ToString()}");
+                        }
+
+                        reader.Close();
+
+                    }
+                    catch (Exception)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+
+                    command = new SqlCommand(queryString, connection);
 
                     command.Parameters.AddWithValue("@id", id);
                     command.Parameters.AddWithValue("@name", category.Name);
@@ -280,7 +338,8 @@ namespace MBWayAPI.Controllers
 
                     try
                     {
-                        connection.Open();
+                        //Done Before
+                        //connection.Open();
                         if (command.ExecuteNonQuery() > 0)
                         {
                             return Ok(GetCategoryById(id));
@@ -342,7 +401,7 @@ namespace MBWayAPI.Controllers
                         connection.Open();
                         if (command.ExecuteNonQuery() > 0)
                         {
-                            return Ok("Category deleted");
+                            return Ok($"Category {id} deleted");
                         }
                         connection.Close();
 

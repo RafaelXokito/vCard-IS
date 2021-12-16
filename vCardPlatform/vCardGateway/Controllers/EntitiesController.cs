@@ -203,10 +203,14 @@ namespace vCardGateway.Controllers
                 requestGet.AddParameter("type", defaultCategory.Type);
                 
                 IRestResponse<List<DefaultCategory>> responseGet = client.Execute<List<DefaultCategory>>(requestGet);
-                dynamic dataDefaultCategory = JsonConvert.DeserializeObject(responseGet.Content); ;
+                dynamic dataDefaultCategory = JsonConvert.DeserializeObject(responseGet.Content);
                 List<DefaultCategory> auxList = new List<DefaultCategory>();
-                if (dataDefaultCategory.data != null)
+                if (responseGet.Data.Count == 0 && dataDefaultCategory.data != null)
                     dataDefaultCategory = dataDefaultCategory.data;
+                else
+                    auxList = responseGet.Data;
+
+                if (responseGet.Data.Count == 0)
                 foreach (var item in dataDefaultCategory)
                 {
                     auxList.Add(new DefaultCategory
@@ -254,6 +258,22 @@ namespace vCardGateway.Controllers
             try
             {
                 handlerXML.UpdateEntity(id, entity);
+                return Ok(handlerXML.GetEntity(id));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Route("api/entities/{id}/auth")]
+        public IHttpActionResult PutEntityAuth(string id,[FromBody] Authentication authentication)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                handlerXML.UpdateEntityAuth(id, authentication);
                 return Ok(handlerXML.GetEntity(id));
             }
             catch (Exception ex)

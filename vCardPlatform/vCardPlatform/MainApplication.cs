@@ -606,7 +606,7 @@ namespace vCardPlatform
             RestRequest requestEntity = new RestRequest("entities/" + txtEntityId.Text, Method.GET);
             RestSharp.IRestResponse<Entity> responseEntity = client.Execute<Entity>(requestEntity);
 
-            if (responseEntity.Data.Authentication is null || responseEntity.Data.Authentication.Token == null || force)
+            if (responseEntity.Data.Authentication is null || responseEntity.Data.Authentication.Token == null || responseEntity.Data.Authentication.Token == "" || force)
             {
                 RestClient clientTest = new RestClient(txtEntityEndpoint.Text);
 
@@ -624,7 +624,14 @@ namespace vCardPlatform
                     dynamic data = Json.Decode(responseAuth.Content);
                     auth.Token = data.user.token_type + " " + data.user.access_token;
 
-                    return auth.Token;
+                    requestAuth = new RestRequest($"entities/{txtEntityId.Text}/auth", Method.PUT, DataFormat.Json);
+                    requestAuth.AddJsonBody(auth);
+                    responseAuth = client.Execute(requestAuth);
+                    if (responseAuth.IsSuccessful)
+                    {
+                        return auth.Token;
+                    }
+                    return null;
                 }
                 return null;
             }
