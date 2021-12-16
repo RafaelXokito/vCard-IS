@@ -46,6 +46,10 @@ namespace vCardGateway.Controllers
                         {
                             command.Parameters.AddWithValue("@dateend", DateTime.Parse(filter.DateEnd));
                         }
+                        if (filter.FromEntity != null)
+                        {
+                            command.Parameters.AddWithValue("@fromentity", filter.FromEntity);
+                        }
                     }
 
                     connection.Open();
@@ -142,60 +146,44 @@ namespace vCardGateway.Controllers
         private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
             string queryString = baseQueryString;
+            bool hasOne = false;
 
-            if (!(filter == null || ((filter.Type == null || filter.Type.Trim().Length == 0) && (filter.FromUser == null || filter.FromUser.Trim().Length == 0))))
+            if (!(filter == null || ((filter.Type == null || filter.Type.Trim().Length == 0) && (filter.FromUser == null || filter.FromUser.Trim().Length == 0) && filter.FromEntity == null && filter.DateEnd == null && filter.DateStart == null)))
             {
                 queryString += " WHERE ";
-            
-                if (filter.FromUser != null && filter.Type != null)
-                {
-                    queryString += "Type = @type AND FromUser LIKE '%' + @fromuser + '%' ";
-                }
 
                 if (filter.FromUser != null)
                 {
-                    queryString += "FromUser LIKE '%' + @fromuser + '%' ";
+                    queryString += (hasOne ? "AND " : "") + "FromUser LIKE '%' + @fromuser + '%' ";
+                    hasOne = true;
                 }
 
                 if (filter.Type != null)
                 {
-                    queryString += "Type = @type ";
+                    queryString += (hasOne ? "AND " : "") + "Type = @type ";
+                    hasOne = true;
                 }
 
-                if (filter.DateStart != null && filter.DateEnd == null)
+                if (filter.DateStart != null)
                 {
-                    queryString += "AND Timestamp >= @datestart ";
+                    queryString += (hasOne ? "AND " : "") + "Timestamp >= @datestart ";
+                    hasOne = true;
                 }
-                else if (filter.DateStart == null && filter.DateEnd != null)
+
+                if (filter.DateEnd != null)
                 {
-                    queryString += "AND Timestamp <= @dateend ";
+                    queryString += (hasOne ? "AND " : "") + "Timestamp <= @dateend ";
+                    hasOne = true;
                 }
-                else
+
+                if (filter.FromEntity != null)
                 {
-                    queryString += "AND Timestamp >= @datestart AND Timestamp <= @dateend ";
-                }
-            }
-            else
-            {
-                if (filter.DateStart != null || filter.DateEnd != null)
-                {
-                    queryString += " WHERE ";
-                    if (filter.DateStart != null && filter.DateEnd == null)
-                    {
-                        queryString += "Timestamp >= @datestart ";
-                    }
-                    else if (filter.DateStart == null && filter.DateEnd != null)
-                    {
-                        queryString += "Timestamp <= @dateend ";
-                    }
-                    else
-                    {
-                        queryString += "Timestamp >= @datestart AND Timestamp <= @dateend ";
-                    }
+                    queryString += (hasOne ? "AND " : "") + "FromEntity = @fromentity ";
+                    hasOne = true;
                 }
             }
 
-            return queryString + "ORDER BY Timestamp DESC";
+            return queryString + " ORDER BY Timestamp DESC";
         }
 
         public static bool PostTransactionLog(TransactionLog transactionLog)

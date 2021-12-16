@@ -12,5 +12,6 @@ namespace vCardGateway.Models
         public string Type { get; set; }
         public string DateStart { get; set; }
         public string DateEnd { get; set; }
+        public string FromEntity { get; set; }
     }
 }

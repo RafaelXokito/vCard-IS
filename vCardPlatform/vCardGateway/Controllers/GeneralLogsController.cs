@@ -192,21 +192,21 @@ namespace vCardGateway.Controllers
         private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
             string queryString = baseQueryString;
+            bool hasOne = false;
 
             if (filter.DateStart != null || filter.DateEnd != null)
             {
                 queryString += " WHERE ";
-                if (filter.DateStart != null && filter.DateEnd == null)
+                if (filter.DateStart != null)
                 {
-                    queryString += "Timestamp >= @datestart";
+                    queryString += (hasOne ? "AND " : "") + "Timestamp >= @datestart ";
+                    hasOne = true;
                 }
-                else if (filter.DateStart == null && filter.DateEnd != null)
+
+                if (filter.DateEnd != null)
                 {
-                    queryString += "Timestamp <= @dateend";
-                }
-                else
-                {
-                    queryString += "Timestamp >= @datestart AND Timestamp <= @dateend";
+                    queryString += (hasOne ? "AND " : "") + "Timestamp <= @dateend ";
+                    hasOne = true;
                 }
             }
 

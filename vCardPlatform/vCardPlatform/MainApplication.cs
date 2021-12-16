@@ -140,14 +140,31 @@ namespace vCardPlatform
 
                 comboBoxType.SelectedIndex = 0;
 
+                Dictionary<string, string> comboSourceEntity = new Dictionary<string, string>();
+                comboSourceEntity.Add("Any", "Any");
+
+                RestRequest request = new RestRequest("entities", Method.GET);
+                var response = client.Execute<List<Entity>>(request);
+
+                if (response.IsSuccessful)
+                {
+                    List<Entity> entities = response.Data;
+                    foreach (Entity entity in entities)
+                    {
+                        comboSourceEntity.Add(entity.Name, entity.Name);
+                    }
+                }
+
+                comboBoxFromEntity.DataSource = new BindingSource(comboSourceEntity, null);
+                comboBoxFromEntity.DisplayMember = "Value";
+                comboBoxFromEntity.ValueMember = "Key";
+
+                comboBoxFromEntity.SelectedIndex = 0;
+
                 dateTimePickerEnd.Value = DateTime.Now;
                 dateTimePickerStart.Value = DateTime.Now.AddDays(-1);
 
                 loadOperations();
-
-                foreach (DataGridViewColumn column in dataGridViewOperations.Columns) {
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
 
                 if (dataGridViewOperations.Columns.Count > 0)
                 {
@@ -165,11 +182,6 @@ namespace vCardPlatform
                 dateTimePickerStart2.Value = DateTime.Now.AddDays(-1);
 
                 loadGeralLogs();
-
-                foreach (DataGridViewColumn column in dataGridViewGeralLogs.Columns)
-                {
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
                 #endregion
 
                 #region Load End Point Sufixs
@@ -300,6 +312,11 @@ namespace vCardPlatform
             if (comboBoxType.SelectedIndex != 0)
             {
                 request.AddParameter("Type", ((KeyValuePair<string, string>)comboBoxType.SelectedItem).Key);
+            }
+
+            if (comboBoxFromEntity.Items.Count > 0 && comboBoxFromEntity.SelectedIndex != 0)
+            {
+                request.AddParameter("FromEntity", ((KeyValuePair<string, string>)comboBoxFromEntity.SelectedItem).Key);
             }
 
             request.AddParameter("FromUser", textBoxFromUser.Text);
@@ -1192,11 +1209,6 @@ namespace vCardPlatform
             panel.Controls.Add(label);
         }
 
-        private void tabCEntities_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnEntityDefaultCategoriesRefresh_Click(object sender, EventArgs e)
         {
             if (txtEntityEndpoint.Text != "")
@@ -1426,6 +1438,11 @@ namespace vCardPlatform
         private void dateTimePickerEnd2_ValueChanged(object sender, EventArgs e)
         {
             loadGeralLogs();
+        }
+
+        private void comboBoxFromEntity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadOperations();
         }
     }
 }

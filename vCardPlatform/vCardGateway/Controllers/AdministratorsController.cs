@@ -284,12 +284,10 @@ namespace vCardGateway.Controllers
 
                 using (SHA256 sha256 = SHA256.Create())
                 {
-                    //string oldPasswordHash = GetHash(sha256, secret.Password);
-                    string oldPasswordHash = secret.Password;
+                    string oldPasswordHash = GetHash(sha256, secret.Password);
                     command.Parameters.AddWithValue("@oldpassword", oldPasswordHash);
 
-                    //string newPasswordHash = GetHash(sha256, secret.NewPassword);
-                    string newPasswordHash = secret.NewPassword;
+                    string newPasswordHash = GetHash(sha256, secret.NewPassword);
                     command.Parameters.AddWithValue("@newpassword", newPasswordHash);
                 }
 
