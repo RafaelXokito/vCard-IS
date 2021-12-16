@@ -17,6 +17,8 @@ namespace vCardGateway.Controllers
         {
             public string FromUser { get; set; }
             public string Type { get; set; }
+            public string DateStart { get; set; }
+            public string DateEnd { get; set; }
         }
 
         [BasicAuthentication]
@@ -43,6 +45,14 @@ namespace vCardGateway.Controllers
                         if (filter.Type != null)
                         {
                             command.Parameters.AddWithValue("@type", filter.Type);
+                        }
+                        if (filter.DateStart != null)
+                        {
+                            command.Parameters.AddWithValue("@datestart", DateTime.Parse(filter.DateStart));
+                        }
+                        if (filter.DateEnd != null)
+                        {
+                            command.Parameters.AddWithValue("@dateend", DateTime.Parse(filter.DateEnd));
                         }
                     }
 
@@ -75,7 +85,7 @@ namespace vCardGateway.Controllers
                     connection.Close();
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (connection.State == System.Data.ConnectionState.Open)
                     {
@@ -139,24 +149,61 @@ namespace vCardGateway.Controllers
 
         private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
-            if (filter == null || ((filter.Type == null || filter.Type.Trim().Length == 0) && (filter.FromUser == null || filter.FromUser.Trim().Length == 0)))
-            {
-                return baseQueryString + " ORDER BY Timestamp DESC";
-            }
+            string queryString = baseQueryString;
 
-            string queryString = baseQueryString + " WHERE ";
+            if (!(filter == null || ((filter.Type == null || filter.Type.Trim().Length == 0) && (filter.FromUser == null || filter.FromUser.Trim().Length == 0))))
+            {
+                queryString += " WHERE ";
             
-            if (filter.FromUser != null && filter.Type != null)
+                if (filter.FromUser != null && filter.Type != null)
+                {
+                    queryString += "Type = @type AND FromUser LIKE '%' + @fromuser + '%' ";
+                }
+
+                if (filter.FromUser != null)
+                {
+                    queryString += "FromUser LIKE '%' + @fromuser + '%' ";
+                }
+
+                if (filter.Type != null)
+                {
+                    queryString += "Type = @type ";
+                }
+
+                if (filter.DateStart != null && filter.DateEnd == null)
+                {
+                    queryString += "AND Timestamp >= @datestart ";
+                }
+                else if (filter.DateStart == null && filter.DateEnd != null)
+                {
+                    queryString += "AND Timestamp <= @dateend ";
+                }
+                else
+                {
+                    queryString += "AND Timestamp >= @datestart AND Timestamp <= @dateend ";
+                }
+            }
+            else
             {
-                return queryString + "Type = @type AND FromUser LIKE '%' + @fromuser + '%' ORDER BY Timestamp DESC";
+                if (filter.DateStart != null || filter.DateEnd != null)
+                {
+                    queryString += " WHERE ";
+                    if (filter.DateStart != null && filter.DateEnd == null)
+                    {
+                        queryString += "Timestamp >= @datestart ";
+                    }
+                    else if (filter.DateStart == null && filter.DateEnd != null)
+                    {
+                        queryString += "Timestamp <= @dateend ";
+                    }
+                    else
+                    {
+                        queryString += "Timestamp >= @datestart AND Timestamp <= @dateend ";
+                    }
+                }
             }
 
-            if (filter.FromUser != null)
-            {
-                return queryString + "FromUser LIKE '%' + @fromuser + '%' ORDER BY Timestamp DESC";
-            }
-
-            return queryString + "Type = @type ORDER BY Timestamp DESC";
+            return queryString + "ORDER BY Timestamp DESC";
         }
 
         public static bool PostTransactionLog(TransactionLog transactionLog)

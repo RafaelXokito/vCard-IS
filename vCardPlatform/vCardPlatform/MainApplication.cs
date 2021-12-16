@@ -33,7 +33,7 @@ namespace vCardPlatform
         //MQTT Variables
         bool valid = true;
         const string STR_CHANNEL_NAME = "logs";
-        MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
+        MqttClient m_cClient = new MqttClient("127.0.0.1");
         string[] m_strTopicsInfo = { STR_CHANNEL_NAME };
 
         public FormMainApplication(string username, string password)
@@ -140,6 +140,9 @@ namespace vCardPlatform
 
                 comboBoxType.SelectedIndex = 0;
 
+                dateTimePickerEnd.Value = DateTime.Now;
+                dateTimePickerStart.Value = DateTime.Now.AddDays(-1);
+
                 loadOperations();
 
                 foreach (DataGridViewColumn column in dataGridViewOperations.Columns) {
@@ -151,9 +154,6 @@ namespace vCardPlatform
                     dataGridViewOperations.Columns["NewBalance"].Visible = false;
                     dataGridViewOperations.Columns["OldBalance"].Visible = false;
                 }
-
-                dateTimePickerEnd.Value = DateTime.Now;
-                dateTimePickerStart.Value = DateTime.Now.AddDays(-1);
 
                 statusProgressBar.PerformStep();
 
@@ -268,44 +268,18 @@ namespace vCardPlatform
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            int c = dataGridViewOperations.Rows.Count;
-            for (int i = 0; i < c; i++)
-            {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells["Timestamp"].Value.ToString());
-                DateTime date2 = DateTime.Parse(dateTimePickerStart.Value.ToString());
-                DateTime date3 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
+            DateTime dateStart = DateTime.Parse(dateTimePickerStart.Value.ToString());
+            DateTime dateEnd = DateTime.Parse(dateTimePickerEnd.Value.ToString());
 
-                if (date1.Date >= date2.Date && date1.Date <= date3.Date)
-                {
-                    dataGridViewOperations.Rows[i].Visible = true;
-                }
-                else
-                {
-                    dataGridViewOperations.CurrentCell = null;
-                    dataGridViewOperations.Rows[i].Visible = false;
-                }
-            }
+            loadOperations();
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
-            int c = dataGridViewOperations.Rows.Count;
-            for (int i = 0; i < c; i++)
-            {
-                DateTime date1 = DateTime.Parse(dataGridViewOperations.Rows[i].Cells["Timestamp"].Value.ToString());
-                DateTime date2 = DateTime.Parse(dateTimePickerEnd.Value.ToString());
-                DateTime date3 = DateTime.Parse(dateTimePickerStart.Value.ToString());
+            DateTime dateStart = DateTime.Parse(dateTimePickerStart.Value.ToString());
+            DateTime dateEnd = DateTime.Parse(dateTimePickerEnd.Value.ToString());
 
-                if (date1.Date <= date2.Date && date1.Date >= date3.Date)
-                {
-                    dataGridViewOperations.Rows[i].Visible = true;
-                }
-                else
-                {
-                    dataGridViewOperations.CurrentCell = null;
-                    dataGridViewOperations.Rows[i].Visible = false;
-                }
-            }
+            loadOperations();
         }
 
         private void buttonOperationsRefresh_Click(object sender, EventArgs e)
@@ -323,6 +297,9 @@ namespace vCardPlatform
             }
 
             request.AddParameter("FromUser", textBoxFromUser.Text);
+
+            request.AddParameter("DateStart", dateTimePickerStart.Value.Date);
+            request.AddParameter("DateEnd", dateTimePickerEnd.Value.Date.AddDays(1).AddTicks(-1));
 
             var result = client.Execute<List<TransactionLog>>(request).Data;
             dataGridViewOperations.DataSource = result;
