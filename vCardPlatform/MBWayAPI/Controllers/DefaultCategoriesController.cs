@@ -116,7 +116,7 @@ namespace MBWayAPI.Controllers
         /// Search for all Default Categoies based on User authenticated
         /// </summary>
         /// <returns>A list of all Default Categoies</returns>
-        /// <response code="200">Returns the Default Categoies founded</response>
+        /// <response code="200">Returns the Default Categoies founded. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/defaultcategories")]
         public IEnumerable<DefaultCategory> GetDefaultCategories()
@@ -376,11 +376,11 @@ namespace MBWayAPI.Controllers
         }
 
         /// <summary>
-        /// Delete for a category based on given ID and on User authenticated
+        /// Delete a category based on given ID and on User authenticated
         /// </summary>
         /// <param name="id">Default Categoy ID</param>
         /// <returns>HTTPResponse</returns>
-        /// <response code="200">Returns the newly created Default Categoy</response>
+        /// <response code="200">Returns subjective message</response>
         /// <response code="401">Default Categoy does not belongs to authenticated user</response>
         /// <response code="404">If given Default Categoy not exist</response>
         /// <response code="500">If a fatal error eccurred</response>

@@ -5,7 +5,6 @@ using System.Web;
 
 namespace vCardGateway.Models
 {
-    public enum TransactionType { D, C }
     public class Transaction
     {
         public long Id { get; set; }
@@ -13,10 +12,10 @@ namespace vCardGateway.Models
         public string FromEntity { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateTime { get; set; }
-        public TransactionType Type { get; set; }
+        public string Type { get; set; }
         public decimal Value { get; set; }
-        public decimal OldBalance { get; set; }
-        public decimal NewBalance { get; set; }
+        public decimal Old_Balance { get; set; }
+        public decimal New_Balance { get; set; }
         public string Payment_Type { get; set; }
         public string Payment_Reference { get; set; }
         public decimal Pair_Transaction { get; set; }

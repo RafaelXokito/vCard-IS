@@ -79,9 +79,10 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        public Category GetCategoryById(int id)
+        public Category GetCategoryById(int id, string phoneNumber = null)
         {
-            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (phoneNumber == null)
+                phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
             string queryString = "SELECT * FROM Categories WHERE Id = @id AND Owner = @owner";
 
@@ -127,7 +128,7 @@ namespace MBWayAPI.Controllers
         /// Search for all categories based on User authenticated
         /// </summary>
         /// <returns>A list of all categories</returns>
-        /// <response code="200">Returns the Categories founded</response>
+        /// <response code="200">Returns the Categories founded. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/categories")]
         public IEnumerable<Category> GetCategories()
@@ -369,11 +370,11 @@ namespace MBWayAPI.Controllers
         }
 
         /// <summary>
-        /// Delete for a category based on given ID and on User authenticated
+        /// Delete a category based on given ID and on User authenticated
         /// </summary>
         /// <param name="id">Category ID</param>
         /// <returns>HTTPResponse</returns>
-        /// <response code="200">Returns the newly created Category</response>
+        /// <response code="200">Returns subjective message</response>
         /// <response code="401">Category does not belongs to authenticated user</response>
         /// <response code="404">If given Category not exist</response>
         /// <response code="500">If a fatal error eccurred</response>

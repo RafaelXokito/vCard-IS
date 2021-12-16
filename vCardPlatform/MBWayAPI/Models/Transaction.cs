@@ -12,11 +12,11 @@ namespace MBWayAPI.Models
         public DateTime Date { get; set; }
         public string Type { get; set; }
         public decimal Value { get; set; }
-        public decimal OldBalance { get; set; }
-        public decimal NewBalance { get; set; }
-        public string PaymentType { get; set; }
-        public string PaymentReference { get; set; }
-        public string ClassificationId { get; set; }
+        public decimal Old_Balance { get; set; }
+        public decimal New_Balance { get; set; }
+        public string Payment_Type { get; set; }
+        public string Payment_Reference { get; set; }
+        public int Category { get; set; }
         public string Description { get; set; }
     }
 }

@@ -66,6 +66,7 @@ namespace vCardGateway.Controllers
                     payment_type=transaction.Payment_Type,
                     category=transaction.Category == 0 ? "" : transaction.Category.ToString(),
                     type=transaction.Type.ToString(),
+                    phonenumber = transaction.FromUser.ToString() ?? null,
                 });
                 requestDebit.AddHeader("Authorization", Request.Headers.Authorization.ToString());
                 IRestResponse<Transaction> responseDebit = clientDebit.Execute<Transaction>(requestDebit);
@@ -93,16 +94,16 @@ namespace vCardGateway.Controllers
                     Transaction debitTransaction = new Transaction
                     {
                         //Este operador '??' é para prevenir diferentes dados de diferentes fontes
-                        OldBalance = dataTransactionDebit.old_balance ?? dataTransactionDebit.OldBalance,
-                        NewBalance = dataTransactionDebit.new_balance ?? dataTransactionDebit.OldBalance,
+                        Old_Balance = dataTransactionDebit.old_balance ?? dataTransactionDebit.Old_Balance,
+                        New_Balance = dataTransactionDebit.new_balance ?? dataTransactionDebit.Old_Balance,
                     };
 
                     debitTransactionLog.Status = "completed";
                     debitTransactionLog.Message = transaction.Type.ToString();
                     debitTransactionLog.Timestamp = DateTime.Now;
 
-                    debitTransactionLog.NewBalance = debitTransaction.NewBalance;
-                    debitTransactionLog.OldBalance = debitTransaction.OldBalance;
+                    debitTransactionLog.NewBalance = debitTransaction.New_Balance;
+                    debitTransactionLog.OldBalance = debitTransaction.Old_Balance;
 
                     TransactionLogsController.PostTransactionLog(debitTransactionLog);
                     #endregion
@@ -123,10 +124,11 @@ namespace vCardGateway.Controllers
                     RestRequest requestCredit = new RestRequest("/transactions", Method.POST, DataFormat.Json);
                     requestCredit.AddJsonBody(new
                     {
+                        vcard = transaction.Payment_Reference.ToString(),
                         phonenumber = transaction.Payment_Reference.ToString(),
-                        paymentreference = transaction.FromUser,
+                        payment_reference = transaction.FromUser,
                         value = transaction.Value,
-                        paymenttype = transaction.FromEntity,
+                        payment_type = transaction.FromEntity,
                         type = "C",
                     });
 
@@ -144,16 +146,16 @@ namespace vCardGateway.Controllers
                         Transaction creditTransaction = new Transaction
                         {
                             //Este operador '??' é para prevenir diferentes dados de diferentes fontes
-                            OldBalance = dataTransactionCredit.old_balance ?? dataTransactionCredit.OldBalance,
-                            NewBalance = dataTransactionCredit.new_balance ?? dataTransactionCredit.NewBalance,
+                            Old_Balance = dataTransactionCredit.old_balance ?? dataTransactionCredit.Old_Balance,
+                            New_Balance = dataTransactionCredit.new_balance ?? dataTransactionCredit.New_Balance,
                         };
 
                         creditTransactionLog.Status = "completed";
                         creditTransactionLog.Message = "C";
                         creditTransactionLog.Timestamp = DateTime.Now;
 
-                        creditTransactionLog.NewBalance = creditTransaction.NewBalance;
-                        creditTransactionLog.OldBalance = creditTransaction.OldBalance;
+                        creditTransactionLog.NewBalance = creditTransaction.New_Balance;
+                        creditTransactionLog.OldBalance = creditTransaction.Old_Balance;
 
                         TransactionLogsController.PostTransactionLog(creditTransactionLog);
                         #endregion
@@ -166,6 +168,7 @@ namespace vCardGateway.Controllers
 
                         requestEarningBack.AddJsonBody(new
                         {
+                            phonenumber = transaction.FromUser.ToString(),
                             vcard = transaction.FromUser,
                             payment_reference = entityDebit.Authentication.Username,
                             value = Math.Round(transaction.Value * (entityDebit.EarningPercentage / 100),2),
@@ -199,16 +202,16 @@ namespace vCardGateway.Controllers
                             Transaction earningBackTransaction = new Transaction
                             {
                                 //Este operador '??' é para prevenir diferentes dados de diferentes fontes
-                                OldBalance = dataTransactionEarningBack.old_balance ?? dataTransactionEarningBack.OldBalance,
-                                NewBalance = dataTransactionEarningBack.new_balance ?? dataTransactionEarningBack.OldBalance,
+                                Old_Balance = dataTransactionEarningBack.old_balance ?? dataTransactionEarningBack.Old_Balance,
+                                New_Balance = dataTransactionEarningBack.new_balance ?? dataTransactionEarningBack.Old_Balance,
                             };
 
                             earningBackTransactionLog.Status = "Earning Back money sent back";
                             earningBackTransactionLog.Message = $"Earning percentage of {entityDebit.EarningPercentage}%";
                             earningBackTransactionLog.Timestamp = DateTime.Now;
 
-                            earningBackTransactionLog.NewBalance = earningBackTransaction.NewBalance;
-                            earningBackTransactionLog.OldBalance = earningBackTransaction.OldBalance;
+                            earningBackTransactionLog.NewBalance = earningBackTransaction.New_Balance;
+                            earningBackTransactionLog.OldBalance = earningBackTransaction.Old_Balance;
 
                             TransactionLogsController.PostTransactionLog(earningBackTransactionLog);
                             #endregion
@@ -257,8 +260,8 @@ namespace vCardGateway.Controllers
                             Transaction creditTransaction = new Transaction
                             {
                                 //Este operador '??' é para prevenir diferentes dados de diferentes fontes
-                                OldBalance = dataTransactionCreditBack.old_balance ?? dataTransactionCreditBack.OldBalance,
-                                NewBalance = dataTransactionCreditBack.new_balance ?? dataTransactionCreditBack.OldBalance,
+                                Old_Balance = dataTransactionCreditBack.old_balance ?? dataTransactionCreditBack.Old_Balance,
+                                New_Balance = dataTransactionCreditBack.new_balance ?? dataTransactionCreditBack.New_Balance,
                             };
 
                             creditTransactionLog.Status = "failed, money sent back";
@@ -266,8 +269,8 @@ namespace vCardGateway.Controllers
                             creditTransactionLog.Message = "C";
                             creditTransactionLog.Timestamp = DateTime.Now;
 
-                            creditTransactionLog.NewBalance = creditTransaction.NewBalance;
-                            creditTransactionLog.OldBalance = creditTransaction.OldBalance;
+                            creditTransactionLog.NewBalance = creditTransaction.New_Balance;
+                            creditTransactionLog.OldBalance = creditTransaction.Old_Balance;
 
                             TransactionLogsController.PostTransactionLog(creditTransactionLog);
                             #endregion

@@ -15,10 +15,30 @@ using System.Web.Script.Serialization;
 
 namespace MBWayAPI.Controllers
 {
+    /// <summary>
+    /// User rest api
+    /// </summary>
     public class UsersController : ApiController
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
+        /// <summary>
+        /// Try to signin with user credentials
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///        "Username": "900000001",
+        ///        "Password": "1234"
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="credentials">User Credentials</param>
+        /// <returns>User auth token</returns>
+        /// <response code="200">User auth token generated</response>
+        /// <response code="400">User credentials are wrong</response>
         [Route("api/signin")]
         public IHttpActionResult PostSignin([FromBody]Credentials credentials)
         {
@@ -29,6 +49,14 @@ namespace MBWayAPI.Controllers
             return Content(HttpStatusCode.BadRequest, $"Invalid Credentials");
         }
 
+        /// <summary>
+        /// Search for a user based on given number
+        /// </summary>
+        /// <param name="number">User Phone Number</param>
+        /// <returns>User founded</returns>
+        /// <response code="200">Returns the User founded</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If the User was not founded</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult GetUser(int number)
@@ -47,7 +75,7 @@ namespace MBWayAPI.Controllers
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    command.Parameters.AddWithValue("@number", number);
+                    command.Parameters.AddWithValue("@number", number.ToString());
 
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
@@ -76,7 +104,7 @@ namespace MBWayAPI.Controllers
                         connection.Close();
                     }
                 }
-                return NotFound();
+                return Content(HttpStatusCode.NotFound, $"User {phoneNumber} was not found");
             }
         }
 
@@ -123,7 +151,12 @@ namespace MBWayAPI.Controllers
             }
         }
 
-        [BasicAuthentication] //You only have to be logged in because there are no admins in this Entity
+        /// <summary>
+        /// Search for all users based on User authenticated
+        /// </summary>
+        /// <returns>A list of all users</returns>
+        /// <response code="200">Returns the users founded. Returns null if you are not authorized</response>
+        [BasicAuthentication]
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {
@@ -179,6 +212,24 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Insert User for authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///        "Photo": Base64(Image)
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="phonenumber">User Phone Number</param>
+        /// <param name="input">User with photo param as base64 string</param>
+        /// <returns>User updated</returns>
+        /// <response code="200">Returns the updated created User</response>
+        /// <response code="400">If something went wrong with inputs</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/users/{phonenumber}/photo")]
         public IHttpActionResult PostUserPhoto(string phonenumber, User input)
         {
@@ -215,11 +266,11 @@ namespace MBWayAPI.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        return Ok();
+                        return Ok(GetUserByNumber(phonenumber));
                     }
                     connection.Close();
 
-                    return NotFound();
+                    return Content(HttpStatusCode.NotFound, $"User {phonenumber} not found.");
                 }
                 catch (Exception ex)
                 {
@@ -232,6 +283,28 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Insert User for authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///       "Username": "900000001",
+        ///       "Password": "1234",
+        ///       "Name": "Jhon",
+        ///       "Email": "900000001@mail.pt",
+        ///       "ConfirmationCode": "1234",
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="user">User to insert</param>
+        /// <returns>User inserted</returns>
+        /// <response code="200">Returns the newly created User</response>
+        /// <response code="400">If something went wrong with inputs</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/users")]
         public IHttpActionResult PostUser(User user)
         {
@@ -269,7 +342,7 @@ namespace MBWayAPI.Controllers
 
                     if (command.ExecuteNonQuery() == 0)
                     {
-                        return BadRequest();
+                        return BadRequest($"Something went wrong with inputs");
                     }
                     #endregion
 
@@ -326,9 +399,28 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///         "Name": "John Doe",
+        ///         "Email": "jhondoe@mail.pt",
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="number">User Phone Number</param>
+        /// <param name="user">User to be updated</param>
+        /// <returns>User Updated</returns>
+        /// <response code="200">Returns the updated updated User</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
-        public IHttpActionResult PutUser(int number, [FromBody] User user)
+        public IHttpActionResult PutUser(int number, [FromBody]User user)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
@@ -336,7 +428,7 @@ namespace MBWayAPI.Controllers
                 return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
             }
 
-            string queryString = "UPDATE Users SET Name = @name, Email = @email, Photo = @photo WHERE PhoneNumber = @phonenumber";
+            string queryString = "UPDATE Users SET Name = @name, Email = @email WHERE PhoneNumber = @phonenumber";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -344,21 +436,18 @@ namespace MBWayAPI.Controllers
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    command.Parameters.AddWithValue("@phonenumber", number);
+                    command.Parameters.AddWithValue("@phonenumber", number.ToString());
                     command.Parameters.AddWithValue("@name", user.Name);
                     command.Parameters.AddWithValue("@email", user.Email);
-
-                    string photo = user.Photo == null ? "" : user.Photo;
-                    command.Parameters.AddWithValue("@photo", photo);
 
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        return Ok();
+                        return Ok(GetUserByNumber(phoneNumber));
                     }
                     connection.Close();
 
-                    return NotFound();
+                    return Content(HttpStatusCode.NotFound, $"User does not exist.");
                 }
                 catch (Exception ex)
                 {
@@ -378,6 +467,25 @@ namespace MBWayAPI.Controllers
             public string NewConfirmationCode { get; set; }
         }
 
+        /// <summary>
+        /// Update authenticated User Password
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///         "Password": "1234",
+        ///         "NewPassword": "1234",
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="number">User Phone Number</param>
+        /// <param name="secret">Secret struct to be updated</param>
+        /// <returns>User Updated</returns>
+        /// <response code="200">Returns the updated updated User</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}/password")]
         public IHttpActionResult PatchUserPassword(int number, [FromBody] Secret secret)
@@ -396,7 +504,7 @@ namespace MBWayAPI.Controllers
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    command.Parameters.AddWithValue("@phonenumber", number);
+                    command.Parameters.AddWithValue("@phonenumber", number.ToString());
 
                     using (SHA256 sha256 = SHA256.Create())
                     {
@@ -410,11 +518,11 @@ namespace MBWayAPI.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        return Ok();
+                        return Ok(GetUserByNumber(phoneNumber));
                     }
                     connection.Close();
 
-                    return NotFound();
+                    return Content(HttpStatusCode.NotFound, $"User does not exist.");
                 }
                 catch (Exception ex)
                 {
@@ -427,6 +535,25 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update authenticated User Confirmation Code
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///         "Password": "1234",
+        ///         "NewConfirmationCode": "1234",
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="number">User Phone Number</param>
+        /// <param name="secret">Secret struct to be updated</param>
+        /// <returns>User Updated</returns>
+        /// <response code="200">Returns the updated updated User</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}/confirmationcode")]
         public IHttpActionResult PatchUserConfirmationCode(int number, [FromBody] Secret secret)
@@ -445,7 +572,7 @@ namespace MBWayAPI.Controllers
                 {
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    command.Parameters.AddWithValue("@phonenumber", number);
+                    command.Parameters.AddWithValue("@phonenumber", number.ToString());
 
                     using (SHA256 sha256 = SHA256.Create())
                     {
@@ -459,11 +586,11 @@ namespace MBWayAPI.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        return Ok();
+                        return Ok(GetUserByNumber(phoneNumber));
                     }
                     connection.Close();
 
-                    return NotFound();
+                    return Content(HttpStatusCode.NotFound, $"User does not exist.");
                 }
                 catch (Exception ex)
                 {
@@ -476,6 +603,15 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a user based on given number and on User authenticated
+        /// </summary>
+        /// <param name="number">User Phone Number</param>
+        /// <returns>HTTPResponse</returns>
+        /// <response code="200">Returns the subjective message</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult DeleteUser(int number)

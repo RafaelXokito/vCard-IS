@@ -5,6 +5,9 @@ using System.Web;
 
 namespace MBWayAPI.Models
 {
+    /// <summary>
+    /// Model of User
+    /// </summary>
     public class User
     {
         public string Username { get; set; }
