@@ -19,6 +19,16 @@ namespace MBWayAPI.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
+        [Route("api/signin")]
+        public IHttpActionResult PostSignin([FromBody]Credentials credentials)
+        {
+            if (UserValidate.Login(credentials.Username, credentials.Password)) { 
+                string encoded = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(credentials.Username + ":" + credentials.Password));
+                return Ok(encoded);
+            }
+            return Content(HttpStatusCode.BadRequest, $"Invalid Credentials");
+        }
+
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
         public IHttpActionResult GetUser(int number)

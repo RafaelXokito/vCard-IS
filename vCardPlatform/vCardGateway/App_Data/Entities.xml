@@ -23,10 +23,8 @@
     <authentication type="User">
       <token>
       </token>
-      <username>
-      </username>
-      <password>
-      </password>
+      <username>GATEWAY</username>
+      <password>1234</password>
     </authentication>
   </entity>
   <entity>

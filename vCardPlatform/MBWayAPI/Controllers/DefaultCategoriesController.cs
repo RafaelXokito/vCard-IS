@@ -14,6 +14,14 @@ namespace MBWayAPI.Controllers
     {
         string connectionString = Properties.Settings.Default.ConnStr;
 
+        /// <summary>
+        /// Search for a category based on given ID based on User authenticated
+        /// </summary>
+        /// <param name="id">Category ID</param>
+        /// <returns>Category founded</returns>
+        /// <response code="200">Returns the Category founded</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If the Category was not founded</response>
         [Route("api/defaultcategories/{id:int}")]
         public IHttpActionResult GetDefaultCategory(int id)
         {
@@ -54,6 +62,11 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Search for all categories based on User authenticated
+        /// </summary>
+        /// <returns>A list of all categories</returns>
+        /// <response code="200">Returns the Categories founded</response>
         [Route("api/defaultcategories")]
         public IEnumerable<DefaultCategory> GetDefaultCategories()
         {
@@ -113,6 +126,25 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Insert Category for authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///        "Name": "Food",
+        ///        "Type": "D"
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="category">Category to insert</param>
+        /// <returns>Category inserted</returns>
+        /// <response code="200">Returns the newly created Category</response>
+        /// <response code="400">If something went wrong with inputs</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/defaultcategories")]
         public IHttpActionResult PostDefaultCategory(DefaultCategory category)
         {
@@ -149,6 +181,27 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update Category of authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT
+        ///     {
+        ///        "Name": "Food",
+        ///        "Type": "D"
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="id">Category ID</param>
+        /// <param name="category">Category to be updated</param>
+        /// <returns>Category Updated</returns>
+        /// <response code="200">Returns the updated created Category</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If given Category not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/defaultcategories/{id:int}")]
         public IHttpActionResult PutDefaultCategory(int id, [FromBody] DefaultCategory category)
         {
@@ -184,6 +237,15 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete for a category based on given ID and on User authenticated
+        /// </summary>
+        /// <param name="id">Category ID</param>
+        /// <returns>HTTPResponse</returns>
+        /// <response code="200">Returns the newly created Category</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If given Category not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/defaultcategories/{id:int}")]
         public IHttpActionResult DeleteDefaultCategory(int id)
         {

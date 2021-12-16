@@ -14,13 +14,72 @@ namespace MBWayAPI.Controllers
         string connectionString = Properties.Settings.Default.ConnStr;
 
         /// <summary>
-        /// Search for a category based on given ID
+        /// Search for a category based on given ID based on User authenticated
         /// </summary>
         /// <param name="id">Category ID</param>
         /// <returns>Category founded</returns>
+        /// <response code="200">Returns the Category founded</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If the Category was not founded</response>
         [BasicAuthentication]
         [Route("api/categories/{id:int}")]
         public IHttpActionResult GetCategory(int id)
+        {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
+            Category policy = GetCategoryById(id);
+
+            if (policy != null && policy.Owner == phoneNumber)
+            {
+                string queryString = "SELECT * FROM Categories WHERE Id = @id AND Owner = @owner";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            Category category = new Category()
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = (string)reader["Name"],
+                                Type = (string)reader["Type"],
+                                Owner = (string)reader["Owner"]
+                            };
+                            return Ok(category);
+                        }
+
+                        reader.Close();
+
+                    }
+                    catch (Exception)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                    return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
+                }
+            }
+            else
+            {
+                if (policy != null)
+                    return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
+                
+                return Content(HttpStatusCode.Unauthorized, $"Category {id} does not belongs to you.");
+            }
+        }
+
+        public Category GetCategoryById(int id)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
@@ -47,7 +106,7 @@ namespace MBWayAPI.Controllers
                             Type = (string)reader["Type"],
                             Owner = (string)reader["Owner"]
                         };
-                        return Ok(category);
+                        return category;
                     }
 
                     reader.Close();
@@ -60,14 +119,15 @@ namespace MBWayAPI.Controllers
                         connection.Close();
                     }
                 }
-                return NotFound();
+                return null;
             }
         }
 
         /// <summary>
-        /// Search for all categories
+        /// Search for all categories based on User authenticated
         /// </summary>
         /// <returns>A list of all categories</returns>
+        /// <response code="200">Returns the Categories founded</response>
         [BasicAuthentication]
         [Route("api/categories")]
         public IEnumerable<Category> GetCategories()
@@ -118,13 +178,32 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Insert Category for authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///        "Name": "Food",
+        ///        "Type": "D"
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="category">Category to insert</param>
+        /// <returns>Category inserted</returns>
+        /// <response code="200">Returns the newly created Category</response>
+        /// <response code="400">If something went wrong with inputs</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/categories")]
         public IHttpActionResult PostCategory(Category category)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
-            string queryString = "INSERT INTO Categories(Name, Type, Owner) VALUES(@name, @type, @owner)";
+            string queryString = "INSERT INTO Categories(Name, Type, Owner) VALUES(@name, @type, @owner);SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -138,13 +217,14 @@ namespace MBWayAPI.Controllers
 
                     connection.Open();
 
-                    if (command.ExecuteNonQuery() > 0)
+                    int insertedID = Convert.ToInt32(command.ExecuteScalar().ToString());
+                    if (insertedID > 0)
                     {
-                        return Ok();
+                        return Ok(GetCategoryById(insertedID));
                     }
 
                     connection.Close();
-                    return BadRequest();
+                    return BadRequest("Something went wrong with your input");
                 }
                 catch (Exception ex)
                 {
@@ -157,79 +237,133 @@ namespace MBWayAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Update Category of authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT
+        ///     {
+        ///        "Name": "Food",
+        ///        "Type": "D"
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="id">Category ID</param>
+        /// <param name="category">Category to be updated</param>
+        /// <returns>Category Updated</returns>
+        /// <response code="200">Returns the updated created Category</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If given Category not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/categories/{id:int}")]
         public IHttpActionResult PutCategory(int id, [FromBody] Category category)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            Category policy = GetCategoryById(id);
 
-            string queryString = "UPDATE Categories SET Name = @name, Type = @type WHERE Id = @id AND Owner = @owner";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (policy != null && policy.Owner == phoneNumber)
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
+                string queryString = "UPDATE Categories SET Name = @name, Type = @type WHERE Id = @id AND Owner = @owner";
 
-                command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@name", category.Name);
-                command.Parameters.AddWithValue("@type", category.Type);
-                command.Parameters.AddWithValue("@owner", phoneNumber);
-
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
-                    if (command.ExecuteNonQuery() > 0)
-                    {
-                        return Ok();
-                    }
-                    connection.Close();
+                    SqlCommand command = new SqlCommand(queryString, connection);
 
-                    return NotFound();
-                }
-                catch (Exception ex)
-                {
-                    if (connection.State == System.Data.ConnectionState.Open)
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@name", category.Name);
+                    command.Parameters.AddWithValue("@type", category.Type);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
+                    try
                     {
+                        connection.Open();
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            return Ok(GetCategoryById(id));
+                        }
                         connection.Close();
+
+                        return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
                     }
-                    return InternalServerError(ex);
+                    catch (Exception ex)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                        return InternalServerError(ex);
+                    }
                 }
+
+            }
+            else
+            {
+                if (policy != null)
+                    return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
+
+                return Content(HttpStatusCode.Unauthorized, $"Category {id} does not belongs to you.");
             }
         }
 
+        /// <summary>
+        /// Delete for a category based on given ID and on User authenticated
+        /// </summary>
+        /// <param name="id">Category ID</param>
+        /// <returns>HTTPResponse</returns>
+        /// <response code="200">Returns the newly created Category</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If given Category not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/categories/{id:int}")]
         public IHttpActionResult DeleteCategory(int id)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
-            string queryString = "DELETE FROM Categories WHERE Id = @id AND Owner = @owner";
+            Category policy = GetCategoryById(id);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (policy != null && policy.Owner == phoneNumber)
             {
-                SqlCommand command = new SqlCommand(queryString, connection);
+                string queryString = "DELETE FROM Categories WHERE Id = @id AND Owner = @owner";
 
-                command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@owner", phoneNumber);
-
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
-                    if (command.ExecuteNonQuery() > 0)
-                    {
-                        return Ok();
-                    }
-                    connection.Close();
+                    SqlCommand command = new SqlCommand(queryString, connection);
 
-                    return NotFound();
-                }
-                catch (Exception ex)
-                {
-                    if (connection.State == System.Data.ConnectionState.Open)
+                    command.Parameters.AddWithValue("@id", id);
+                    command.Parameters.AddWithValue("@owner", phoneNumber);
+
+                    try
                     {
+                        connection.Open();
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            return Ok("Category deleted");
+                        }
                         connection.Close();
+
+                        return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
                     }
-                    return InternalServerError(ex);
+                    catch (Exception ex)
+                    {
+                        if (connection.State == System.Data.ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                        return InternalServerError(ex);
+                    }
                 }
+            }
+            else
+            {
+                if (policy != null)
+                    return Content(HttpStatusCode.NotFound, $"Category {id} does not exist.");
+
+                return Content(HttpStatusCode.Unauthorized, $"Category {id} does not belongs to you.");
             }
         }
     }

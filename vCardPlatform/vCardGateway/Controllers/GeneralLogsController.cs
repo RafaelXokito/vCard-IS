@@ -25,7 +25,7 @@ namespace vCardGateway.Controllers
         [Route("api/generallogs")]
         public IEnumerable<GeneralLog> GetGeneralLogs()
         {
-            string queryString = GetFilterQueryString("SELECT * FROM GeneralLogs ORDER BY Timestamp");
+            string queryString = GetFilterQueryString("SELECT * FROM GeneralLogs ORDER BY Timestamp DESC");
 
             List<GeneralLog> logs = new List<GeneralLog>();
 
