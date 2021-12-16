@@ -13,14 +13,6 @@ namespace vCardGateway.Controllers
     {
         static string connectionString = Properties.Settings.Default.ConnStr;
 
-        public class Filter
-        {
-            public string FromUser { get; set; }
-            public string Type { get; set; }
-            public string DateStart { get; set; }
-            public string DateEnd { get; set; }
-        }
-
         [BasicAuthentication]
         [Route("api/transactionlogs")]
         public IEnumerable<TransactionLog> GetTransactionLogs([FromUri] Filter filter)

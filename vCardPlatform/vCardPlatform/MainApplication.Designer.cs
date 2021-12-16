@@ -108,8 +108,8 @@ namespace vCardPlatform
             this.button1 = new System.Windows.Forms.Button();
             this.buttonGLogsExportXml = new System.Windows.Forms.Button();
             this.buttonGLogsExportExcel = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerEnd2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerStart2 = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewGeralLogs = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridViewRealtime = new System.Windows.Forms.DataGridView();
@@ -156,7 +156,7 @@ namespace vCardPlatform
             this.labelAdministratorName.Location = new System.Drawing.Point(10, 9);
             this.labelAdministratorName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAdministratorName.Name = "labelAdministratorName";
-            this.labelAdministratorName.Size = new System.Drawing.Size(180, 22);
+            this.labelAdministratorName.Size = new System.Drawing.Size(160, 20);
             this.labelAdministratorName.TabIndex = 1;
             this.labelAdministratorName.Text = "Administrator\'s Name";
             // 
@@ -219,8 +219,8 @@ namespace vCardPlatform
             // 
             // tabCEntities
             // 
-            this.tabCEntities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.tabCEntities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabCEntities.Controls.Add(this.tabEntityTable);
             this.tabCEntities.Controls.Add(this.tabEntity);
@@ -290,8 +290,8 @@ namespace vCardPlatform
             // 
             // dataGridViewEntities
             // 
-            this.dataGridViewEntities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewEntities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewEntities.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEntities.Location = new System.Drawing.Point(6, 35);
@@ -333,7 +333,7 @@ namespace vCardPlatform
             // 
             // groupDataEntity
             // 
-            this.groupDataEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.groupDataEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupDataEntity.Controls.Add(this.groupEntityAuth);
             this.groupDataEntity.Controls.Add(this.numEarningPercentage);
@@ -357,7 +357,7 @@ namespace vCardPlatform
             // 
             // groupEntityAuth
             // 
-            this.groupEntityAuth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.groupEntityAuth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupEntityAuth.Controls.Add(this.btnEntityTestAuthentication);
             this.groupEntityAuth.Controls.Add(this.lblEntityUsername);
@@ -385,18 +385,18 @@ namespace vCardPlatform
             // 
             // lblEntityUsername
             // 
-            this.lblEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityUsername.AutoSize = true;
             this.lblEntityUsername.Location = new System.Drawing.Point(6, 29);
             this.lblEntityUsername.Name = "lblEntityUsername";
-            this.lblEntityUsername.Size = new System.Drawing.Size(36, 15);
+            this.lblEntityUsername.Size = new System.Drawing.Size(32, 13);
             this.lblEntityUsername.TabIndex = 13;
             this.lblEntityUsername.Text = "User:";
             // 
             // txtEntityUsername
             // 
-            this.txtEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityUsername.Location = new System.Drawing.Point(48, 26);
             this.txtEntityUsername.Name = "txtEntityUsername";
@@ -405,18 +405,18 @@ namespace vCardPlatform
             // 
             // lblEntityPassword
             // 
-            this.lblEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityPassword.AutoSize = true;
             this.lblEntityPassword.Location = new System.Drawing.Point(5, 63);
             this.lblEntityPassword.Name = "lblEntityPassword";
-            this.lblEntityPassword.Size = new System.Drawing.Size(37, 15);
+            this.lblEntityPassword.Size = new System.Drawing.Size(33, 13);
             this.lblEntityPassword.TabIndex = 11;
             this.lblEntityPassword.Text = "Pass:";
             // 
             // txtEntityPassword
             // 
-            this.txtEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityPassword.Location = new System.Drawing.Point(48, 63);
             this.txtEntityPassword.Name = "txtEntityPassword";
@@ -433,29 +433,29 @@ namespace vCardPlatform
             // 
             // lblEarningPercentage
             // 
-            this.lblEarningPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEarningPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEarningPercentage.AutoSize = true;
             this.lblEarningPercentage.Location = new System.Drawing.Point(3, 219);
             this.lblEarningPercentage.Name = "lblEarningPercentage";
-            this.lblEarningPercentage.Size = new System.Drawing.Size(64, 15);
+            this.lblEarningPercentage.Size = new System.Drawing.Size(54, 13);
             this.lblEarningPercentage.TabIndex = 10;
             this.lblEarningPercentage.Text = "Earning %";
             // 
             // lblEntityID
             // 
-            this.lblEntityID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityID.AutoSize = true;
             this.lblEntityID.Location = new System.Drawing.Point(3, 24);
             this.lblEntityID.Name = "lblEntityID";
-            this.lblEntityID.Size = new System.Drawing.Size(17, 15);
+            this.lblEntityID.Size = new System.Drawing.Size(16, 13);
             this.lblEntityID.TabIndex = 9;
             this.lblEntityID.Text = "Id";
             // 
             // txtEntityId
             // 
-            this.txtEntityId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEntityId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityId.Enabled = false;
             this.txtEntityId.Location = new System.Drawing.Point(6, 42);
@@ -493,29 +493,29 @@ namespace vCardPlatform
             // 
             // lblEntityMaxLimit
             // 
-            this.lblEntityMaxLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityMaxLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityMaxLimit.AutoSize = true;
             this.lblEntityMaxLimit.Location = new System.Drawing.Point(3, 165);
             this.lblEntityMaxLimit.Name = "lblEntityMaxLimit";
-            this.lblEntityMaxLimit.Size = new System.Drawing.Size(61, 15);
+            this.lblEntityMaxLimit.Size = new System.Drawing.Size(51, 13);
             this.lblEntityMaxLimit.TabIndex = 5;
             this.lblEntityMaxLimit.Text = "Max Limit";
             // 
             // lblEntityEndpoint
             // 
-            this.lblEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityEndpoint.AutoSize = true;
             this.lblEntityEndpoint.Location = new System.Drawing.Point(3, 114);
             this.lblEntityEndpoint.Name = "lblEntityEndpoint";
-            this.lblEntityEndpoint.Size = new System.Drawing.Size(56, 15);
+            this.lblEntityEndpoint.Size = new System.Drawing.Size(49, 13);
             this.lblEntityEndpoint.TabIndex = 3;
             this.lblEntityEndpoint.Text = "Endpoint";
             // 
             // txtEntityEndpoint
             // 
-            this.txtEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityEndpoint.Location = new System.Drawing.Point(6, 138);
             this.txtEntityEndpoint.Name = "txtEntityEndpoint";
@@ -524,18 +524,18 @@ namespace vCardPlatform
             // 
             // lblEntityName
             // 
-            this.lblEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.lblEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityName.AutoSize = true;
             this.lblEntityName.Location = new System.Drawing.Point(3, 62);
             this.lblEntityName.Name = "lblEntityName";
-            this.lblEntityName.Size = new System.Drawing.Size(41, 15);
+            this.lblEntityName.Size = new System.Drawing.Size(35, 13);
             this.lblEntityName.TabIndex = 1;
             this.lblEntityName.Text = "Name";
             // 
             // txtEntityName
             // 
-            this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityName.Location = new System.Drawing.Point(6, 90);
             this.txtEntityName.Name = "txtEntityName";
@@ -544,8 +544,8 @@ namespace vCardPlatform
             // 
             // groupEntityDefaultCategory
             // 
-            this.groupEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.groupEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupEntityDefaultCategory.Controls.Add(this.btnEntityDefaultCategoriesRefresh);
             this.groupEntityDefaultCategory.Controls.Add(this.btnEntityDCRemoveRow);
@@ -580,8 +580,8 @@ namespace vCardPlatform
             // 
             // dataGridViewEntityDefaultCategory
             // 
-            this.dataGridViewEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewEntityDefaultCategory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEntityDefaultCategory.Location = new System.Drawing.Point(6, 47);
@@ -606,7 +606,7 @@ namespace vCardPlatform
             // 
             // groupEntityStatus
             // 
-            this.groupEntityStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.groupEntityStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.groupEntityStatus.Controls.Add(this.label6);
             this.groupEntityStatus.Controls.Add(this.panelEntityStatusResources);
@@ -626,14 +626,14 @@ namespace vCardPlatform
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(28, 96);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 13);
+            this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Resources: ";
             // 
             // panelEntityStatusResources
             // 
-            this.panelEntityStatusResources.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.panelEntityStatusResources.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEntityStatusResources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelEntityStatusResources.Location = new System.Drawing.Point(6, 114);
@@ -647,7 +647,7 @@ namespace vCardPlatform
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(31, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.Size = new System.Drawing.Size(60, 13);
             this.label5.TabIndex = 3;
             this.label5.Text = "Response: ";
             // 
@@ -656,7 +656,7 @@ namespace vCardPlatform
             this.lblEntityStatusName.AutoSize = true;
             this.lblEntityStatusName.Location = new System.Drawing.Point(106, 26);
             this.lblEntityStatusName.Name = "lblEntityStatusName";
-            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 15);
+            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 13);
             this.lblEntityStatusName.TabIndex = 2;
             // 
             // label4
@@ -727,8 +727,8 @@ namespace vCardPlatform
             // 
             // tabCAdministrators
             // 
-            this.tabCAdministrators.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.tabCAdministrators.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabCAdministrators.Controls.Add(this.tabTable);
             this.tabCAdministrators.Controls.Add(this.tabCreate);
@@ -781,8 +781,8 @@ namespace vCardPlatform
             // 
             // dataGridViewAdministrators
             // 
-            this.dataGridViewAdministrators.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewAdministrators.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewAdministrators.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAdministrators.Location = new System.Drawing.Point(6, 35);
@@ -815,7 +815,7 @@ namespace vCardPlatform
             this.label1.Location = new System.Drawing.Point(251, 217);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 15);
+            this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 26;
             this.label1.Text = "Password:";
             // 
@@ -825,7 +825,7 @@ namespace vCardPlatform
             this.label2.Location = new System.Drawing.Point(251, 178);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 15);
+            this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 25;
             this.label2.Text = "E-mail:";
             // 
@@ -835,7 +835,7 @@ namespace vCardPlatform
             this.label3.Location = new System.Drawing.Point(251, 141);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 15);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 24;
             this.label3.Text = "Name:";
             // 
@@ -887,8 +887,8 @@ namespace vCardPlatform
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageTransactionLogs);
             this.tabControl1.Controls.Add(this.tabPageGeralLogs);
@@ -959,7 +959,7 @@ namespace vCardPlatform
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(130, 27);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(33, 15);
+            this.label8.Size = new System.Drawing.Size(31, 13);
             this.label8.TabIndex = 30;
             this.label8.Text = "Type";
             // 
@@ -982,14 +982,14 @@ namespace vCardPlatform
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 27);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(62, 15);
+            this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 29;
             this.label7.Text = "FromUser";
             // 
             // dataGridViewOperations
             // 
-            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewOperations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewOperations.Location = new System.Drawing.Point(4, 68);
@@ -1035,8 +1035,8 @@ namespace vCardPlatform
             this.tabPageGeralLogs.Controls.Add(this.button1);
             this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportXml);
             this.tabPageGeralLogs.Controls.Add(this.buttonGLogsExportExcel);
-            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker1);
-            this.tabPageGeralLogs.Controls.Add(this.dateTimePicker2);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePickerEnd2);
+            this.tabPageGeralLogs.Controls.Add(this.dateTimePickerStart2);
             this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
             this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeralLogs.Name = "tabPageGeralLogs";
@@ -1088,26 +1088,28 @@ namespace vCardPlatform
             this.buttonGLogsExportExcel.UseVisualStyleBackColor = true;
             this.buttonGLogsExportExcel.Click += new System.EventHandler(this.buttonGLogsExportExcel_Click);
             // 
-            // dateTimePicker1
+            // dateTimePickerEnd2
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(212, 18);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 30;
-            this.dateTimePicker1.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerEnd2.Location = new System.Drawing.Point(212, 18);
+            this.dateTimePickerEnd2.Name = "dateTimePickerEnd2";
+            this.dateTimePickerEnd2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerEnd2.TabIndex = 30;
+            this.dateTimePickerEnd2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerEnd2.ValueChanged += new System.EventHandler(this.dateTimePickerEnd2_ValueChanged);
             // 
-            // dateTimePicker2
+            // dateTimePickerStart2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(6, 17);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker2.TabIndex = 29;
-            this.dateTimePicker2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerStart2.Location = new System.Drawing.Point(6, 17);
+            this.dateTimePickerStart2.Name = "dateTimePickerStart2";
+            this.dateTimePickerStart2.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerStart2.TabIndex = 29;
+            this.dateTimePickerStart2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
+            this.dateTimePickerStart2.ValueChanged += new System.EventHandler(this.dateTimePickerStart2_ValueChanged);
             // 
             // dataGridViewGeralLogs
             // 
-            this.dataGridViewGeralLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewGeralLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGeralLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGeralLogs.Location = new System.Drawing.Point(6, 43);
@@ -1131,8 +1133,8 @@ namespace vCardPlatform
             this.dataGridViewRealtime.AllowUserToAddRows = false;
             this.dataGridViewRealtime.AllowUserToDeleteRows = false;
             this.dataGridViewRealtime.AllowUserToOrderColumns = true;
-            this.dataGridViewRealtime.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dataGridViewRealtime.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewRealtime.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewRealtime.Location = new System.Drawing.Point(0, 30);
@@ -1157,7 +1159,7 @@ namespace vCardPlatform
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(79, 19);
+            this.lblStatus.Size = new System.Drawing.Size(67, 19);
             this.lblStatus.Text = "StatusLabel";
             // 
             // statusProgressBar
@@ -1322,8 +1324,8 @@ namespace vCardPlatform
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button buttonGLogsExportXml;
         private System.Windows.Forms.Button buttonGLogsExportExcel;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd2;
+        private System.Windows.Forms.DateTimePicker dateTimePickerStart2;
         private System.Windows.Forms.DataGridView dataGridViewGeralLogs;
     }
 }

@@ -161,6 +161,9 @@ namespace vCardPlatform
                 #endregion
 
                 #region Load General Logs
+                dateTimePickerEnd2.Value = DateTime.Now;
+                dateTimePickerStart2.Value = DateTime.Now.AddDays(-1);
+
                 loadGeralLogs();
 
                 foreach (DataGridViewColumn column in dataGridViewGeralLogs.Columns)
@@ -277,17 +280,11 @@ namespace vCardPlatform
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            DateTime dateStart = DateTime.Parse(dateTimePickerStart.Value.ToString());
-            DateTime dateEnd = DateTime.Parse(dateTimePickerEnd.Value.ToString());
-
             loadOperations();
         }
 
         private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
-            DateTime dateStart = DateTime.Parse(dateTimePickerStart.Value.ToString());
-            DateTime dateEnd = DateTime.Parse(dateTimePickerEnd.Value.ToString());
-
             loadOperations();
         }
 
@@ -1349,6 +1346,9 @@ namespace vCardPlatform
         {
             var request = new RestRequest("generallogs", Method.GET);
 
+            request.AddParameter("DateStart", dateTimePickerStart2.Value.Date);
+            request.AddParameter("DateEnd", dateTimePickerEnd2.Value.Date.AddDays(1).AddTicks(-1));
+
             var result = client.Execute<List<GeneralLog>>(request).Data;
             dataGridViewGeralLogs.DataSource = result;
         }
@@ -1409,6 +1409,16 @@ namespace vCardPlatform
                     Console.WriteLine(ex);
                 }
             }
+        }
+
+        private void dateTimePickerStart2_ValueChanged(object sender, EventArgs e)
+        {
+            loadGeralLogs();
+        }
+
+        private void dateTimePickerEnd2_ValueChanged(object sender, EventArgs e)
+        {
+            loadGeralLogs();
         }
     }
 }

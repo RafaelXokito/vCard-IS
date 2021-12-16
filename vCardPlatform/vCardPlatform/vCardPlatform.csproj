@@ -113,6 +113,7 @@
       <DependentUpon>MainApplication.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\GeneralLog.cs" />
     <Compile Include="Models\Secret.cs" />
     <Compile Include="Models\TransactionLog.cs" />

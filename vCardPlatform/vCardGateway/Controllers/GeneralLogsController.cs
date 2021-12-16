@@ -18,14 +18,14 @@ namespace vCardGateway.Controllers
         //MQTT Variables
         static bool valid = true;
         static String STR_CHANNEL_NAME = "logs";
-        static MqttClient m_cClient = new MqttClient(IPAddress.Parse("127.0.0.1"));
+        static MqttClient m_cClient = new MqttClient("127.0.0.1");
 
 
         [BasicAuthentication]
         [Route("api/generallogs")]
-        public IEnumerable<GeneralLog> GetGeneralLogs()
+        public IEnumerable<GeneralLog> GetGeneralLogs([FromUri] Filter filter)
         {
-            string queryString = GetFilterQueryString("SELECT * FROM GeneralLogs ORDER BY Timestamp");
+            string queryString = GetFilterQueryString("SELECT * FROM GeneralLogs", filter);
 
             List<GeneralLog> logs = new List<GeneralLog>();
 
@@ -36,6 +36,16 @@ namespace vCardGateway.Controllers
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(queryString, connection);
+
+                    if (filter.DateStart != null)
+                    {
+                        command.Parameters.AddWithValue("@datestart", DateTime.Parse(filter.DateStart));
+                    }
+                    if (filter.DateEnd != null)
+                    {
+                        command.Parameters.AddWithValue("@dateend", DateTime.Parse(filter.DateEnd));
+                    }
+
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -179,10 +189,28 @@ namespace vCardGateway.Controllers
             }
         }
 
-        private string GetFilterQueryString(string baseQueryString)
+        private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
-            //TODO
-            return baseQueryString;
+            string queryString = baseQueryString;
+
+            if (filter.DateStart != null || filter.DateEnd != null)
+            {
+                queryString += " WHERE ";
+                if (filter.DateStart != null && filter.DateEnd == null)
+                {
+                    queryString += "Timestamp >= @datestart";
+                }
+                else if (filter.DateStart == null && filter.DateEnd != null)
+                {
+                    queryString += "Timestamp <= @dateend";
+                }
+                else
+                {
+                    queryString += "Timestamp >= @datestart AND Timestamp <= @dateend";
+                }
+            }
+
+            return queryString + " ORDER BY Timestamp DESC";
         }
 
     }
