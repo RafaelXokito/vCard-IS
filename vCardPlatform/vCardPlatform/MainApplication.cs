@@ -571,7 +571,7 @@ namespace vCardPlatform
         {
             try
             {
-
+                RestClient client = new RestClient(this.client.BaseUrl.AbsoluteUri.ToString());
                 IRestRequest request = new RestRequest($"entities/{txtEntityId.Text}/defaultcategories", Method.GET);
 
                 if (txtEntityId.Text != "")
@@ -589,7 +589,8 @@ namespace vCardPlatform
                 if (responseData.IsSuccessful)
                 {
                     //dataGridViewEntityDefaultCategory.DataSource = responseData;
-                    dynamic dataDefaultCategory = Json.Decode(content.Substring(1,content.Length-2));
+                    dynamic dataDefaultCategory;
+                    dataDefaultCategory = Json.Decode(content);
                     List<DefaultCategory> auxList = new List<DefaultCategory>();
                     if (dataDefaultCategory.data != null)
                         dataDefaultCategory = dataDefaultCategory.data;
