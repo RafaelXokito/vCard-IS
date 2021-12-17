@@ -1,20 +1,5 @@
 <entities>
   <entity>
-    <id>1</id>
-    <name>VCardAPI</name>
-    <endpoint>http://localhost:60001</endpoint>
-    <maxlimit>5000</maxlimit>
-    <earningpercentage>2</earningpercentage>
-    <authentication type="User">
-      <token>
-      </token>
-      <username>
-      </username>
-      <password>
-      </password>
-    </authentication>
-  </entity>
-  <entity>
     <id>2</id>
     <name>MBWAY</name>
     <endpoint>http://localhost:55059</endpoint>
@@ -27,29 +12,26 @@
     </authentication>
   </entity>
   <entity>
-    <id>4e8d8e0f-f029-49c2-9357-afceaa4d40cd</id>
-    <name>TesteAPI</name>
-    <endpoint>http://localhost:63021</endpoint>
-    <maxlimit>5000,0</maxlimit>
-    <earningpercentage>2</earningpercentage>
-    <authentication type="User">
-      <token>
-      </token>
-      <username>
-      </username>
-      <password>
-      </password>
-    </authentication>
-  </entity>
-  <entity>
     <id>876fba56-a1d5-4ae3-aba3-b4df50c7068d</id>
-    <name>VCARD</name>
+    <name>VCARDDAD</name>
     <endpoint>http://172.22.21.95</endpoint>
     <maxlimit>2500</maxlimit>
     <earningpercentage>3</earningpercentage>
     <authentication type="User">
       <token>Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIyIiwianRpIjoiNmIxNzIwYzk4Mzk3YmVlMWRkNjE5NmZhOTI1YjNiZWQzMTg1YmNhMjAzNDM2Yzg1NjZhYmQyMDdmZWRhMTZkMjM2NDFlZTAzMzhhZjg2ZTUiLCJpYXQiOjE2MzkwODQ4MDMuMDE4NDU1LCJuYmYiOjE2MzkwODQ4MDMuMDE4NDU3LCJleHAiOjE2NzA2MjA4MDMuMDEzMzY0LCJzdWIiOiIxMSIsInNjb3BlcyI6W119.LGcIk8jNrCinoFNQ6xn5vj5nzJrUEUUWxv6jao2ona20gsbt-MFLfJ906Ty77rIdJrtp2sdq1ANfUAiom8A0IFUnnjAx6KxXqdqPLUnoQTusHNBjin29nHEwbBtqIteK22tAsQQUAZTbTk160Spn84LVZaUInKMx6REKRi8zQ2MJugC3-i3gVf4t9rgIcp__lX7RP9gGK3_OjShClEdzHVYTse1h_Js2zDNUGAkb52j4yAlL4yZxCa1GC1n5bC2im1kXk7EYXYpfolTIutsMkfP0-jQBk2X4shR9S4bfPfPLPurDArVJvw2df5vx0XXq092__Vg9R8kDZGqUNbZFLg2qrKc0NGzxx4e1reC_RpS6j16dCVqCFrfA-BZnHyTOM6t4B3rWc1pz5ooVb192Y6eofZr_-qTtQdzRP74uGcZ5nSRDCbgCP1TC45btQ62eMUKbY9FxebR-52H3e3hrQRrw3Z0Za1bwMr9yOgoy6tF40fIY7RIRG3cpGiIpt16DDDo0rLF0WPC34hcbOILWfMx0F_RovRVmpsc-2PTH87-7xGzZ2xs1WsC5tn_ypR89lvzd8rdWGVxabYdg8AxeTFRn5btDKdJ6KqCyZ_ljy06X8dFnH09jW9VQvlMuxTtWKBm_HFcbz94KY6pIt-tNY1mZszvhBfdM603y3zg-eoU</token>
       <username>gateway@172.22.21.95.pt</username>
+      <password>1234</password>
+    </authentication>
+  </entity>
+  <entity>
+    <id>7563b762-fdb7-4fbb-b8d7-d2cc9dbb01f6</id>
+    <name>VCARD</name>
+    <endpoint>http://localhost:55058/</endpoint>
+    <maxlimit>1000</maxlimit>
+    <earningpercentage>2</earningpercentage>
+    <authentication>
+      <token>Basic R0FURVdBWToxMjM0</token>
+      <username>GATEWAY</username>
       <password>1234</password>
     </authentication>
   </entity>

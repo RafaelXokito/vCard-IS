@@ -45,8 +45,7 @@ namespace vCardGateway.Controllers
 
             try
             {
-                handlerXML.CreateEntity(entity);
-                return Ok();
+                return Ok(handlerXML.CreateEntity(entity));
             }
             catch (Exception ex)
             {

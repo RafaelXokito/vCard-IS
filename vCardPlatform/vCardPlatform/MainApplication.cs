@@ -620,6 +620,10 @@ namespace vCardPlatform
 
         private string getAuthToken(string username, string password, bool force = false)
         {
+            if (txtEntityId.Text == "")
+            {
+                return null;
+            }
             RestRequest requestEntity = new RestRequest("entities/" + txtEntityId.Text, Method.GET);
             RestSharp.IRestResponse<Entity> responseEntity = client.Execute<Entity>(requestEntity);
 
@@ -784,53 +788,60 @@ namespace vCardPlatform
 
                         statusProgressBar.Value = 50;
 
-
-                        DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
-                        dataTable2.Columns[0].ColumnName = FirstCharToUpper(dataTable2.Columns[0].ColumnName);
-                        dataTable2.Columns[1].ColumnName = FirstCharToUpper(dataTable2.Columns[1].ColumnName);
-
-                        #region Get Default Categories From Endpoint & Prepare To Compare
-                        List<DefaultCategory> defaultCategories = loadEntityDefaultCategories();
-
-                        DataTable dataTable1 = ConvertToDataTable<DefaultCategory>(defaultCategories);
-                        dataTable1.Columns.RemoveAt(0);
-
-                        #endregion
-
-                        foreach (DataRow row in dataTable2.Rows)
+                        if (btnEntitySave.Text == "Create")
                         {
-                            if (row["Type"].ToString() == "Credit")
-                                row["Type"] = "C";
-                            else
-                                row["Type"] = "D";
+                            statusProgressBar.Value = 100;
                         }
-
-                        DataTable dt = getDifferentRecords(dataTable2, dataTable1);
-
-                        #region Handle Different Rows
-                        foreach (DataRow row in dt.Rows)
+                        else
                         {
-                            DefaultCategory defaultCategory = new DefaultCategory
-                            {
-                                Name = row["Name"].ToString(),
-                                Type = row["Type"].ToString(),
-                            };
+                            DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
+                            dataTable2.Columns[0].ColumnName = FirstCharToUpper(dataTable2.Columns[0].ColumnName);
+                            dataTable2.Columns[1].ColumnName = FirstCharToUpper(dataTable2.Columns[1].ColumnName);
 
-                            #region Create&Populate&Send Request
-                            if (row["Method"].ToString() == "POST")
-                            {
-                                request = new RestSharp.RestRequest("entities/" + response.Data.Id + "/defaultcategories", RestSharp.Method.POST, DataFormat.Json);
-                                request.AddJsonBody(defaultCategory);
-                            }
-                            else if (row["Method"].ToString() == "DELETE")
-                            {
-                                request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
-                                request.AddJsonBody(defaultCategory);
-                            }
-                            RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                            #region Get Default Categories From Endpoint & Prepare To Compare
+                            List<DefaultCategory> defaultCategories = loadEntityDefaultCategories();
+
+                            DataTable dataTable1 = ConvertToDataTable<DefaultCategory>(defaultCategories);
+                            dataTable1.Columns.RemoveAt(0);
+
                             #endregion
+
+                            foreach (DataRow row in dataTable2.Rows)
+                            {
+                                if (row["Type"].ToString() == "Credit")
+                                    row["Type"] = "C";
+                                else
+                                    row["Type"] = "D";
+                            }
+
+                            DataTable dt = getDifferentRecords(dataTable2, dataTable1);
+
+                            #region Handle Different Rows
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                DefaultCategory defaultCategory = new DefaultCategory
+                                {
+                                    Name = row["Name"].ToString(),
+                                    Type = row["Type"].ToString(),
+                                };
+
+                                #region Create&Populate&Send Request
+                                if (row["Method"].ToString() == "POST")
+                                {
+                                    request = new RestSharp.RestRequest("entities/" + response.Data.Id + "/defaultcategories", RestSharp.Method.POST, DataFormat.Json);
+                                    request.AddJsonBody(defaultCategory);
+                                }
+                                else if (row["Method"].ToString() == "DELETE")
+                                {
+                                    request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
+                                    request.AddJsonBody(defaultCategory);
+                                }
+                                RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                                #endregion
+                            }
+                                #endregion
+
                         }
-                        #endregion
                         statusProgressBar.Value = 100;
                         groupDataEntity.Enabled = false;
                         btnEntitySave.Enabled = false;

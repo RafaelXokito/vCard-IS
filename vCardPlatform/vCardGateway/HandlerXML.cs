@@ -154,7 +154,7 @@ namespace vCardGateway
             return entity;
         }
 
-        public void CreateEntity(Entity entity)
+        public Entity CreateEntity(Entity entity)
         {
             if (GetEntity(entity.Id) != null)
             {
@@ -202,6 +202,7 @@ namespace vCardGateway
             newEntity.AppendChild(authentication);
 
             doc.Save(XmlFilePath);
+            return entity;
         }
 
         public void UpdateEntity(string id, Entity entity)

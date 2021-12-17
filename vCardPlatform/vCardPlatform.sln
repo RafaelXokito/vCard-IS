@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBWayAPI", "MBWayAPI\MBWayA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vCardGateway", "vCardGateway\vCardGateway.csproj", "{43EE1356-21D8-4980-B20C-2ED12C3A6180}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vCardAPI", "vCardAPI\vCardAPI.csproj", "{22D5CC57-DB68-46CF-9E2C-FBBBB1A31CF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{43EE1356-21D8-4980-B20C-2ED12C3A6180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43EE1356-21D8-4980-B20C-2ED12C3A6180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43EE1356-21D8-4980-B20C-2ED12C3A6180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D5CC57-DB68-46CF-9E2C-FBBBB1A31CF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D5CC57-DB68-46CF-9E2C-FBBBB1A31CF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D5CC57-DB68-46CF-9E2C-FBBBB1A31CF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D5CC57-DB68-46CF-9E2C-FBBBB1A31CF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
