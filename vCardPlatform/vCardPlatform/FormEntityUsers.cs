@@ -69,7 +69,9 @@ namespace vCardPlatform
                         dataEntityUsers = dataEntityUsers.data;
                     foreach (var item in dataEntityUsers)
                     {
-                        if ((item.user_type ?? "USER") != "A")
+                        if ((item.user_type ?? "USER") != "A") {
+                            item.max_debit = item.max_debit ?? item.maximumlimit.ToString();
+
                             auxList.Add(new User
                             {
                                 Username = item.id ?? item.username ?? item.PhoneNumber,
@@ -77,9 +79,10 @@ namespace vCardPlatform
                                 Email = item.email,
                                 Photo = item.photo_url ?? item.photo,
 
-                                MaximumLimit = decimal.Parse(item.max_debit ?? item.maximumlimit.ToString()),
-                                Balance = decimal.Parse(item.balance.ToString())
+                                MaximumLimit = decimal.Parse(item.max_debit.ToString().Replace(".", ",") ?? item.maximumlimit.ToString()),
+                                Balance = decimal.Parse(item.balance.ToString().Replace(".", ","))
                             });
+                        }
                     }
 
                     dataGridViewEntityUser.DataSource = auxList;
