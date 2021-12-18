@@ -87,20 +87,13 @@ namespace vCardPlatform
             arr[1] = doc.SelectSingleNode("/log/status").InnerText;
             arr[2] = doc.SelectSingleNode("/log/timestamp").InnerText;
 
-            /*
-            if (arr[0] == AdminInitiator)
-            {
-                MessageBox.Show("You blocked yourself! " + labelAdministratorName.Text);
-                return;
-            }*/
-
             if (arr[0] == labelAdministratorId.Text && arr[1] == "True")
             {
-                MessageBox.Show("You are Blocked! " + labelAdministratorName.Text);
-
                 if (this.InvokeRequired)
                 {
+                    clientUnsubscribe();
                     this.Invoke((Action)delegate { this.Hide(); });
+                    MessageBox.Show("You are Blocked! " + labelAdministratorName.Text);
                     FormLogin fl = new FormLogin();
                     this.Invoke((Action)delegate { fl.Show(); });
                 }
@@ -122,13 +115,20 @@ namespace vCardPlatform
 
         private void FormMainApplication_FormClosing(object sender, FormClosingEventArgs e)
         {
+            clientUnsubscribe();
+
+            Application.Exit();
+        }
+
+        private void clientUnsubscribe()
+        {
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
+                string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
+                m_cClient.Unsubscribe(m_strTopicsInfoBlocked);
                 //m_cClient.Disconnect();
             }
-
-            Application.Exit();
         }
 
         private void buttonChangePassword_Click(object sender, EventArgs e)
