@@ -102,6 +102,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Secret.cs" />
     <Compile Include="UserValidate.cs" />
     <Compile Include="BasicAuthenticationAttribute.cs" />

@@ -51,15 +51,15 @@ namespace vCardGateway.Controllers
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultUser != null)
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostSignin", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostSignin", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(response.StatusCode, dataDefaultUser);
                 }
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostSignin", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostSignin", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return Content(response.StatusCode, response.StatusDescription);
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostSignin", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostSignin", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
 
                 return InternalServerError(ex);
             }
@@ -90,15 +90,15 @@ namespace vCardGateway.Controllers
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultUser != null)
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(response.StatusCode, dataDefaultUser);
                 }
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return Content(HttpStatusCode.Unauthorized, HttpStatusCode.Unauthorized.ToString());
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetUsers", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetUsers", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -131,7 +131,7 @@ namespace vCardGateway.Controllers
                 //    return Content(response.StatusCode, response.Data);
                 //}
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "GetUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -140,7 +140,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -182,7 +182,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody(user);
                 IRestResponse response = client.Execute(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostUserPhoto", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostUserPhoto", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -191,7 +191,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostUserPhoto", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostUserPhoto", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -236,7 +236,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody(user);
                 IRestResponse<User> response = client.Execute<User>(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PostUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -245,7 +245,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -288,7 +288,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody(user);
                 IRestResponse<User> response = client.Execute<User>(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PutUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PutUser", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -297,7 +297,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PutUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PutUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -341,7 +341,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody(secret);
                 IRestResponse<User> response = client.Execute<User>(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserPassword", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserPassword", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -350,7 +350,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserPassword", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserPassword", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -395,7 +395,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody(secret);
                 IRestResponse<User> response = client.Execute<User>(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserConfirmationCode", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserConfirmationCode", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -404,7 +404,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserConfirmationCode", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserConfirmationCode", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -438,7 +438,7 @@ namespace vCardGateway.Controllers
 
                 IRestResponse response = client.Execute(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "DeleteUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "DeleteUsers", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -447,7 +447,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "DeleteUsers", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "DeleteUsers", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }

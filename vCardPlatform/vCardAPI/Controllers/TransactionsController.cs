@@ -143,11 +143,11 @@ namespace vCardAPI.Controllers
         /// <response code="200">Returns the Transactions found. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/transactions")]
-        public IEnumerable<Transaction> GetTransactions()
+        public IEnumerable<Transaction> GetTransactions([FromUri] Filter filter)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
 
-            string queryString = "SELECT * FROM Transactions WHERE PhoneNumber = @number";
+            string queryString = GetFilterQueryString("SELECT * FROM Transactions WHERE PhoneNumber = @number ", filter);
 
             List<Transaction> transactions = new List<Transaction>();
 
@@ -160,6 +160,22 @@ namespace vCardAPI.Controllers
                     SqlCommand command = new SqlCommand(queryString, connection);
 
                     command.Parameters.AddWithValue("@number", phoneNumber);
+
+                    if (filter != null)
+                    {
+                        if (filter.Type != null)
+                        {
+                            command.Parameters.AddWithValue("@type", filter.Type);
+                        }
+                        if (filter.DateStart != null)
+                        {
+                            command.Parameters.AddWithValue("@datestart", DateTime.Parse(filter.DateStart));
+                        }
+                        if (filter.DateEnd != null)
+                        {
+                            command.Parameters.AddWithValue("@dateend", DateTime.Parse(filter.DateEnd));
+                        }
+                    }
 
                     SqlDataReader reader = command.ExecuteReader();
 
@@ -430,6 +446,32 @@ namespace vCardAPI.Controllers
 
                 return Content(HttpStatusCode.Unauthorized, $"Transaction {id} does not belongs to you.");
             }
+        }
+
+        private string GetFilterQueryString(string baseQueryString, Filter filter)
+        {
+            string queryString = baseQueryString;
+            bool hasOne = false;
+
+            if (filter.Type != null)
+            {
+                queryString += (hasOne ? "AND " : "") + "Type = @type ";
+                hasOne = true;
+            }
+
+            if (filter.DateStart != null)
+            {
+                queryString += (hasOne ? "AND " : "") + "Date >= @datestart ";
+                hasOne = true;
+            }
+
+            if (filter.DateEnd != null)
+            {
+                queryString += (hasOne ? "AND " : "") + "Date <= @dateend ";
+                hasOne = true;
+            }
+
+            return queryString + " ORDER BY Date DESC";
         }
     }
 }

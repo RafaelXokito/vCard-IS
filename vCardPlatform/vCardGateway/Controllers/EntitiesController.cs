@@ -31,7 +31,7 @@ namespace vCardGateway.Controllers
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
-            GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEntities", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+            GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEntities", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
             return handlerXML.GetEntities(name);
         }
 
@@ -52,10 +52,10 @@ namespace vCardGateway.Controllers
 
             if (entity == null)
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetEntity", $"Endpoint {entity_id} was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetEntity", $"Endpoint {entity_id} was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.NotFound, $"Endpoint {entity_id} was not found");
             }
-            GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+            GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
             return Ok(entity);
         }
 
@@ -99,24 +99,24 @@ namespace vCardGateway.Controllers
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                     return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
                 }
             }
             else
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
             }
 
             try
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PostEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PostEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.Created, handlerXML.CreateEntity(entity));
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return InternalServerError(ex);
             }
         }
@@ -163,25 +163,25 @@ namespace vCardGateway.Controllers
                 IRestResponse response = client.Execute(request);
                 if (!response.IsSuccessful && response.StatusCode != HttpStatusCode.NotFound)
                 {
-                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                     return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
                 }
             }
             else
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
             }
 
             try
             {
                 handlerXML.UpdateEntity(entity_id, entity);
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PutEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PutEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.Created,handlerXML.GetEntity(entity_id));
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PutEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PutEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return InternalServerError(ex);
             }
         }
@@ -218,12 +218,12 @@ namespace vCardGateway.Controllers
             try
             {
                 handlerXML.UpdateEntityAuth(entity_id, authentication);
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "PutEntityAuth", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "PutEntityAuth", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Ok(handlerXML.GetEntity(entity_id));
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PutEntityAuth", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PutEntityAuth", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return InternalServerError(ex);
             }
         }
@@ -247,12 +247,12 @@ namespace vCardGateway.Controllers
             try
             {
                 handlerXML.DeleteEntity(entity_id);
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Ok($"Entity {entity_id} deleted");
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteEntity", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return InternalServerError(ex);
             }
         }

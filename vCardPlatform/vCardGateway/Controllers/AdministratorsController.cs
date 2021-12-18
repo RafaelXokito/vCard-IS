@@ -42,11 +42,11 @@ namespace vCardGateway.Controllers
             if (AdminValidate.Login(credentials.Email, credentials.Password))
             {
                 stopwatch.Stop();
-                GeneralLogsController.PostGeneralLog("Authentication", credentials.Email, "Gateway", HttpStatusCode.OK.ToString(), $"Authenticate with {credentials.Email}", "", DateTime.Now, stopwatch.ElapsedMilliseconds);
+                GeneralLogsController.PostGeneralLog("Authentication", credentials.Email, "Gateway", HttpStatusCode.OK.ToString(), $"Authenticate with {credentials.Email}", "", DateTime.Now, stopwatch.ElapsedMilliseconds, "administrators");
                 return Ok(credentials.Email + " Success");
             }
             stopwatch.Stop();
-            GeneralLogsController.PostGeneralLog("Authentication", credentials.Email, "Gateway", HttpStatusCode.BadRequest.ToString(), $"Failed to Authenticate with {credentials.Email}", "Invalid Email and/or Password", DateTime.Now, stopwatch.ElapsedMilliseconds);
+            GeneralLogsController.PostGeneralLog("Authentication", credentials.Email, "Gateway", HttpStatusCode.BadRequest.ToString(), $"Failed to Authenticate with {credentials.Email}", "Invalid Email and/or Password", DateTime.Now, stopwatch.ElapsedMilliseconds, "administrators");
             return BadRequest("Invalid Email and/or Password");
         }
 
@@ -84,7 +84,7 @@ namespace vCardGateway.Controllers
                             Name = (string)reader["Name"],
                             Disabled = (bool)reader["Disabled"]
                         };
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetLoggedAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetLoggedAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
 
                         return Ok(administrator);
                     }
@@ -99,7 +99,7 @@ namespace vCardGateway.Controllers
                         connection.Close();
                     }
                 }
-                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetLoggedAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetLoggedAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
 
                 return Content(HttpStatusCode.NotFound, "We could not identify you");
             }
@@ -139,7 +139,7 @@ namespace vCardGateway.Controllers
                             Name = (string)reader["Name"],
                             Disabled = (bool)reader["Disabled"]
                         };
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Ok(administrator);
                     }
 
@@ -153,7 +153,7 @@ namespace vCardGateway.Controllers
                         connection.Close();
                     }
                 }
-                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                 return Content(HttpStatusCode.NotFound, "Administrator not found");
             }
         }
@@ -206,7 +206,7 @@ namespace vCardGateway.Controllers
                         connection.Close();
                     }
                 }
-                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetAdministrators", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "GetAdministrators", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                 return administrators;
             }
         }
@@ -257,12 +257,12 @@ namespace vCardGateway.Controllers
 
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.Created.ToString(), "PostAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.Created.ToString(), "PostAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Content(HttpStatusCode.Created, $"Administrator {administrator.Name} created");
                     }
 
                     connection.Close();
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostAdministrator", "Something went wrong with your inputs.", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostAdministrator", "Something went wrong with your inputs.", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return Content(HttpStatusCode.BadRequest, "Something went wrong with your inputs.");
                 }
                 catch (Exception ex)
@@ -271,7 +271,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return InternalServerError(ex);
                 }
             }
@@ -319,11 +319,11 @@ namespace vCardGateway.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PutAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PutAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Content(HttpStatusCode.OK, $"Administrator {administrator.Name} updated");
                     }
                     connection.Close();
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "GetLoggedAdministrator", "Something went wrong with inputs", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "GetLoggedAdministrator", "Something went wrong with inputs", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return Content(HttpStatusCode.BadRequest, "Something went wrong with inputs");
                 }
                 catch (Exception ex)
@@ -332,7 +332,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "GetLoggedAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "GetLoggedAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return InternalServerError(ex);
                 }
             }
@@ -378,12 +378,12 @@ namespace vCardGateway.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PatchAdministratorDisabled", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PatchAdministratorDisabled", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Content(HttpStatusCode.OK, $"Administrator {administrator.Name} " + (administrator.Disabled ? "disabled" : "enabled"));
                     }
                     connection.Close();
 
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorDisabled", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorDisabled", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return Content(HttpStatusCode.NotFound, "Administrator was not found");
                 }
                 catch (Exception ex)
@@ -392,7 +392,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorDisabled", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorDisabled", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return InternalServerError(ex);
                 }
             }
@@ -445,12 +445,12 @@ namespace vCardGateway.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PatchAdministratorPassword", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PatchAdministratorPassword", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Content(HttpStatusCode.OK, $"Administrator {id} updated");
                     }
                     connection.Close();
 
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorPassword", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "PatchAdministratorPassword", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return Content(HttpStatusCode.NotFound, "Administrator was not found");
                 }
                 catch (Exception ex)
@@ -459,7 +459,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PatchAdministratorPassword", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PatchAdministratorPassword", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return InternalServerError(ex);
                 }
             }
@@ -492,12 +492,12 @@ namespace vCardGateway.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteAdministrator", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                         return Content(HttpStatusCode.OK, $"Administrator {id} deleted");
                     }
                     connection.Close();
 
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "DeleteAdministrator", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.NotFound.ToString(), "DeleteAdministrator", "Administrator was not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return Content(HttpStatusCode.NotFound, "Administrator was not found");
                 }
                 catch (Exception ex)
@@ -506,7 +506,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "administrators");
                     return InternalServerError(ex);
                 }
             }

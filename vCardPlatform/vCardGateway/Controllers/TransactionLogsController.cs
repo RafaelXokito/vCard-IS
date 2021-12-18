@@ -4,7 +4,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
+using uPLibrary.Networking.M2Mqtt;
 using vCardGateway.Models;
 
 namespace vCardGateway.Controllers
@@ -139,6 +141,7 @@ namespace vCardGateway.Controllers
                             ErrorMessage = reader["ErrorMessage"].ToString(),
                             Timestamp = (DateTime)reader["Timestamp"]
                         };
+
                         return Ok(log);
                     }
 

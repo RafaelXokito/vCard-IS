@@ -35,9 +35,8 @@ namespace vCardPlatform
 
         //MQTT Variables
         bool valid = true;
-        const string STR_CHANNEL_NAME = "logs";
         MqttClient m_cClient = new MqttClient("127.0.0.1");
-        string[] m_strTopicsInfo = { STR_CHANNEL_NAME };
+        string[] m_strTopicsInfo = { "administrators", "categories", "defaultcategories", "endpointssufixs", "entities", "transactions", "users" };
 
         public FormMainApplication(string username, string password)
         {
@@ -211,7 +210,7 @@ namespace vCardPlatform
 
                 m_cClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
-                byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
+                byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
                 m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
 
                 #endregion

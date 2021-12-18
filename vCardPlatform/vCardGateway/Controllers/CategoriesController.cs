@@ -34,7 +34,7 @@ namespace vCardGateway.Controllers
                 string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
                 request.AddHeader("Authorization", auth);
                 IRestResponse<List<Category>> response = client.Execute<List<Category>>(request);
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultCategory != null)
                 {
@@ -44,7 +44,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 return InternalServerError(ex);
             }
         }
@@ -79,7 +79,7 @@ namespace vCardGateway.Controllers
                 //{
                 //    return Content(response.StatusCode, response.Data);
                 //}
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategory", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategory", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultCategory != null)
                 {
@@ -89,7 +89,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategory", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategory", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 return InternalServerError(ex);
             }
         }
@@ -130,13 +130,13 @@ namespace vCardGateway.Controllers
                 string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
                 request.AddHeader("Authorization", auth);
                 IRestResponse<Category> response = client.Execute<Category>(request);
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PostCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PostCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 return InternalServerError(ex);
             }
         }
@@ -183,13 +183,13 @@ namespace vCardGateway.Controllers
                 //{
                 //    return Content(response.StatusCode, response.Data);
                 //}
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PutCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PutCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PutCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PutCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 return InternalServerError(ex);
             }
         }
@@ -221,13 +221,13 @@ namespace vCardGateway.Controllers
                 request.AddHeader("Authorization", auth);
 
                 IRestResponse response = client.Execute(request);
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "DeleteCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "DeleteCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "DeleteCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "DeleteCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                 return InternalServerError(ex);
             }
         }

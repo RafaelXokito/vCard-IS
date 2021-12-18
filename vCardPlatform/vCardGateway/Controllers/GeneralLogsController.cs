@@ -16,8 +16,6 @@ namespace vCardGateway.Controllers
         static string connectionString = Properties.Settings.Default.ConnStr;
 
         //MQTT Variables
-        static bool valid = true;
-        static String STR_CHANNEL_NAME = "logs";
         static MqttClient m_cClient = new MqttClient("127.0.0.1");
 
         /// <summary>
@@ -140,7 +138,7 @@ namespace vCardGateway.Controllers
             }
         }
 
-        public static GeneralLog PostGeneralLog(string Type, string Username, string Entity, string Status, string Message, string ErrorMessage, DateTime Timestamp, long ResponseTime)
+        public static GeneralLog PostGeneralLog(string Type, string Username, string Entity, string Status, string Message, string ErrorMessage, DateTime Timestamp, long ResponseTime, string topic)
         {
             GeneralLog generalLog = new GeneralLog { 
                 Type = Type,
@@ -152,10 +150,10 @@ namespace vCardGateway.Controllers
                 Timestamp = Timestamp,
                 ResponseTime = ResponseTime,
             };
-            return PostGeneralLog(generalLog);
+            return PostGeneralLog(generalLog, topic);
         }
 
-        public static GeneralLog PostGeneralLog(GeneralLog general)
+        public static GeneralLog PostGeneralLog(GeneralLog general, string topic)
         {
 
             string queryString = @"INSERT INTO GeneralLogs
@@ -185,7 +183,7 @@ namespace vCardGateway.Controllers
 
                         if (m_cClient.IsConnected)
                         {
-                            m_cClient.Publish("logs", Encoding.UTF8.GetBytes(Log.BuildMessage(general.Message, general.Status, general.Timestamp)));
+                            m_cClient.Publish(topic, Encoding.UTF8.GetBytes(Log.BuildMessage(general.Message, general.Status, general.Timestamp)));
                         }
                         return general;
                     }

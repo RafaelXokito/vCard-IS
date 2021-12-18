@@ -25,7 +25,7 @@ namespace vCardGateway.Controllers
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
             HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
-            GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "Getendpointssufixs", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+            GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "Getendpointssufixs", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
             return handlerXML.GetEndpointSufixs();
         }
 
@@ -59,10 +59,10 @@ namespace vCardGateway.Controllers
 
             if (sufix_r == null)
             {
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetEndpointSufix", $"Sufix {sufix.Content} not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.NotFound.ToString(), "GetEndpointSufix", $"Sufix {sufix.Content} not found", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return Content(HttpStatusCode.NotFound, $"Sufix {sufix.Content} not found");
             }
-            GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+            GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
             return Ok(sufix_r);
         }
 
@@ -94,12 +94,12 @@ namespace vCardGateway.Controllers
             try
             {
                 handlerXML.CreateEndpointSufix(sufix);
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "PostEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "PostEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return Content(HttpStatusCode.Created, sufix);
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostEndpointSufix", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PostEndpointSufix", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return InternalServerError(ex);
             }
         }
@@ -132,12 +132,12 @@ namespace vCardGateway.Controllers
             try
             {
                 handlerXML.DeleteEndpointSufix(sufix.Content);
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return Ok($"EndPoint {sufix.Content} Deleted");
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteEndpointSufix", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "DeleteEndpointSufix", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return InternalServerError(ex);
             }
         }

@@ -271,6 +271,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Credentials.cs" />
     <Compile Include="Models\DefaultCategory.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Secret.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\User.cs" />
