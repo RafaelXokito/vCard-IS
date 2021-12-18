@@ -24,6 +24,17 @@ namespace vCardPlatform
 {
     public partial class FormMainApplication : Form
     {
+        private string currentAdminName;
+
+        public string CurrentAdminName
+        {
+            get { return currentAdminName; }
+            set { 
+                currentAdminName = value;
+                labelAdministratorName.Text = value;
+            }
+        }
+
         //Connection String
         string connStr = Properties.Settings.Default.ConnStr;
 
@@ -32,7 +43,6 @@ namespace vCardPlatform
         //ClientAux dont have authorization --Util para enviar pedidos que têm a própria autenticação do lado do cliente
         RestClient clientAux = new RestClient("http://localhost:59458/api");
         Administrator administrator = null;
-
         //MQTT Variables
         bool valid = true;
         const string STR_CHANNEL_NAME = "logs";
@@ -49,6 +59,7 @@ namespace vCardPlatform
 
             if (response.IsSuccessful)
             {
+                currentAdminName = response.Data.Name;
                 administrator = response.Data;
                 labelAdministratorName.Text = administrator.Name;
                 return;
@@ -1496,6 +1507,16 @@ namespace vCardPlatform
         private void comboBoxFromEntity_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadOperations();
+        }
+
+        private void btnChangeName_Click(object sender, EventArgs e)
+        {
+            FormChangeProfile fm = new FormChangeProfile(this, client, administrator.Id);
+            panelProfile.Controls.Clear();
+            fm.TopLevel = false;
+            fm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            panelProfile.Controls.Add(fm);
+            fm.Show();
         }
     }
 }

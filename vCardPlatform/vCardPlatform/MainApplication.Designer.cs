@@ -38,15 +38,10 @@ namespace vCardPlatform
             this.tabEntities = new System.Windows.Forms.TabPage();
             this.tabCEntities = new System.Windows.Forms.TabControl();
             this.tabEntityTable = new System.Windows.Forms.TabPage();
-            this.btnEntitiesCreate = new System.Windows.Forms.Button();
-            this.btnEntitiesDelete = new System.Windows.Forms.Button();
-            this.btnEntitiesRefresh = new System.Windows.Forms.Button();
             this.dataGridViewEntities = new System.Windows.Forms.DataGridView();
             this.tabEntity = new System.Windows.Forms.TabPage();
-            this.btnEntitySave = new System.Windows.Forms.Button();
             this.groupDataEntity = new System.Windows.Forms.GroupBox();
             this.groupEntityAuth = new System.Windows.Forms.GroupBox();
-            this.btnEntityTestAuthentication = new System.Windows.Forms.Button();
             this.lblEntityUsername = new System.Windows.Forms.Label();
             this.txtEntityUsername = new System.Windows.Forms.TextBox();
             this.lblEntityPassword = new System.Windows.Forms.Label();
@@ -56,17 +51,13 @@ namespace vCardPlatform
             this.lblEntityID = new System.Windows.Forms.Label();
             this.txtEntityId = new System.Windows.Forms.TextBox();
             this.numEntityMaxLimit = new System.Windows.Forms.NumericUpDown();
-            this.btnTestEndpoint = new System.Windows.Forms.Button();
             this.lblEntityMaxLimit = new System.Windows.Forms.Label();
             this.lblEntityEndpoint = new System.Windows.Forms.Label();
             this.txtEntityEndpoint = new System.Windows.Forms.TextBox();
             this.lblEntityName = new System.Windows.Forms.Label();
             this.txtEntityName = new System.Windows.Forms.TextBox();
             this.groupEntityDefaultCategory = new System.Windows.Forms.GroupBox();
-            this.btnEntityDefaultCategoriesRefresh = new System.Windows.Forms.Button();
-            this.btnEntityDCRemoveRow = new System.Windows.Forms.Button();
             this.dataGridViewEntityDefaultCategory = new System.Windows.Forms.DataGridView();
-            this.btnEntityUsers = new System.Windows.Forms.Button();
             this.groupEntityStatus = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.panelEntityStatusResources = new System.Windows.Forms.Panel();
@@ -74,14 +65,10 @@ namespace vCardPlatform
             this.lblEntityStatusName = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tabEndPointsSufixs = new System.Windows.Forms.TabPage();
-            this.btnEndPointsSufixsRefresh = new System.Windows.Forms.Button();
-            this.btnEndPointsSufixsSave = new System.Windows.Forms.Button();
             this.dataGridViewEndPointsSufixs = new System.Windows.Forms.DataGridView();
             this.tabAdmistrators = new System.Windows.Forms.TabPage();
             this.tabCAdministrators = new System.Windows.Forms.TabControl();
             this.tabTable = new System.Windows.Forms.TabPage();
-            this.btnAdministratorsDelete = new System.Windows.Forms.Button();
-            this.btnAdministratorsRefresh = new System.Windows.Forms.Button();
             this.dataGridViewAdministrators = new System.Windows.Forms.DataGridView();
             this.tabCreate = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
@@ -96,20 +83,14 @@ namespace vCardPlatform
             this.tabPageTransactionLogs = new System.Windows.Forms.TabPage();
             this.lblFromEntity = new System.Windows.Forms.Label();
             this.comboBoxFromEntity = new System.Windows.Forms.ComboBox();
-            this.buttonOperationsRefresh = new System.Windows.Forms.Button();
             this.textBoxFromUser = new System.Windows.Forms.TextBox();
-            this.buttonTLogsExportXml = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.buttonTLogsExportExcel = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridViewOperations = new System.Windows.Forms.DataGridView();
             this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.comboBoxType = new System.Windows.Forms.ComboBox();
             this.tabPageGeralLogs = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
-            this.buttonGLogsExportXml = new System.Windows.Forms.Button();
-            this.buttonGLogsExportExcel = new System.Windows.Forms.Button();
             this.dateTimePickerEnd2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePickerStart2 = new System.Windows.Forms.DateTimePicker();
             this.dataGridViewGeralLogs = new System.Windows.Forms.DataGridView();
@@ -119,6 +100,26 @@ namespace vCardPlatform
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.btnEntitiesCreate = new System.Windows.Forms.Button();
+            this.btnEntitiesDelete = new System.Windows.Forms.Button();
+            this.btnEntitiesRefresh = new System.Windows.Forms.Button();
+            this.btnEntitySave = new System.Windows.Forms.Button();
+            this.btnEntityTestAuthentication = new System.Windows.Forms.Button();
+            this.btnTestEndpoint = new System.Windows.Forms.Button();
+            this.btnEntityDefaultCategoriesRefresh = new System.Windows.Forms.Button();
+            this.btnEntityDCRemoveRow = new System.Windows.Forms.Button();
+            this.btnEntityUsers = new System.Windows.Forms.Button();
+            this.btnEndPointsSufixsRefresh = new System.Windows.Forms.Button();
+            this.btnEndPointsSufixsSave = new System.Windows.Forms.Button();
+            this.btnAdministratorsDelete = new System.Windows.Forms.Button();
+            this.btnAdministratorsRefresh = new System.Windows.Forms.Button();
+            this.buttonOperationsRefresh = new System.Windows.Forms.Button();
+            this.buttonTLogsExportXml = new System.Windows.Forms.Button();
+            this.buttonTLogsExportExcel = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.buttonGLogsExportXml = new System.Windows.Forms.Button();
+            this.buttonGLogsExportExcel = new System.Windows.Forms.Button();
+            this.btnChangeName = new System.Windows.Forms.Button();
             this.tabCMain.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabEntities.SuspendLayout();
@@ -165,9 +166,9 @@ namespace vCardPlatform
             // buttonChangePassword
             // 
             this.buttonChangePassword.Location = new System.Drawing.Point(227, 7);
-            this.buttonChangePassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonChangePassword.Margin = new System.Windows.Forms.Padding(2);
             this.buttonChangePassword.Name = "buttonChangePassword";
-            this.buttonChangePassword.Size = new System.Drawing.Size(102, 24);
+            this.buttonChangePassword.Size = new System.Drawing.Size(124, 24);
             this.buttonChangePassword.TabIndex = 2;
             this.buttonChangePassword.Text = "Change Password";
             this.buttonChangePassword.UseVisualStyleBackColor = true;
@@ -189,12 +190,13 @@ namespace vCardPlatform
             // 
             // tabProfile
             // 
+            this.tabProfile.Controls.Add(this.btnChangeName);
             this.tabProfile.Controls.Add(this.panelProfile);
             this.tabProfile.Controls.Add(this.buttonChangePassword);
             this.tabProfile.Controls.Add(this.labelAdministratorName);
             this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(3);
             this.tabProfile.Size = new System.Drawing.Size(936, 501);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
@@ -213,7 +215,7 @@ namespace vCardPlatform
             this.tabEntities.Controls.Add(this.tabCEntities);
             this.tabEntities.Location = new System.Drawing.Point(4, 22);
             this.tabEntities.Name = "tabEntities";
-            this.tabEntities.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEntities.Padding = new System.Windows.Forms.Padding(3);
             this.tabEntities.Size = new System.Drawing.Size(936, 501);
             this.tabEntities.TabIndex = 1;
             this.tabEntities.Text = "Entities";
@@ -242,53 +244,11 @@ namespace vCardPlatform
             this.tabEntityTable.Controls.Add(this.dataGridViewEntities);
             this.tabEntityTable.Location = new System.Drawing.Point(4, 22);
             this.tabEntityTable.Name = "tabEntityTable";
-            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabEntityTable.Size = new System.Drawing.Size(919, 430);
+            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEntityTable.Size = new System.Drawing.Size(919, 443);
             this.tabEntityTable.TabIndex = 0;
             this.tabEntityTable.Text = "Table";
             this.tabEntityTable.UseVisualStyleBackColor = true;
-            // 
-            // btnEntitiesCreate
-            // 
-            this.btnEntitiesCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntitiesCreate.Image = global::vCardPlatform.Properties.Resources.add;
-            this.btnEntitiesCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesCreate.Location = new System.Drawing.Point(664, 6);
-            this.btnEntitiesCreate.Name = "btnEntitiesCreate";
-            this.btnEntitiesCreate.Size = new System.Drawing.Size(75, 23);
-            this.btnEntitiesCreate.TabIndex = 23;
-            this.btnEntitiesCreate.Text = "Create";
-            this.btnEntitiesCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntitiesCreate.UseVisualStyleBackColor = true;
-            this.btnEntitiesCreate.Click += new System.EventHandler(this.btnEntitiesCreate_Click);
-            // 
-            // btnEntitiesDelete
-            // 
-            this.btnEntitiesDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntitiesDelete.Image = global::vCardPlatform.Properties.Resources.delete;
-            this.btnEntitiesDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesDelete.Location = new System.Drawing.Point(745, 6);
-            this.btnEntitiesDelete.Name = "btnEntitiesDelete";
-            this.btnEntitiesDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnEntitiesDelete.TabIndex = 22;
-            this.btnEntitiesDelete.Text = "Delete";
-            this.btnEntitiesDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntitiesDelete.UseVisualStyleBackColor = true;
-            this.btnEntitiesDelete.Click += new System.EventHandler(this.btnEntitiesDelete_Click);
-            // 
-            // btnEntitiesRefresh
-            // 
-            this.btnEntitiesRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntitiesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnEntitiesRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesRefresh.Location = new System.Drawing.Point(826, 6);
-            this.btnEntitiesRefresh.Name = "btnEntitiesRefresh";
-            this.btnEntitiesRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnEntitiesRefresh.TabIndex = 21;
-            this.btnEntitiesRefresh.Text = "Refresh";
-            this.btnEntitiesRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntitiesRefresh.UseVisualStyleBackColor = true;
-            this.btnEntitiesRefresh.Click += new System.EventHandler(this.btnEntitiesRefresh_Click);
             // 
             // dataGridViewEntities
             // 
@@ -301,7 +261,7 @@ namespace vCardPlatform
             this.dataGridViewEntities.ReadOnly = true;
             this.dataGridViewEntities.RowHeadersWidth = 45;
             this.dataGridViewEntities.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEntities.Size = new System.Drawing.Size(910, 389);
+            this.dataGridViewEntities.Size = new System.Drawing.Size(910, 402);
             this.dataGridViewEntities.TabIndex = 20;
             this.dataGridViewEntities.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEntities_CellDoubleClick);
             // 
@@ -310,28 +270,14 @@ namespace vCardPlatform
             this.tabEntity.Controls.Add(this.btnEntitySave);
             this.tabEntity.Controls.Add(this.groupDataEntity);
             this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
-            this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.groupEntityStatus);
+            this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Location = new System.Drawing.Point(4, 22);
             this.tabEntity.Name = "tabEntity";
             this.tabEntity.Size = new System.Drawing.Size(919, 443);
             this.tabEntity.TabIndex = 2;
             this.tabEntity.Text = "Entity";
             this.tabEntity.UseVisualStyleBackColor = true;
-            // 
-            // btnEntitySave
-            // 
-            this.btnEntitySave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntitySave.Enabled = false;
-            this.btnEntitySave.Image = global::vCardPlatform.Properties.Resources.save;
-            this.btnEntitySave.Location = new System.Drawing.Point(841, 3);
-            this.btnEntitySave.Name = "btnEntitySave";
-            this.btnEntitySave.Size = new System.Drawing.Size(75, 23);
-            this.btnEntitySave.TabIndex = 3;
-            this.btnEntitySave.Text = "Save";
-            this.btnEntitySave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntitySave.UseVisualStyleBackColor = true;
-            this.btnEntitySave.Click += new System.EventHandler(this.btnEntitySave_Click);
             // 
             // groupDataEntity
             // 
@@ -372,18 +318,6 @@ namespace vCardPlatform
             this.groupEntityAuth.TabIndex = 7;
             this.groupEntityAuth.TabStop = false;
             this.groupEntityAuth.Text = "Authentication";
-            // 
-            // btnEntityTestAuthentication
-            // 
-            this.btnEntityTestAuthentication.Image = global::vCardPlatform.Properties.Resources.block;
-            this.btnEntityTestAuthentication.Location = new System.Drawing.Point(204, 87);
-            this.btnEntityTestAuthentication.Name = "btnEntityTestAuthentication";
-            this.btnEntityTestAuthentication.Size = new System.Drawing.Size(82, 26);
-            this.btnEntityTestAuthentication.TabIndex = 14;
-            this.btnEntityTestAuthentication.Text = "Test";
-            this.btnEntityTestAuthentication.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntityTestAuthentication.UseVisualStyleBackColor = true;
-            this.btnEntityTestAuthentication.Click += new System.EventHandler(this.btnEntityTestAuthentication_Click);
             // 
             // lblEntityUsername
             // 
@@ -483,16 +417,6 @@ namespace vCardPlatform
             this.numEntityMaxLimit.Size = new System.Drawing.Size(292, 20);
             this.numEntityMaxLimit.TabIndex = 7;
             // 
-            // btnTestEndpoint
-            // 
-            this.btnTestEndpoint.Image = global::vCardPlatform.Properties.Resources.connect;
-            this.btnTestEndpoint.Location = new System.Drawing.Point(275, 138);
-            this.btnTestEndpoint.Name = "btnTestEndpoint";
-            this.btnTestEndpoint.Size = new System.Drawing.Size(23, 23);
-            this.btnTestEndpoint.TabIndex = 6;
-            this.btnTestEndpoint.UseVisualStyleBackColor = true;
-            this.btnTestEndpoint.Click += new System.EventHandler(this.btnTestEndpoint_Click);
-            // 
             // lblEntityMaxLimit
             // 
             this.lblEntityMaxLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -560,26 +484,6 @@ namespace vCardPlatform
             this.groupEntityDefaultCategory.TabStop = false;
             this.groupEntityDefaultCategory.Text = "Default Categories";
             // 
-            // btnEntityDefaultCategoriesRefresh
-            // 
-            this.btnEntityDefaultCategoriesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnEntityDefaultCategoriesRefresh.Location = new System.Drawing.Point(38, 18);
-            this.btnEntityDefaultCategoriesRefresh.Name = "btnEntityDefaultCategoriesRefresh";
-            this.btnEntityDefaultCategoriesRefresh.Size = new System.Drawing.Size(26, 23);
-            this.btnEntityDefaultCategoriesRefresh.TabIndex = 8;
-            this.btnEntityDefaultCategoriesRefresh.UseVisualStyleBackColor = true;
-            this.btnEntityDefaultCategoriesRefresh.Click += new System.EventHandler(this.btnEntityDefaultCategoriesRefresh_Click);
-            // 
-            // btnEntityDCRemoveRow
-            // 
-            this.btnEntityDCRemoveRow.Image = global::vCardPlatform.Properties.Resources.delete;
-            this.btnEntityDCRemoveRow.Location = new System.Drawing.Point(6, 18);
-            this.btnEntityDCRemoveRow.Name = "btnEntityDCRemoveRow";
-            this.btnEntityDCRemoveRow.Size = new System.Drawing.Size(26, 23);
-            this.btnEntityDCRemoveRow.TabIndex = 7;
-            this.btnEntityDCRemoveRow.UseVisualStyleBackColor = true;
-            this.btnEntityDCRemoveRow.Click += new System.EventHandler(this.btnEntityDCRemoveRow_Click);
-            // 
             // dataGridViewEntityDefaultCategory
             // 
             this.dataGridViewEntityDefaultCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -591,20 +495,6 @@ namespace vCardPlatform
             this.dataGridViewEntityDefaultCategory.RowHeadersWidth = 45;
             this.dataGridViewEntityDefaultCategory.Size = new System.Drawing.Size(287, 350);
             this.dataGridViewEntityDefaultCategory.TabIndex = 0;
-            // 
-            // btnEntityUsers
-            // 
-            this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEntityUsers.Enabled = false;
-            this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
-            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
-            this.btnEntityUsers.Name = "btnEntityUsers";
-            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
-            this.btnEntityUsers.TabIndex = 4;
-            this.btnEntityUsers.Text = "Users";
-            this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEntityUsers.UseVisualStyleBackColor = true;
-            this.btnEntityUsers.Click += new System.EventHandler(this.btnEntityUsers_Click);
             // 
             // groupEntityStatus
             // 
@@ -678,35 +568,11 @@ namespace vCardPlatform
             this.tabEndPointsSufixs.Controls.Add(this.dataGridViewEndPointsSufixs);
             this.tabEndPointsSufixs.Location = new System.Drawing.Point(4, 22);
             this.tabEndPointsSufixs.Name = "tabEndPointsSufixs";
-            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabEndPointsSufixs.Size = new System.Drawing.Size(919, 430);
+            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabEndPointsSufixs.Size = new System.Drawing.Size(919, 443);
             this.tabEndPointsSufixs.TabIndex = 3;
             this.tabEndPointsSufixs.Text = "EndPoints Sufixs";
             this.tabEndPointsSufixs.UseVisualStyleBackColor = true;
-            // 
-            // btnEndPointsSufixsRefresh
-            // 
-            this.btnEndPointsSufixsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnEndPointsSufixsRefresh.Location = new System.Drawing.Point(755, 3);
-            this.btnEndPointsSufixsRefresh.Name = "btnEndPointsSufixsRefresh";
-            this.btnEndPointsSufixsRefresh.Size = new System.Drawing.Size(76, 23);
-            this.btnEndPointsSufixsRefresh.TabIndex = 2;
-            this.btnEndPointsSufixsRefresh.Text = "Refresh";
-            this.btnEndPointsSufixsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEndPointsSufixsRefresh.UseVisualStyleBackColor = true;
-            this.btnEndPointsSufixsRefresh.Click += new System.EventHandler(this.btnEndPointsSufixsRefresh_Click);
-            // 
-            // btnEndPointsSufixsSave
-            // 
-            this.btnEndPointsSufixsSave.Image = global::vCardPlatform.Properties.Resources.save;
-            this.btnEndPointsSufixsSave.Location = new System.Drawing.Point(837, 3);
-            this.btnEndPointsSufixsSave.Name = "btnEndPointsSufixsSave";
-            this.btnEndPointsSufixsSave.Size = new System.Drawing.Size(76, 23);
-            this.btnEndPointsSufixsSave.TabIndex = 1;
-            this.btnEndPointsSufixsSave.Text = "Save";
-            this.btnEndPointsSufixsSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEndPointsSufixsSave.UseVisualStyleBackColor = true;
-            this.btnEndPointsSufixsSave.Click += new System.EventHandler(this.btnEndPointsSufixsSave_Click);
             // 
             // dataGridViewEndPointsSufixs
             // 
@@ -747,39 +613,11 @@ namespace vCardPlatform
             this.tabTable.Controls.Add(this.dataGridViewAdministrators);
             this.tabTable.Location = new System.Drawing.Point(4, 22);
             this.tabTable.Name = "tabTable";
-            this.tabTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabTable.Padding = new System.Windows.Forms.Padding(3);
             this.tabTable.Size = new System.Drawing.Size(917, 459);
             this.tabTable.TabIndex = 0;
             this.tabTable.Text = "Table";
             this.tabTable.UseVisualStyleBackColor = true;
-            // 
-            // btnAdministratorsDelete
-            // 
-            this.btnAdministratorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdministratorsDelete.Image = global::vCardPlatform.Properties.Resources.delete;
-            this.btnAdministratorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsDelete.Location = new System.Drawing.Point(743, 6);
-            this.btnAdministratorsDelete.Name = "btnAdministratorsDelete";
-            this.btnAdministratorsDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnAdministratorsDelete.TabIndex = 22;
-            this.btnAdministratorsDelete.Text = "Delete";
-            this.btnAdministratorsDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAdministratorsDelete.UseVisualStyleBackColor = true;
-            this.btnAdministratorsDelete.Click += new System.EventHandler(this.btnAdministratorsDelete_Click);
-            // 
-            // btnAdministratorsRefresh
-            // 
-            this.btnAdministratorsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdministratorsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnAdministratorsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(824, 6);
-            this.btnAdministratorsRefresh.Name = "btnAdministratorsRefresh";
-            this.btnAdministratorsRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnAdministratorsRefresh.TabIndex = 21;
-            this.btnAdministratorsRefresh.Text = "Refresh";
-            this.btnAdministratorsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAdministratorsRefresh.UseVisualStyleBackColor = true;
-            this.btnAdministratorsRefresh.Click += new System.EventHandler(this.btnAdministratorsRefresh_Click);
             // 
             // dataGridViewAdministrators
             // 
@@ -805,7 +643,7 @@ namespace vCardPlatform
             this.tabCreate.Controls.Add(this.btnCreateAdmin);
             this.tabCreate.Location = new System.Drawing.Point(4, 22);
             this.tabCreate.Name = "tabCreate";
-            this.tabCreate.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabCreate.Padding = new System.Windows.Forms.Padding(3);
             this.tabCreate.Size = new System.Drawing.Size(917, 459);
             this.tabCreate.TabIndex = 1;
             this.tabCreate.Text = "Create";
@@ -844,7 +682,7 @@ namespace vCardPlatform
             // txtAdministratorName
             // 
             this.txtAdministratorName.Location = new System.Drawing.Point(317, 138);
-            this.txtAdministratorName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorName.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorName.Name = "txtAdministratorName";
             this.txtAdministratorName.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorName.TabIndex = 21;
@@ -852,7 +690,7 @@ namespace vCardPlatform
             // txtAdministratorPassword
             // 
             this.txtAdministratorPassword.Location = new System.Drawing.Point(317, 214);
-            this.txtAdministratorPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorPassword.Name = "txtAdministratorPassword";
             this.txtAdministratorPassword.PasswordChar = '*';
             this.txtAdministratorPassword.Size = new System.Drawing.Size(350, 20);
@@ -861,7 +699,7 @@ namespace vCardPlatform
             // txtAdministratorEmail
             // 
             this.txtAdministratorEmail.Location = new System.Drawing.Point(317, 174);
-            this.txtAdministratorEmail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAdministratorEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtAdministratorEmail.Name = "txtAdministratorEmail";
             this.txtAdministratorEmail.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorEmail.TabIndex = 22;
@@ -869,7 +707,7 @@ namespace vCardPlatform
             // btnCreateAdmin
             // 
             this.btnCreateAdmin.Location = new System.Drawing.Point(422, 269);
-            this.btnCreateAdmin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCreateAdmin.Margin = new System.Windows.Forms.Padding(2);
             this.btnCreateAdmin.Name = "btnCreateAdmin";
             this.btnCreateAdmin.Size = new System.Drawing.Size(61, 23);
             this.btnCreateAdmin.TabIndex = 20;
@@ -916,7 +754,7 @@ namespace vCardPlatform
             this.tabPageTransactionLogs.Controls.Add(this.comboBoxType);
             this.tabPageTransactionLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageTransactionLogs.Name = "tabPageTransactionLogs";
-            this.tabPageTransactionLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageTransactionLogs.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageTransactionLogs.Size = new System.Drawing.Size(922, 449);
             this.tabPageTransactionLogs.TabIndex = 0;
             this.tabPageTransactionLogs.Text = "Transaction Logs";
@@ -937,25 +775,11 @@ namespace vCardPlatform
             this.comboBoxFromEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFromEntity.FormattingEnabled = true;
             this.comboBoxFromEntity.Location = new System.Drawing.Point(269, 42);
-            this.comboBoxFromEntity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxFromEntity.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxFromEntity.Name = "comboBoxFromEntity";
             this.comboBoxFromEntity.Size = new System.Drawing.Size(130, 21);
             this.comboBoxFromEntity.TabIndex = 32;
             this.comboBoxFromEntity.SelectedIndexChanged += new System.EventHandler(this.comboBoxFromEntity_SelectedIndexChanged);
-            // 
-            // buttonOperationsRefresh
-            // 
-            this.buttonOperationsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOperationsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.buttonOperationsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonOperationsRefresh.Location = new System.Drawing.Point(844, 3);
-            this.buttonOperationsRefresh.Name = "buttonOperationsRefresh";
-            this.buttonOperationsRefresh.Size = new System.Drawing.Size(75, 23);
-            this.buttonOperationsRefresh.TabIndex = 22;
-            this.buttonOperationsRefresh.Text = "Refresh";
-            this.buttonOperationsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonOperationsRefresh.UseVisualStyleBackColor = true;
-            this.buttonOperationsRefresh.Click += new System.EventHandler(this.buttonOperationsRefresh_Click);
             // 
             // textBoxFromUser
             // 
@@ -965,20 +789,6 @@ namespace vCardPlatform
             this.textBoxFromUser.TabIndex = 31;
             this.textBoxFromUser.TextChanged += new System.EventHandler(this.textBoxFromUser_TextChanged);
             // 
-            // buttonTLogsExportXml
-            // 
-            this.buttonTLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
-            this.buttonTLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonTLogsExportXml.Location = new System.Drawing.Point(742, 3);
-            this.buttonTLogsExportXml.Name = "buttonTLogsExportXml";
-            this.buttonTLogsExportXml.Size = new System.Drawing.Size(97, 23);
-            this.buttonTLogsExportXml.TabIndex = 23;
-            this.buttonTLogsExportXml.Text = "Export to Xml";
-            this.buttonTLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonTLogsExportXml.UseVisualStyleBackColor = true;
-            this.buttonTLogsExportXml.Click += new System.EventHandler(this.buttonExportXml_Click);
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -987,20 +797,6 @@ namespace vCardPlatform
             this.label8.Size = new System.Drawing.Size(33, 15);
             this.label8.TabIndex = 30;
             this.label8.Text = "Type";
-            // 
-            // buttonTLogsExportExcel
-            // 
-            this.buttonTLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
-            this.buttonTLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonTLogsExportExcel.Location = new System.Drawing.Point(634, 3);
-            this.buttonTLogsExportExcel.Name = "buttonTLogsExportExcel";
-            this.buttonTLogsExportExcel.Size = new System.Drawing.Size(102, 23);
-            this.buttonTLogsExportExcel.TabIndex = 24;
-            this.buttonTLogsExportExcel.Text = "Export to Excel";
-            this.buttonTLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonTLogsExportExcel.UseVisualStyleBackColor = true;
-            this.buttonTLogsExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
             // 
             // label7
             // 
@@ -1018,7 +814,7 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewOperations.Location = new System.Drawing.Point(4, 68);
-            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewOperations.Name = "dataGridViewOperations";
             this.dataGridViewOperations.ReadOnly = true;
             this.dataGridViewOperations.RowHeadersWidth = 51;
@@ -1065,53 +861,11 @@ namespace vCardPlatform
             this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
             this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeralLogs.Name = "tabPageGeralLogs";
-            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageGeralLogs.Size = new System.Drawing.Size(922, 449);
             this.tabPageGeralLogs.TabIndex = 1;
             this.tabPageGeralLogs.Text = "Geral Logs";
             this.tabPageGeralLogs.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(841, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 31;
-            this.button1.Text = "Refresh";
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // buttonGLogsExportXml
-            // 
-            this.buttonGLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
-            this.buttonGLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonGLogsExportXml.Location = new System.Drawing.Point(739, 14);
-            this.buttonGLogsExportXml.Name = "buttonGLogsExportXml";
-            this.buttonGLogsExportXml.Size = new System.Drawing.Size(97, 23);
-            this.buttonGLogsExportXml.TabIndex = 32;
-            this.buttonGLogsExportXml.Text = "Export to Xml";
-            this.buttonGLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonGLogsExportXml.UseVisualStyleBackColor = true;
-            this.buttonGLogsExportXml.Click += new System.EventHandler(this.buttonGLogsExportXml_Click);
-            // 
-            // buttonGLogsExportExcel
-            // 
-            this.buttonGLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonGLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
-            this.buttonGLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonGLogsExportExcel.Location = new System.Drawing.Point(631, 14);
-            this.buttonGLogsExportExcel.Name = "buttonGLogsExportExcel";
-            this.buttonGLogsExportExcel.Size = new System.Drawing.Size(102, 23);
-            this.buttonGLogsExportExcel.TabIndex = 33;
-            this.buttonGLogsExportExcel.Text = "Export to Excel";
-            this.buttonGLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonGLogsExportExcel.UseVisualStyleBackColor = true;
-            this.buttonGLogsExportExcel.Click += new System.EventHandler(this.buttonGLogsExportExcel_Click);
             // 
             // dateTimePickerEnd2
             // 
@@ -1198,7 +952,7 @@ namespace vCardPlatform
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
             this.btnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLogout.Location = new System.Drawing.Point(873, 502);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new System.Drawing.Size(69, 25);
             this.btnLogout.TabIndex = 6;
@@ -1206,6 +960,265 @@ namespace vCardPlatform
             this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // btnEntitiesCreate
+            // 
+            this.btnEntitiesCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitiesCreate.Image = global::vCardPlatform.Properties.Resources.add;
+            this.btnEntitiesCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntitiesCreate.Location = new System.Drawing.Point(664, 6);
+            this.btnEntitiesCreate.Name = "btnEntitiesCreate";
+            this.btnEntitiesCreate.Size = new System.Drawing.Size(75, 23);
+            this.btnEntitiesCreate.TabIndex = 23;
+            this.btnEntitiesCreate.Text = "Create";
+            this.btnEntitiesCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntitiesCreate.UseVisualStyleBackColor = true;
+            this.btnEntitiesCreate.Click += new System.EventHandler(this.btnEntitiesCreate_Click);
+            // 
+            // btnEntitiesDelete
+            // 
+            this.btnEntitiesDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitiesDelete.Image = global::vCardPlatform.Properties.Resources.delete;
+            this.btnEntitiesDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntitiesDelete.Location = new System.Drawing.Point(745, 6);
+            this.btnEntitiesDelete.Name = "btnEntitiesDelete";
+            this.btnEntitiesDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnEntitiesDelete.TabIndex = 22;
+            this.btnEntitiesDelete.Text = "Delete";
+            this.btnEntitiesDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntitiesDelete.UseVisualStyleBackColor = true;
+            this.btnEntitiesDelete.Click += new System.EventHandler(this.btnEntitiesDelete_Click);
+            // 
+            // btnEntitiesRefresh
+            // 
+            this.btnEntitiesRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitiesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.btnEntitiesRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEntitiesRefresh.Location = new System.Drawing.Point(826, 6);
+            this.btnEntitiesRefresh.Name = "btnEntitiesRefresh";
+            this.btnEntitiesRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnEntitiesRefresh.TabIndex = 21;
+            this.btnEntitiesRefresh.Text = "Refresh";
+            this.btnEntitiesRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntitiesRefresh.UseVisualStyleBackColor = true;
+            this.btnEntitiesRefresh.Click += new System.EventHandler(this.btnEntitiesRefresh_Click);
+            // 
+            // btnEntitySave
+            // 
+            this.btnEntitySave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntitySave.Enabled = false;
+            this.btnEntitySave.Image = global::vCardPlatform.Properties.Resources.save;
+            this.btnEntitySave.Location = new System.Drawing.Point(841, 3);
+            this.btnEntitySave.Name = "btnEntitySave";
+            this.btnEntitySave.Size = new System.Drawing.Size(75, 23);
+            this.btnEntitySave.TabIndex = 3;
+            this.btnEntitySave.Text = "Save";
+            this.btnEntitySave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntitySave.UseVisualStyleBackColor = true;
+            this.btnEntitySave.Click += new System.EventHandler(this.btnEntitySave_Click);
+            // 
+            // btnEntityTestAuthentication
+            // 
+            this.btnEntityTestAuthentication.Image = global::vCardPlatform.Properties.Resources.block;
+            this.btnEntityTestAuthentication.Location = new System.Drawing.Point(204, 87);
+            this.btnEntityTestAuthentication.Name = "btnEntityTestAuthentication";
+            this.btnEntityTestAuthentication.Size = new System.Drawing.Size(82, 26);
+            this.btnEntityTestAuthentication.TabIndex = 14;
+            this.btnEntityTestAuthentication.Text = "Test";
+            this.btnEntityTestAuthentication.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntityTestAuthentication.UseVisualStyleBackColor = true;
+            this.btnEntityTestAuthentication.Click += new System.EventHandler(this.btnEntityTestAuthentication_Click);
+            // 
+            // btnTestEndpoint
+            // 
+            this.btnTestEndpoint.Image = global::vCardPlatform.Properties.Resources.connect;
+            this.btnTestEndpoint.Location = new System.Drawing.Point(275, 138);
+            this.btnTestEndpoint.Name = "btnTestEndpoint";
+            this.btnTestEndpoint.Size = new System.Drawing.Size(23, 23);
+            this.btnTestEndpoint.TabIndex = 6;
+            this.btnTestEndpoint.UseVisualStyleBackColor = true;
+            this.btnTestEndpoint.Click += new System.EventHandler(this.btnTestEndpoint_Click);
+            // 
+            // btnEntityDefaultCategoriesRefresh
+            // 
+            this.btnEntityDefaultCategoriesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.btnEntityDefaultCategoriesRefresh.Location = new System.Drawing.Point(38, 18);
+            this.btnEntityDefaultCategoriesRefresh.Name = "btnEntityDefaultCategoriesRefresh";
+            this.btnEntityDefaultCategoriesRefresh.Size = new System.Drawing.Size(26, 23);
+            this.btnEntityDefaultCategoriesRefresh.TabIndex = 8;
+            this.btnEntityDefaultCategoriesRefresh.UseVisualStyleBackColor = true;
+            this.btnEntityDefaultCategoriesRefresh.Click += new System.EventHandler(this.btnEntityDefaultCategoriesRefresh_Click);
+            // 
+            // btnEntityDCRemoveRow
+            // 
+            this.btnEntityDCRemoveRow.Image = global::vCardPlatform.Properties.Resources.delete;
+            this.btnEntityDCRemoveRow.Location = new System.Drawing.Point(6, 18);
+            this.btnEntityDCRemoveRow.Name = "btnEntityDCRemoveRow";
+            this.btnEntityDCRemoveRow.Size = new System.Drawing.Size(26, 23);
+            this.btnEntityDCRemoveRow.TabIndex = 7;
+            this.btnEntityDCRemoveRow.UseVisualStyleBackColor = true;
+            this.btnEntityDCRemoveRow.Click += new System.EventHandler(this.btnEntityDCRemoveRow_Click);
+            // 
+            // btnEntityUsers
+            // 
+            this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEntityUsers.Enabled = false;
+            this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
+            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
+            this.btnEntityUsers.Name = "btnEntityUsers";
+            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
+            this.btnEntityUsers.TabIndex = 4;
+            this.btnEntityUsers.Text = "Users";
+            this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEntityUsers.UseVisualStyleBackColor = true;
+            this.btnEntityUsers.Click += new System.EventHandler(this.btnEntityUsers_Click);
+            // 
+            // btnEndPointsSufixsRefresh
+            // 
+            this.btnEndPointsSufixsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.btnEndPointsSufixsRefresh.Location = new System.Drawing.Point(755, 3);
+            this.btnEndPointsSufixsRefresh.Name = "btnEndPointsSufixsRefresh";
+            this.btnEndPointsSufixsRefresh.Size = new System.Drawing.Size(76, 23);
+            this.btnEndPointsSufixsRefresh.TabIndex = 2;
+            this.btnEndPointsSufixsRefresh.Text = "Refresh";
+            this.btnEndPointsSufixsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEndPointsSufixsRefresh.UseVisualStyleBackColor = true;
+            this.btnEndPointsSufixsRefresh.Click += new System.EventHandler(this.btnEndPointsSufixsRefresh_Click);
+            // 
+            // btnEndPointsSufixsSave
+            // 
+            this.btnEndPointsSufixsSave.Image = global::vCardPlatform.Properties.Resources.save;
+            this.btnEndPointsSufixsSave.Location = new System.Drawing.Point(837, 3);
+            this.btnEndPointsSufixsSave.Name = "btnEndPointsSufixsSave";
+            this.btnEndPointsSufixsSave.Size = new System.Drawing.Size(76, 23);
+            this.btnEndPointsSufixsSave.TabIndex = 1;
+            this.btnEndPointsSufixsSave.Text = "Save";
+            this.btnEndPointsSufixsSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEndPointsSufixsSave.UseVisualStyleBackColor = true;
+            this.btnEndPointsSufixsSave.Click += new System.EventHandler(this.btnEndPointsSufixsSave_Click);
+            // 
+            // btnAdministratorsDelete
+            // 
+            this.btnAdministratorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdministratorsDelete.Image = global::vCardPlatform.Properties.Resources.delete;
+            this.btnAdministratorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAdministratorsDelete.Location = new System.Drawing.Point(743, 6);
+            this.btnAdministratorsDelete.Name = "btnAdministratorsDelete";
+            this.btnAdministratorsDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnAdministratorsDelete.TabIndex = 22;
+            this.btnAdministratorsDelete.Text = "Delete";
+            this.btnAdministratorsDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAdministratorsDelete.UseVisualStyleBackColor = true;
+            this.btnAdministratorsDelete.Click += new System.EventHandler(this.btnAdministratorsDelete_Click);
+            // 
+            // btnAdministratorsRefresh
+            // 
+            this.btnAdministratorsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdministratorsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.btnAdministratorsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(824, 6);
+            this.btnAdministratorsRefresh.Name = "btnAdministratorsRefresh";
+            this.btnAdministratorsRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnAdministratorsRefresh.TabIndex = 21;
+            this.btnAdministratorsRefresh.Text = "Refresh";
+            this.btnAdministratorsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAdministratorsRefresh.UseVisualStyleBackColor = true;
+            this.btnAdministratorsRefresh.Click += new System.EventHandler(this.btnAdministratorsRefresh_Click);
+            // 
+            // buttonOperationsRefresh
+            // 
+            this.buttonOperationsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOperationsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.buttonOperationsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonOperationsRefresh.Location = new System.Drawing.Point(844, 3);
+            this.buttonOperationsRefresh.Name = "buttonOperationsRefresh";
+            this.buttonOperationsRefresh.Size = new System.Drawing.Size(75, 23);
+            this.buttonOperationsRefresh.TabIndex = 22;
+            this.buttonOperationsRefresh.Text = "Refresh";
+            this.buttonOperationsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonOperationsRefresh.UseVisualStyleBackColor = true;
+            this.buttonOperationsRefresh.Click += new System.EventHandler(this.buttonOperationsRefresh_Click);
+            // 
+            // buttonTLogsExportXml
+            // 
+            this.buttonTLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
+            this.buttonTLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonTLogsExportXml.Location = new System.Drawing.Point(742, 3);
+            this.buttonTLogsExportXml.Name = "buttonTLogsExportXml";
+            this.buttonTLogsExportXml.Size = new System.Drawing.Size(97, 23);
+            this.buttonTLogsExportXml.TabIndex = 23;
+            this.buttonTLogsExportXml.Text = "Export to Xml";
+            this.buttonTLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonTLogsExportXml.UseVisualStyleBackColor = true;
+            this.buttonTLogsExportXml.Click += new System.EventHandler(this.buttonExportXml_Click);
+            // 
+            // buttonTLogsExportExcel
+            // 
+            this.buttonTLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
+            this.buttonTLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonTLogsExportExcel.Location = new System.Drawing.Point(634, 3);
+            this.buttonTLogsExportExcel.Name = "buttonTLogsExportExcel";
+            this.buttonTLogsExportExcel.Size = new System.Drawing.Size(102, 23);
+            this.buttonTLogsExportExcel.TabIndex = 24;
+            this.buttonTLogsExportExcel.Text = "Export to Excel";
+            this.buttonTLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonTLogsExportExcel.UseVisualStyleBackColor = true;
+            this.buttonTLogsExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(841, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 31;
+            this.button1.Text = "Refresh";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // buttonGLogsExportXml
+            // 
+            this.buttonGLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
+            this.buttonGLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonGLogsExportXml.Location = new System.Drawing.Point(739, 14);
+            this.buttonGLogsExportXml.Name = "buttonGLogsExportXml";
+            this.buttonGLogsExportXml.Size = new System.Drawing.Size(97, 23);
+            this.buttonGLogsExportXml.TabIndex = 32;
+            this.buttonGLogsExportXml.Text = "Export to Xml";
+            this.buttonGLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonGLogsExportXml.UseVisualStyleBackColor = true;
+            this.buttonGLogsExportXml.Click += new System.EventHandler(this.buttonGLogsExportXml_Click);
+            // 
+            // buttonGLogsExportExcel
+            // 
+            this.buttonGLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
+            this.buttonGLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.buttonGLogsExportExcel.Location = new System.Drawing.Point(631, 14);
+            this.buttonGLogsExportExcel.Name = "buttonGLogsExportExcel";
+            this.buttonGLogsExportExcel.Size = new System.Drawing.Size(102, 23);
+            this.buttonGLogsExportExcel.TabIndex = 33;
+            this.buttonGLogsExportExcel.Text = "Export to Excel";
+            this.buttonGLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonGLogsExportExcel.UseVisualStyleBackColor = true;
+            this.buttonGLogsExportExcel.Click += new System.EventHandler(this.buttonGLogsExportExcel_Click);
+            // 
+            // btnChangeName
+            // 
+            this.btnChangeName.Location = new System.Drawing.Point(364, 7);
+            this.btnChangeName.Margin = new System.Windows.Forms.Padding(2);
+            this.btnChangeName.Name = "btnChangeName";
+            this.btnChangeName.Size = new System.Drawing.Size(124, 24);
+            this.btnChangeName.TabIndex = 5;
+            this.btnChangeName.Text = "Change Name";
+            this.btnChangeName.UseVisualStyleBackColor = true;
+            this.btnChangeName.Click += new System.EventHandler(this.btnChangeName_Click);
             // 
             // FormMainApplication
             // 
@@ -1216,7 +1229,7 @@ namespace vCardPlatform
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabCMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(958, 561);
             this.Name = "FormMainApplication";
             this.Text = "MainApplication";
@@ -1354,5 +1367,6 @@ namespace vCardPlatform
         private System.Windows.Forms.DataGridView dataGridViewGeralLogs;
         private System.Windows.Forms.Label lblFromEntity;
         private System.Windows.Forms.ComboBox comboBoxFromEntity;
+        private System.Windows.Forms.Button btnChangeName;
     }
 }

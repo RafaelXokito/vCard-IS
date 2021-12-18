@@ -304,14 +304,14 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            string queryString = "UPDATE Administrators SET Name = @name, Disabled = @disabled WHERE Id = @id";
+            string queryString = "UPDATE Administrators SET Name = @name WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@name", administrator.Name);
-                command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
+                //command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
                 command.Parameters.AddWithValue("@id", id);
 
                 try
