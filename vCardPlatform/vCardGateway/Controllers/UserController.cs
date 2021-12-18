@@ -245,6 +245,13 @@ namespace vCardGateway.Controllers
                     GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
+
+                if (!IsValidPhone(user.Username))
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", $"Phone Number must match portuguese phone number", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return BadRequest($"Phone Number must match portuguese phone number");
+                }
+
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -266,6 +273,22 @@ namespace vCardGateway.Controllers
             {
                 GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostUser", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
+            }
+        }
+
+        public bool IsValidPhone(string Phone)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Phone))
+                    return false;
+                var r = new Regex(@"^([9][1236])[0-9]*$");
+                return r.IsMatch(Phone);
+
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

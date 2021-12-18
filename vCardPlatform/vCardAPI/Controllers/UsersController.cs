@@ -316,6 +316,8 @@ namespace vCardAPI.Controllers
             {
                 try
                 {
+                    if (!IsValidPhone(user.Username))
+                        return BadRequest($"Phone Number must match portuguese phone number");
                     #region CREATE USER
                     SqlCommand command = new SqlCommand(queryStringUser, connection);
 
@@ -396,6 +398,22 @@ namespace vCardAPI.Controllers
                     }
                     return InternalServerError(ex);
                 }
+            }
+        }
+
+        public bool IsValidPhone(string Phone)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(Phone))
+                    return false;
+                var r = new Regex(@"^([9][1236])[0-9]*$");
+                return r.IsMatch(Phone);
+
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
