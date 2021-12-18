@@ -123,9 +123,9 @@ namespace vCardGateway.Controllers
         ///
         ///     POST
         ///     {
-        ///         "Payment_reference": "913406043",
+        ///         "Payment_Reference": "913406043",
         ///         "Value": "3",
-        ///         "Payment_type": "VCARD",
+        ///         "Payment_Type": "VCARD",
         ///         "Type": "D",
         ///         "Category": "7",
         ///         "Description": "Food For School",
@@ -146,6 +146,16 @@ namespace vCardGateway.Controllers
             DateTime responseTimeStart = DateTime.Now;
             try
             {
+                if (transaction == null || transaction.Payment_Reference == null || transaction.Payment_Reference == ""
+                    || transaction.Value <= 0
+                    || transaction.Payment_Type == null || transaction.Payment_Type == ""
+                    || (transaction.Type != "D" && transaction.Type != "C")
+                    || transaction.FromUser == null || transaction.FromUser == ""
+                    || transaction.FromEntity == null || transaction.FromEntity == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostTransaction", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
                 #region Find Debit Entity
@@ -455,7 +465,6 @@ namespace vCardGateway.Controllers
         ///         "Description": "Food",
         ///     }
         ///     
-        ///     Type IN ("D", "C")
         /// </remarks>
         /// <param name="entity_id">Entity ID</param>
         /// <param name="transaction_id">Transaction ID</param>
@@ -473,6 +482,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (transaction == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchTransactions", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 

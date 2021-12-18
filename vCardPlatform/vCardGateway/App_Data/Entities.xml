@@ -1,10 +1,10 @@
 <entities>
   <entity>
     <id>2</id>
-    <name>MBWAY</name>
+    <name>MBWAYPOSTMAN</name>
     <endpoint>http://localhost:55059</endpoint>
     <maxlimit>5000,02</maxlimit>
-    <earningpercentage>2</earningpercentage>
+    <earningpercentage>2,5</earningpercentage>
     <authentication type="User">
       <token>Basic R0FURVdBWToxMjM0</token>
       <username>GATEWAY</username>

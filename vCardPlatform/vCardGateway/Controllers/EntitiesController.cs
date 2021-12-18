@@ -76,6 +76,7 @@ namespace vCardGateway.Controllers
         ///             "Token": "Basic R0FURVdBWToxMjM0",
         ///             "Username": "GATEWAY",
         ///             "Password": "1234"
+        ///         }
         ///     }
         ///     
         /// </remarks>
@@ -91,26 +92,31 @@ namespace vCardGateway.Controllers
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
-            if (entity.Endpoint != null)
-            {
-                RestClient client = new RestClient(entity.Endpoint + "/api");
-                RestRequest request = new RestRequest("categories", Method.GET);
-
-                IRestResponse response = client.Execute(request);
-                if (response.StatusCode == HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
-                    return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
-                }
-            }
-            else
-            {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
-                return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
-            }
-
             try
             {
+                if (entity == null || entity.Name == null || entity.Endpoint == null || entity.MaxLimit < 0 || entity.EarningPercentage < 0 || entity.EarningPercentage > 100 || entity.Authentication == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
+                if (entity.Endpoint != null)
+                {
+                    RestClient client = new RestClient(entity.Endpoint + "/api");
+                    RestRequest request = new RestRequest("categories", Method.GET);
+
+                    IRestResponse response = client.Execute(request);
+                    if (response.StatusCode == HttpStatusCode.InternalServerError || response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                        return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
+                    }
+                }
+                else
+                {
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                    return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
+                }
+
                 GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PostEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.Created, handlerXML.CreateEntity(entity));
             }
@@ -138,6 +144,7 @@ namespace vCardGateway.Controllers
         ///             "Token": "Basic R0FURVdBWToxMjM0",
         ///             "Username": "GATEWAY",
         ///             "Password": "1234"
+        ///         }
         ///     }
         ///     
         /// </remarks>
@@ -155,26 +162,31 @@ namespace vCardGateway.Controllers
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
-            if (entity.Endpoint != null)
-            {
-                RestClient client = new RestClient(entity.Endpoint + "/api");
-                RestRequest request = new RestRequest("", Method.GET);
-
-                IRestResponse response = client.Execute(request);
-                if (!response.IsSuccessful && response.StatusCode != HttpStatusCode.NotFound)
-                {
-                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
-                    return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
-                }
-            }
-            else
-            {
-                GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
-                return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
-            }
-
             try
             {
+                if (entity == null || entity.Name == null || entity.Endpoint == null || entity.MaxLimit < 0 || entity.EarningPercentage < 0 || entity.EarningPercentage > 100 || entity.Authentication == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
+                if (entity.Endpoint != null)
+                {
+                    RestClient client = new RestClient(entity.Endpoint + "/api");
+                    RestRequest request = new RestRequest("", Method.GET);
+
+                    IRestResponse response = client.Execute(request);
+                    if (!response.IsSuccessful && response.StatusCode != HttpStatusCode.NotFound)
+                    {
+                        GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint need to be reachble", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                        return Content(HttpStatusCode.BadRequest, "Endpoint need to be reachble");
+                    }
+                }
+                else
+                {
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntity", "Endpoint cant be null", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                    return Content(HttpStatusCode.BadRequest, "Endpoint cant be null");
+                }
+
                 handlerXML.UpdateEntity(entity_id, entity);
                 GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.Created.ToString(), "PutEntity", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Content(HttpStatusCode.Created,handlerXML.GetEntity(entity_id));
@@ -217,6 +229,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (authentication == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutEntityAuth", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 handlerXML.UpdateEntityAuth(entity_id, authentication);
                 GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "PutEntityAuth", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
                 return Ok(handlerXML.GetEntity(entity_id));

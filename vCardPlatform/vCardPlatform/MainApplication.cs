@@ -24,6 +24,17 @@ namespace vCardPlatform
 {
     public partial class FormMainApplication : Form
     {
+        private string currentAdminName;
+
+        public string CurrentAdminName
+        {
+            get { return currentAdminName; }
+            set { 
+                currentAdminName = value;
+                labelAdministratorName.Text = value;
+            }
+        }
+
         //Connection String
         string connStr = Properties.Settings.Default.ConnStr;
 
@@ -32,7 +43,6 @@ namespace vCardPlatform
         //ClientAux dont have authorization --Util para enviar pedidos que têm a própria autenticação do lado do cliente
         RestClient clientAux = new RestClient("http://localhost:59458/api");
         Administrator administrator = null;
-
         //MQTT Variables
         bool valid = true;
         MqttClient m_cClient = new MqttClient("127.0.0.1");
@@ -48,8 +58,10 @@ namespace vCardPlatform
 
             if (response.IsSuccessful)
             {
+                currentAdminName = response.Data.Name;
                 administrator = response.Data;
                 labelAdministratorName.Text = administrator.Name;
+                labelAdministratorId.Text = administrator.Id.ToString();
                 return;
             }
 
@@ -74,6 +86,23 @@ namespace vCardPlatform
             arr[1] = doc.SelectSingleNode("/log/status").InnerText;
             arr[2] = doc.SelectSingleNode("/log/timestamp").InnerText;
 
+            if (arr[0] == labelAdministratorId.Text && arr[1] == "True")
+            {
+                if (this.InvokeRequired)
+                {
+                    clientUnsubscribe();
+                    this.Invoke((Action)delegate { this.Hide(); });
+                    MessageBox.Show("You are Blocked! " + labelAdministratorName.Text);
+                    FormLogin fl = new FormLogin();
+                    this.Invoke((Action)delegate { fl.Show(); });
+                }
+                else
+                {
+                    this.Close();
+                }
+                //this.Hide();
+            }
+
             //INSERT INTO DATALISTVIEW
             dataGridViewRealtime.BeginInvoke((MethodInvoker)delegate { dataGridViewRealtime.Rows.Add(arr[2], arr[1], arr[0]); dataGridViewRealtime.Sort(dataGridViewRealtime.Columns["Timestamp"], ListSortDirection.Descending); });
         }
@@ -85,13 +114,20 @@ namespace vCardPlatform
 
         private void FormMainApplication_FormClosing(object sender, FormClosingEventArgs e)
         {
+            clientUnsubscribe();
+
+            Application.Exit();
+        }
+
+        private void clientUnsubscribe()
+        {
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
+                string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
+                m_cClient.Unsubscribe(m_strTopicsInfoBlocked);
                 //m_cClient.Disconnect();
             }
-
-            Application.Exit();
         }
 
         private void buttonChangePassword_Click(object sender, EventArgs e)
@@ -212,6 +248,9 @@ namespace vCardPlatform
 
                 byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
                 m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
+
+                string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
+                m_cClient.Subscribe(m_strTopicsInfoBlocked, qosLevels);
 
                 #endregion
 
@@ -341,9 +380,12 @@ namespace vCardPlatform
 
             var resultAdmin = client.Execute<List<Administrator>>(requestAdmin).Data;
 
-            dataGridViewAdministrators.DataSource = resultAdmin;
+            if (resultAdmin != null)
+            {
+                dataGridViewAdministrators.DataSource = resultAdmin;
 
-            dataGridViewAdministrators.Columns["password"].Visible = false;
+                dataGridViewAdministrators.Columns["password"].Visible = false;
+            }
         }
 
 
@@ -1495,6 +1537,16 @@ namespace vCardPlatform
         private void comboBoxFromEntity_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadOperations();
+        }
+
+        private void btnChangeName_Click(object sender, EventArgs e)
+        {
+            FormChangeProfile fm = new FormChangeProfile(this, client, administrator.Id);
+            panelProfile.Controls.Clear();
+            fm.TopLevel = false;
+            fm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            panelProfile.Controls.Add(fm);
+            fm.Show();
         }
     }
 }
