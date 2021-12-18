@@ -46,7 +46,7 @@ namespace vCardPlatform
         //MQTT Variables
         bool valid = true;
         MqttClient m_cClient = new MqttClient("127.0.0.1");
-        string[] m_strTopicsInfo = { "administrators", "categories", "defaultcategories", "endpointssufixs", "entities", "transactions", "users" };
+        string[] m_strTopicsInfo = { "administrators", "categories", "defaultcategories", "endpointssufixs", "entities", "transactions", "users", "" };
 
         public FormMainApplication(string username, string password)
         {
@@ -124,8 +124,8 @@ namespace vCardPlatform
             if (m_cClient.IsConnected)
             {
                 m_cClient.Unsubscribe(m_strTopicsInfo);
-                string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
-                m_cClient.Unsubscribe(m_strTopicsInfoBlocked);
+                //string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
+                //m_cClient.Unsubscribe(m_strTopicsInfoBlocked);
                 //m_cClient.Disconnect();
             }
         }
@@ -1548,6 +1548,29 @@ namespace vCardPlatform
             fm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             panelProfile.Controls.Add(fm);
             fm.Show();
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void FormMainApplication_Move(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                notifyIcon.ShowBalloonTip(1000, "Application Closed", "Click to see Application!", ToolTipIcon.Info);
+            }
+        }
+
+        private void Exit_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
         }
     }
 }

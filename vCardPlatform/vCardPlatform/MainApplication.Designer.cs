@@ -29,6 +29,7 @@ namespace vCardPlatform
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMainApplication));
             this.labelAdministratorName = new System.Windows.Forms.Label();
             this.buttonChangePassword = new System.Windows.Forms.Button();
@@ -151,6 +152,7 @@ namespace vCardPlatform
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelAdministratorName
@@ -1256,6 +1258,7 @@ namespace vCardPlatform
             this.Text = "MainApplication";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMainApplication_FormClosing);
             this.Load += new System.EventHandler(this.FormMainApplication_Load);
+            this.Move += new System.EventHandler(this.FormMainApplication_Move);
             this.tabCMain.ResumeLayout(false);
             this.tabProfile.ResumeLayout(false);
             this.tabProfile.PerformLayout();
@@ -1293,6 +1296,7 @@ namespace vCardPlatform
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewRealtime)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1390,5 +1394,9 @@ namespace vCardPlatform
         private System.Windows.Forms.ComboBox comboBoxFromEntity;
         private System.Windows.Forms.Button btnChangeName;
         private System.Windows.Forms.Label labelAdministratorId;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
