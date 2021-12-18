@@ -62,6 +62,7 @@ namespace vCardPlatform
                 currentAdminName = response.Data.Name;
                 administrator = response.Data;
                 labelAdministratorName.Text = administrator.Name;
+                labelAdministratorId.Text = administrator.Id.ToString();
                 return;
             }
 
@@ -85,6 +86,30 @@ namespace vCardPlatform
             arr[0] = doc.SelectSingleNode("/log/message").InnerText;
             arr[1] = doc.SelectSingleNode("/log/status").InnerText;
             arr[2] = doc.SelectSingleNode("/log/timestamp").InnerText;
+
+            /*
+            if (arr[0] == AdminInitiator)
+            {
+                MessageBox.Show("You blocked yourself! " + labelAdministratorName.Text);
+                return;
+            }*/
+
+            if (arr[0] == labelAdministratorId.Text && arr[1] == "True")
+            {
+                MessageBox.Show("You are Blocked! " + labelAdministratorName.Text);
+
+                if (this.InvokeRequired)
+                {
+                    this.Invoke((Action)delegate { this.Hide(); });
+                    FormLogin fl = new FormLogin();
+                    this.Invoke((Action)delegate { fl.Show(); });
+                }
+                else
+                {
+                    this.Close();
+                }
+                //this.Hide();
+            }
 
             //INSERT INTO DATALISTVIEW
             dataGridViewRealtime.BeginInvoke((MethodInvoker)delegate { dataGridViewRealtime.Rows.Add(arr[2], arr[1], arr[0]); dataGridViewRealtime.Sort(dataGridViewRealtime.Columns["Timestamp"], ListSortDirection.Descending); });
@@ -225,6 +250,9 @@ namespace vCardPlatform
                 byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
                 m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
 
+                string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
+                m_cClient.Subscribe(m_strTopicsInfoBlocked, qosLevels);
+
                 #endregion
 
                 lblStatus.Text = "Tables loaded";
@@ -353,9 +381,12 @@ namespace vCardPlatform
 
             var resultAdmin = client.Execute<List<Administrator>>(requestAdmin).Data;
 
-            dataGridViewAdministrators.DataSource = resultAdmin;
+            if (resultAdmin != null)
+            {
+                dataGridViewAdministrators.DataSource = resultAdmin;
 
-            dataGridViewAdministrators.Columns["password"].Visible = false;
+                dataGridViewAdministrators.Columns["password"].Visible = false;
+            }
         }
 
 

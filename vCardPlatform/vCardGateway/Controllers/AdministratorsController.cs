@@ -10,12 +10,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
 using vCardGateway.Models;
+using uPLibrary.Networking.M2Mqtt;
 
 namespace vCardGateway.Controllers
 {
     public class AdministratorsController : ApiController
     {
         string connectionString = Properties.Settings.Default.ConnStr;
+
+        static MqttClient m_cClient = new MqttClient("127.0.0.1");
 
         /// <summary>
         /// Try to signin with gateway administrator credentials
@@ -403,6 +406,14 @@ namespace vCardGateway.Controllers
                     connection.Open();
                     if (command.ExecuteNonQuery() > 0)
                     {
+                        m_cClient.Connect(Guid.NewGuid().ToString());
+
+                        if (m_cClient.IsConnected)
+                        {
+                            DateTime datetime = new DateTime();
+                            m_cClient.Publish(id.ToString(), Encoding.UTF8.GetBytes(Log.BuildMessage(id.ToString(), administrator.Disabled.ToString(), datetime)));
+                        }
+
                         GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.OK.ToString(), "PatchAdministratorDisabled", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                         return Content(HttpStatusCode.OK, $"Administrator {administrator.Name} " + (administrator.Disabled ? "disabled" : "enabled"));
                     }
