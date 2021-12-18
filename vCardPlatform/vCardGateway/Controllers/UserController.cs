@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using vCardGateway.Models;
 
@@ -42,7 +43,7 @@ namespace vCardGateway.Controllers
             {
                 if (credentials == null)
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostSignin", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostSignin", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);
@@ -179,7 +180,7 @@ namespace vCardGateway.Controllers
             {
                 if (user == null || user.Photo == null)
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUserPhoto", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUserPhoto", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);
@@ -242,13 +243,13 @@ namespace vCardGateway.Controllers
                                  || user.Email == null || user.Email == ""
                                  || user.ConfirmationCode == null || user.ConfirmationCode == "")
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
 
                 if (!IsValidPhone(user.Username))
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", $"Phone Number must match portuguese phone number", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", $"Phone Number must match portuguese phone number", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return BadRequest($"Phone Number must match portuguese phone number");
                 }
 
@@ -323,7 +324,7 @@ namespace vCardGateway.Controllers
                 if (user == null || user.Name == null || user.Name == ""
                                  || user.Email == null || user.Email == "")
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);
@@ -381,7 +382,7 @@ namespace vCardGateway.Controllers
             {
                 if (user == null || user.MaximumLimit <= 0)
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserMaxLimit", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserMaxLimit", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
 
@@ -395,7 +396,7 @@ namespace vCardGateway.Controllers
                 request.AddJsonBody (user);
                 IRestResponse<User> response = client.Execute<User>(request);
                 dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
-                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserMaxLimit", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserMaxLimit", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 if (dataDefaultUser != null)
                 {
                     return Content(response.StatusCode, dataDefaultUser);
@@ -404,7 +405,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserMaxLimit", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserMaxLimit", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                 return InternalServerError(ex);
             }
         }
@@ -442,7 +443,7 @@ namespace vCardGateway.Controllers
                 if (secret == null || secret.Password == null || secret.Password == ""
                                  || secret.NewPassword == null || secret.NewPassword == "")
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserPassword", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserPassword", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);
@@ -502,7 +503,7 @@ namespace vCardGateway.Controllers
                 if (secret == null || secret.Password == null || secret.Password == ""
                                  || secret.NewConfirmationCode == null || secret.NewConfirmationCode == "")
                 {
-                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserConfirmationCode", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserConfirmationCode", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "users");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);

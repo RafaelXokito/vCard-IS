@@ -124,7 +124,7 @@ namespace vCardGateway.Controllers
             {
                 if (category == null || category.Name == null || category.Type == null || (category.Type != "D" && category.Type != "C"))
                 {
-                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);
@@ -178,7 +178,7 @@ namespace vCardGateway.Controllers
             {
                 if (category == null || category.Name == null || category.Type == null || (category.Type != "D" && category.Type != "C"))
                 {
-                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "categories");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);

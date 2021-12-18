@@ -153,7 +153,7 @@ namespace vCardGateway.Controllers
                     || transaction.FromUser == null || transaction.FromUser == ""
                     || transaction.FromEntity == null || transaction.FromEntity == "")
                 {
-                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostTransaction", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostTransaction", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "transactions");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 HandlerXML handlerXML = new HandlerXML(entitiesPath);
@@ -484,7 +484,7 @@ namespace vCardGateway.Controllers
             {
                 if (transaction == null)
                 {
-                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchTransactions", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchTransactions", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "transactions");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 Entity entity = handlerXML.GetEntity(entity_id);

@@ -56,7 +56,7 @@ namespace vCardGateway.Controllers
             HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
             if (sufix == null || sufix.Content == null || sufix.Content == "")
             {
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "GetEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "GetEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return Content(HttpStatusCode.BadRequest, "Invalid inputs");
             }
             EndpointSufix sufix_r = handlerXML.GetEndpointSufix(sufix.Content);
@@ -99,7 +99,7 @@ namespace vCardGateway.Controllers
             {
                 if (sufix == null || sufix.Content == null || sufix.Content == "")
                 {
-                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 handlerXML.CreateEndpointSufix(sufix);
@@ -142,7 +142,7 @@ namespace vCardGateway.Controllers
             {
                 if (sufix == null || sufix.Content == null || sufix.Content == "")
                 {
-                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "DeleteEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "DeleteEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 handlerXML.DeleteEndpointSufix(sufix.Content);
