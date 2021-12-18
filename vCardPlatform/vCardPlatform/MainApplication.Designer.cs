@@ -94,6 +94,8 @@ namespace vCardPlatform
             this.tabOperations = new System.Windows.Forms.TabPage();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageTransactionLogs = new System.Windows.Forms.TabPage();
+            this.lblFromEntity = new System.Windows.Forms.Label();
+            this.comboBoxFromEntity = new System.Windows.Forms.ComboBox();
             this.buttonOperationsRefresh = new System.Windows.Forms.Button();
             this.textBoxFromUser = new System.Windows.Forms.TextBox();
             this.buttonTLogsExportXml = new System.Windows.Forms.Button();
@@ -117,8 +119,6 @@ namespace vCardPlatform
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnLogout = new System.Windows.Forms.Button();
-            this.comboBoxFromEntity = new System.Windows.Forms.ComboBox();
-            this.lblFromEntity = new System.Windows.Forms.Label();
             this.tabCMain.SuspendLayout();
             this.tabProfile.SuspendLayout();
             this.tabEntities.SuspendLayout();
@@ -155,17 +155,19 @@ namespace vCardPlatform
             // 
             this.labelAdministratorName.AutoSize = true;
             this.labelAdministratorName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAdministratorName.Location = new System.Drawing.Point(15, 14);
+            this.labelAdministratorName.Location = new System.Drawing.Point(10, 9);
+            this.labelAdministratorName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelAdministratorName.Name = "labelAdministratorName";
-            this.labelAdministratorName.Size = new System.Drawing.Size(241, 29);
+            this.labelAdministratorName.Size = new System.Drawing.Size(180, 22);
             this.labelAdministratorName.TabIndex = 1;
             this.labelAdministratorName.Text = "Administrator\'s Name";
             // 
             // buttonChangePassword
             // 
-            this.buttonChangePassword.Location = new System.Drawing.Point(340, 11);
+            this.buttonChangePassword.Location = new System.Drawing.Point(227, 7);
+            this.buttonChangePassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonChangePassword.Name = "buttonChangePassword";
-            this.buttonChangePassword.Size = new System.Drawing.Size(153, 37);
+            this.buttonChangePassword.Size = new System.Drawing.Size(102, 24);
             this.buttonChangePassword.TabIndex = 2;
             this.buttonChangePassword.Text = "Change Password";
             this.buttonChangePassword.UseVisualStyleBackColor = true;
@@ -180,10 +182,9 @@ namespace vCardPlatform
             this.tabCMain.Controls.Add(this.tabPage1);
             this.tabCMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabCMain.Location = new System.Drawing.Point(0, 0);
-            this.tabCMain.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabCMain.Name = "tabCMain";
             this.tabCMain.SelectedIndex = 0;
-            this.tabCMain.Size = new System.Drawing.Size(1416, 811);
+            this.tabCMain.Size = new System.Drawing.Size(944, 527);
             this.tabCMain.TabIndex = 4;
             // 
             // tabProfile
@@ -191,11 +192,10 @@ namespace vCardPlatform
             this.tabProfile.Controls.Add(this.panelProfile);
             this.tabProfile.Controls.Add(this.buttonChangePassword);
             this.tabProfile.Controls.Add(this.labelAdministratorName);
-            this.tabProfile.Location = new System.Drawing.Point(4, 29);
-            this.tabProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabProfile.Location = new System.Drawing.Point(4, 22);
             this.tabProfile.Name = "tabProfile";
-            this.tabProfile.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabProfile.Size = new System.Drawing.Size(1408, 778);
+            this.tabProfile.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabProfile.Size = new System.Drawing.Size(936, 501);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
             this.tabProfile.UseVisualStyleBackColor = true;
@@ -203,20 +203,18 @@ namespace vCardPlatform
             // panelProfile
             // 
             this.panelProfile.BackColor = System.Drawing.SystemColors.Control;
-            this.panelProfile.Location = new System.Drawing.Point(14, 88);
-            this.panelProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panelProfile.Location = new System.Drawing.Point(9, 57);
             this.panelProfile.Name = "panelProfile";
-            this.panelProfile.Size = new System.Drawing.Size(1366, 545);
+            this.panelProfile.Size = new System.Drawing.Size(911, 354);
             this.panelProfile.TabIndex = 4;
             // 
             // tabEntities
             // 
             this.tabEntities.Controls.Add(this.tabCEntities);
-            this.tabEntities.Location = new System.Drawing.Point(4, 29);
-            this.tabEntities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabEntities.Location = new System.Drawing.Point(4, 22);
             this.tabEntities.Name = "tabEntities";
-            this.tabEntities.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabEntities.Size = new System.Drawing.Size(1408, 778);
+            this.tabEntities.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEntities.Size = new System.Drawing.Size(936, 501);
             this.tabEntities.TabIndex = 1;
             this.tabEntities.Text = "Entities";
             this.tabEntities.UseVisualStyleBackColor = true;
@@ -229,11 +227,11 @@ namespace vCardPlatform
             this.tabCEntities.Controls.Add(this.tabEntityTable);
             this.tabCEntities.Controls.Add(this.tabEntity);
             this.tabCEntities.Controls.Add(this.tabEndPointsSufixs);
-            this.tabCEntities.Location = new System.Drawing.Point(9, 9);
-            this.tabCEntities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCEntities.Location = new System.Drawing.Point(6, 6);
+            this.tabCEntities.MinimumSize = new System.Drawing.Size(927, 469);
             this.tabCEntities.Name = "tabCEntities";
             this.tabCEntities.SelectedIndex = 0;
-            this.tabCEntities.Size = new System.Drawing.Size(1390, 702);
+            this.tabCEntities.Size = new System.Drawing.Size(927, 469);
             this.tabCEntities.TabIndex = 30;
             // 
             // tabEntityTable
@@ -242,11 +240,10 @@ namespace vCardPlatform
             this.tabEntityTable.Controls.Add(this.btnEntitiesDelete);
             this.tabEntityTable.Controls.Add(this.btnEntitiesRefresh);
             this.tabEntityTable.Controls.Add(this.dataGridViewEntities);
-            this.tabEntityTable.Location = new System.Drawing.Point(4, 29);
-            this.tabEntityTable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabEntityTable.Location = new System.Drawing.Point(4, 22);
             this.tabEntityTable.Name = "tabEntityTable";
-            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabEntityTable.Size = new System.Drawing.Size(1382, 669);
+            this.tabEntityTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEntityTable.Size = new System.Drawing.Size(919, 430);
             this.tabEntityTable.TabIndex = 0;
             this.tabEntityTable.Text = "Table";
             this.tabEntityTable.UseVisualStyleBackColor = true;
@@ -256,10 +253,9 @@ namespace vCardPlatform
             this.btnEntitiesCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEntitiesCreate.Image = global::vCardPlatform.Properties.Resources.add;
             this.btnEntitiesCreate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesCreate.Location = new System.Drawing.Point(996, 9);
-            this.btnEntitiesCreate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntitiesCreate.Location = new System.Drawing.Point(664, 6);
             this.btnEntitiesCreate.Name = "btnEntitiesCreate";
-            this.btnEntitiesCreate.Size = new System.Drawing.Size(112, 35);
+            this.btnEntitiesCreate.Size = new System.Drawing.Size(75, 23);
             this.btnEntitiesCreate.TabIndex = 23;
             this.btnEntitiesCreate.Text = "Create";
             this.btnEntitiesCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -271,10 +267,9 @@ namespace vCardPlatform
             this.btnEntitiesDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEntitiesDelete.Image = global::vCardPlatform.Properties.Resources.delete;
             this.btnEntitiesDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesDelete.Location = new System.Drawing.Point(1118, 9);
-            this.btnEntitiesDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntitiesDelete.Location = new System.Drawing.Point(745, 6);
             this.btnEntitiesDelete.Name = "btnEntitiesDelete";
-            this.btnEntitiesDelete.Size = new System.Drawing.Size(112, 35);
+            this.btnEntitiesDelete.Size = new System.Drawing.Size(75, 23);
             this.btnEntitiesDelete.TabIndex = 22;
             this.btnEntitiesDelete.Text = "Delete";
             this.btnEntitiesDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -286,10 +281,9 @@ namespace vCardPlatform
             this.btnEntitiesRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEntitiesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.btnEntitiesRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEntitiesRefresh.Location = new System.Drawing.Point(1239, 9);
-            this.btnEntitiesRefresh.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntitiesRefresh.Location = new System.Drawing.Point(826, 6);
             this.btnEntitiesRefresh.Name = "btnEntitiesRefresh";
-            this.btnEntitiesRefresh.Size = new System.Drawing.Size(112, 35);
+            this.btnEntitiesRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnEntitiesRefresh.TabIndex = 21;
             this.btnEntitiesRefresh.Text = "Refresh";
             this.btnEntitiesRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -302,13 +296,12 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewEntities.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewEntities.Location = new System.Drawing.Point(9, 54);
-            this.dataGridViewEntities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewEntities.Location = new System.Drawing.Point(6, 35);
             this.dataGridViewEntities.Name = "dataGridViewEntities";
             this.dataGridViewEntities.ReadOnly = true;
             this.dataGridViewEntities.RowHeadersWidth = 45;
             this.dataGridViewEntities.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEntities.Size = new System.Drawing.Size(1365, 592);
+            this.dataGridViewEntities.Size = new System.Drawing.Size(910, 389);
             this.dataGridViewEntities.TabIndex = 20;
             this.dataGridViewEntities.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEntities_CellDoubleClick);
             // 
@@ -319,10 +312,9 @@ namespace vCardPlatform
             this.tabEntity.Controls.Add(this.groupEntityDefaultCategory);
             this.tabEntity.Controls.Add(this.btnEntityUsers);
             this.tabEntity.Controls.Add(this.groupEntityStatus);
-            this.tabEntity.Location = new System.Drawing.Point(4, 29);
-            this.tabEntity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabEntity.Location = new System.Drawing.Point(4, 22);
             this.tabEntity.Name = "tabEntity";
-            this.tabEntity.Size = new System.Drawing.Size(1382, 669);
+            this.tabEntity.Size = new System.Drawing.Size(919, 443);
             this.tabEntity.TabIndex = 2;
             this.tabEntity.Text = "Entity";
             this.tabEntity.UseVisualStyleBackColor = true;
@@ -332,10 +324,9 @@ namespace vCardPlatform
             this.btnEntitySave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEntitySave.Enabled = false;
             this.btnEntitySave.Image = global::vCardPlatform.Properties.Resources.save;
-            this.btnEntitySave.Location = new System.Drawing.Point(1262, 5);
-            this.btnEntitySave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntitySave.Location = new System.Drawing.Point(841, 3);
             this.btnEntitySave.Name = "btnEntitySave";
-            this.btnEntitySave.Size = new System.Drawing.Size(112, 35);
+            this.btnEntitySave.Size = new System.Drawing.Size(75, 23);
             this.btnEntitySave.TabIndex = 3;
             this.btnEntitySave.Text = "Save";
             this.btnEntitySave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -359,11 +350,9 @@ namespace vCardPlatform
             this.groupDataEntity.Controls.Add(this.lblEntityName);
             this.groupDataEntity.Controls.Add(this.txtEntityName);
             this.groupDataEntity.Enabled = false;
-            this.groupDataEntity.Location = new System.Drawing.Point(4, 49);
-            this.groupDataEntity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupDataEntity.Location = new System.Drawing.Point(3, 32);
             this.groupDataEntity.Name = "groupDataEntity";
-            this.groupDataEntity.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupDataEntity.Size = new System.Drawing.Size(456, 592);
+            this.groupDataEntity.Size = new System.Drawing.Size(304, 402);
             this.groupDataEntity.TabIndex = 2;
             this.groupDataEntity.TabStop = false;
             this.groupDataEntity.Text = "Data";
@@ -377,11 +366,9 @@ namespace vCardPlatform
             this.groupEntityAuth.Controls.Add(this.txtEntityUsername);
             this.groupEntityAuth.Controls.Add(this.lblEntityPassword);
             this.groupEntityAuth.Controls.Add(this.txtEntityPassword);
-            this.groupEntityAuth.Location = new System.Drawing.Point(9, 420);
-            this.groupEntityAuth.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupEntityAuth.Location = new System.Drawing.Point(6, 273);
             this.groupEntityAuth.Name = "groupEntityAuth";
-            this.groupEntityAuth.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupEntityAuth.Size = new System.Drawing.Size(438, 162);
+            this.groupEntityAuth.Size = new System.Drawing.Size(292, 123);
             this.groupEntityAuth.TabIndex = 7;
             this.groupEntityAuth.TabStop = false;
             this.groupEntityAuth.Text = "Authentication";
@@ -389,10 +376,9 @@ namespace vCardPlatform
             // btnEntityTestAuthentication
             // 
             this.btnEntityTestAuthentication.Image = global::vCardPlatform.Properties.Resources.block;
-            this.btnEntityTestAuthentication.Location = new System.Drawing.Point(306, 134);
-            this.btnEntityTestAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntityTestAuthentication.Location = new System.Drawing.Point(204, 87);
             this.btnEntityTestAuthentication.Name = "btnEntityTestAuthentication";
-            this.btnEntityTestAuthentication.Size = new System.Drawing.Size(123, 40);
+            this.btnEntityTestAuthentication.Size = new System.Drawing.Size(82, 26);
             this.btnEntityTestAuthentication.TabIndex = 14;
             this.btnEntityTestAuthentication.Text = "Test";
             this.btnEntityTestAuthentication.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -404,10 +390,9 @@ namespace vCardPlatform
             this.lblEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityUsername.AutoSize = true;
-            this.lblEntityUsername.Location = new System.Drawing.Point(9, 45);
-            this.lblEntityUsername.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityUsername.Location = new System.Drawing.Point(6, 29);
             this.lblEntityUsername.Name = "lblEntityUsername";
-            this.lblEntityUsername.Size = new System.Drawing.Size(47, 20);
+            this.lblEntityUsername.Size = new System.Drawing.Size(36, 15);
             this.lblEntityUsername.TabIndex = 13;
             this.lblEntityUsername.Text = "User:";
             // 
@@ -415,10 +400,9 @@ namespace vCardPlatform
             // 
             this.txtEntityUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityUsername.Location = new System.Drawing.Point(72, 40);
-            this.txtEntityUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEntityUsername.Location = new System.Drawing.Point(48, 26);
             this.txtEntityUsername.Name = "txtEntityUsername";
-            this.txtEntityUsername.Size = new System.Drawing.Size(355, 26);
+            this.txtEntityUsername.Size = new System.Drawing.Size(238, 20);
             this.txtEntityUsername.TabIndex = 12;
             // 
             // lblEntityPassword
@@ -426,10 +410,9 @@ namespace vCardPlatform
             this.lblEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityPassword.AutoSize = true;
-            this.lblEntityPassword.Location = new System.Drawing.Point(8, 97);
-            this.lblEntityPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityPassword.Location = new System.Drawing.Point(5, 63);
             this.lblEntityPassword.Name = "lblEntityPassword";
-            this.lblEntityPassword.Size = new System.Drawing.Size(48, 20);
+            this.lblEntityPassword.Size = new System.Drawing.Size(37, 15);
             this.lblEntityPassword.TabIndex = 11;
             this.lblEntityPassword.Text = "Pass:";
             // 
@@ -437,19 +420,17 @@ namespace vCardPlatform
             // 
             this.txtEntityPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityPassword.Location = new System.Drawing.Point(72, 97);
-            this.txtEntityPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEntityPassword.Location = new System.Drawing.Point(48, 63);
             this.txtEntityPassword.Name = "txtEntityPassword";
             this.txtEntityPassword.PasswordChar = '*';
-            this.txtEntityPassword.Size = new System.Drawing.Size(355, 26);
+            this.txtEntityPassword.Size = new System.Drawing.Size(238, 20);
             this.txtEntityPassword.TabIndex = 10;
             // 
             // numEarningPercentage
             // 
-            this.numEarningPercentage.Location = new System.Drawing.Point(9, 360);
-            this.numEarningPercentage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.numEarningPercentage.Location = new System.Drawing.Point(6, 234);
             this.numEarningPercentage.Name = "numEarningPercentage";
-            this.numEarningPercentage.Size = new System.Drawing.Size(438, 26);
+            this.numEarningPercentage.Size = new System.Drawing.Size(292, 20);
             this.numEarningPercentage.TabIndex = 11;
             // 
             // lblEarningPercentage
@@ -457,10 +438,9 @@ namespace vCardPlatform
             this.lblEarningPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEarningPercentage.AutoSize = true;
-            this.lblEarningPercentage.Location = new System.Drawing.Point(4, 337);
-            this.lblEarningPercentage.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEarningPercentage.Location = new System.Drawing.Point(3, 219);
             this.lblEarningPercentage.Name = "lblEarningPercentage";
-            this.lblEarningPercentage.Size = new System.Drawing.Size(82, 20);
+            this.lblEarningPercentage.Size = new System.Drawing.Size(64, 15);
             this.lblEarningPercentage.TabIndex = 10;
             this.lblEarningPercentage.Text = "Earning %";
             // 
@@ -469,10 +449,9 @@ namespace vCardPlatform
             this.lblEntityID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityID.AutoSize = true;
-            this.lblEntityID.Location = new System.Drawing.Point(4, 37);
-            this.lblEntityID.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityID.Location = new System.Drawing.Point(3, 24);
             this.lblEntityID.Name = "lblEntityID";
-            this.lblEntityID.Size = new System.Drawing.Size(23, 20);
+            this.lblEntityID.Size = new System.Drawing.Size(17, 15);
             this.lblEntityID.TabIndex = 9;
             this.lblEntityID.Text = "Id";
             // 
@@ -481,10 +460,9 @@ namespace vCardPlatform
             this.txtEntityId.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEntityId.Enabled = false;
-            this.txtEntityId.Location = new System.Drawing.Point(9, 65);
-            this.txtEntityId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEntityId.Location = new System.Drawing.Point(6, 42);
             this.txtEntityId.Name = "txtEntityId";
-            this.txtEntityId.Size = new System.Drawing.Size(436, 26);
+            this.txtEntityId.Size = new System.Drawing.Size(292, 20);
             this.txtEntityId.TabIndex = 8;
             // 
             // numEntityMaxLimit
@@ -495,24 +473,22 @@ namespace vCardPlatform
             0,
             0,
             131072});
-            this.numEntityMaxLimit.Location = new System.Drawing.Point(9, 286);
-            this.numEntityMaxLimit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.numEntityMaxLimit.Location = new System.Drawing.Point(6, 186);
             this.numEntityMaxLimit.Maximum = new decimal(new int[] {
             -559939585,
             902409669,
             54,
             0});
             this.numEntityMaxLimit.Name = "numEntityMaxLimit";
-            this.numEntityMaxLimit.Size = new System.Drawing.Size(438, 26);
+            this.numEntityMaxLimit.Size = new System.Drawing.Size(292, 20);
             this.numEntityMaxLimit.TabIndex = 7;
             // 
             // btnTestEndpoint
             // 
             this.btnTestEndpoint.Image = global::vCardPlatform.Properties.Resources.connect;
-            this.btnTestEndpoint.Location = new System.Drawing.Point(412, 212);
-            this.btnTestEndpoint.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnTestEndpoint.Location = new System.Drawing.Point(275, 138);
             this.btnTestEndpoint.Name = "btnTestEndpoint";
-            this.btnTestEndpoint.Size = new System.Drawing.Size(34, 35);
+            this.btnTestEndpoint.Size = new System.Drawing.Size(23, 23);
             this.btnTestEndpoint.TabIndex = 6;
             this.btnTestEndpoint.UseVisualStyleBackColor = true;
             this.btnTestEndpoint.Click += new System.EventHandler(this.btnTestEndpoint_Click);
@@ -522,10 +498,9 @@ namespace vCardPlatform
             this.lblEntityMaxLimit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityMaxLimit.AutoSize = true;
-            this.lblEntityMaxLimit.Location = new System.Drawing.Point(4, 254);
-            this.lblEntityMaxLimit.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityMaxLimit.Location = new System.Drawing.Point(3, 165);
             this.lblEntityMaxLimit.Name = "lblEntityMaxLimit";
-            this.lblEntityMaxLimit.Size = new System.Drawing.Size(75, 20);
+            this.lblEntityMaxLimit.Size = new System.Drawing.Size(61, 15);
             this.lblEntityMaxLimit.TabIndex = 5;
             this.lblEntityMaxLimit.Text = "Max Limit";
             // 
@@ -534,10 +509,9 @@ namespace vCardPlatform
             this.lblEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityEndpoint.AutoSize = true;
-            this.lblEntityEndpoint.Location = new System.Drawing.Point(4, 175);
-            this.lblEntityEndpoint.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityEndpoint.Location = new System.Drawing.Point(3, 114);
             this.lblEntityEndpoint.Name = "lblEntityEndpoint";
-            this.lblEntityEndpoint.Size = new System.Drawing.Size(73, 20);
+            this.lblEntityEndpoint.Size = new System.Drawing.Size(56, 15);
             this.lblEntityEndpoint.TabIndex = 3;
             this.lblEntityEndpoint.Text = "Endpoint";
             // 
@@ -545,10 +519,9 @@ namespace vCardPlatform
             // 
             this.txtEntityEndpoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityEndpoint.Location = new System.Drawing.Point(9, 212);
-            this.txtEntityEndpoint.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEntityEndpoint.Location = new System.Drawing.Point(6, 138);
             this.txtEntityEndpoint.Name = "txtEntityEndpoint";
-            this.txtEntityEndpoint.Size = new System.Drawing.Size(392, 26);
+            this.txtEntityEndpoint.Size = new System.Drawing.Size(263, 20);
             this.txtEntityEndpoint.TabIndex = 2;
             // 
             // lblEntityName
@@ -556,10 +529,9 @@ namespace vCardPlatform
             this.lblEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblEntityName.AutoSize = true;
-            this.lblEntityName.Location = new System.Drawing.Point(4, 95);
-            this.lblEntityName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityName.Location = new System.Drawing.Point(3, 62);
             this.lblEntityName.Name = "lblEntityName";
-            this.lblEntityName.Size = new System.Drawing.Size(51, 20);
+            this.lblEntityName.Size = new System.Drawing.Size(41, 15);
             this.lblEntityName.TabIndex = 1;
             this.lblEntityName.Text = "Name";
             // 
@@ -567,10 +539,9 @@ namespace vCardPlatform
             // 
             this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEntityName.Location = new System.Drawing.Point(9, 138);
-            this.txtEntityName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEntityName.Location = new System.Drawing.Point(6, 90);
             this.txtEntityName.Name = "txtEntityName";
-            this.txtEntityName.Size = new System.Drawing.Size(436, 26);
+            this.txtEntityName.Size = new System.Drawing.Size(292, 20);
             this.txtEntityName.TabIndex = 0;
             // 
             // groupEntityDefaultCategory
@@ -582,11 +553,9 @@ namespace vCardPlatform
             this.groupEntityDefaultCategory.Controls.Add(this.btnEntityDCRemoveRow);
             this.groupEntityDefaultCategory.Controls.Add(this.dataGridViewEntityDefaultCategory);
             this.groupEntityDefaultCategory.Enabled = false;
-            this.groupEntityDefaultCategory.Location = new System.Drawing.Point(934, 49);
-            this.groupEntityDefaultCategory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupEntityDefaultCategory.Location = new System.Drawing.Point(623, 32);
             this.groupEntityDefaultCategory.Name = "groupEntityDefaultCategory";
-            this.groupEntityDefaultCategory.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupEntityDefaultCategory.Size = new System.Drawing.Size(456, 592);
+            this.groupEntityDefaultCategory.Size = new System.Drawing.Size(304, 402);
             this.groupEntityDefaultCategory.TabIndex = 1;
             this.groupEntityDefaultCategory.TabStop = false;
             this.groupEntityDefaultCategory.Text = "Default Categories";
@@ -594,10 +563,9 @@ namespace vCardPlatform
             // btnEntityDefaultCategoriesRefresh
             // 
             this.btnEntityDefaultCategoriesRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnEntityDefaultCategoriesRefresh.Location = new System.Drawing.Point(57, 28);
-            this.btnEntityDefaultCategoriesRefresh.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntityDefaultCategoriesRefresh.Location = new System.Drawing.Point(38, 18);
             this.btnEntityDefaultCategoriesRefresh.Name = "btnEntityDefaultCategoriesRefresh";
-            this.btnEntityDefaultCategoriesRefresh.Size = new System.Drawing.Size(39, 35);
+            this.btnEntityDefaultCategoriesRefresh.Size = new System.Drawing.Size(26, 23);
             this.btnEntityDefaultCategoriesRefresh.TabIndex = 8;
             this.btnEntityDefaultCategoriesRefresh.UseVisualStyleBackColor = true;
             this.btnEntityDefaultCategoriesRefresh.Click += new System.EventHandler(this.btnEntityDefaultCategoriesRefresh_Click);
@@ -605,10 +573,9 @@ namespace vCardPlatform
             // btnEntityDCRemoveRow
             // 
             this.btnEntityDCRemoveRow.Image = global::vCardPlatform.Properties.Resources.delete;
-            this.btnEntityDCRemoveRow.Location = new System.Drawing.Point(9, 28);
-            this.btnEntityDCRemoveRow.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntityDCRemoveRow.Location = new System.Drawing.Point(6, 18);
             this.btnEntityDCRemoveRow.Name = "btnEntityDCRemoveRow";
-            this.btnEntityDCRemoveRow.Size = new System.Drawing.Size(39, 35);
+            this.btnEntityDCRemoveRow.Size = new System.Drawing.Size(26, 23);
             this.btnEntityDCRemoveRow.TabIndex = 7;
             this.btnEntityDCRemoveRow.UseVisualStyleBackColor = true;
             this.btnEntityDCRemoveRow.Click += new System.EventHandler(this.btnEntityDCRemoveRow_Click);
@@ -619,11 +586,10 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewEntityDefaultCategory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewEntityDefaultCategory.Location = new System.Drawing.Point(9, 72);
-            this.dataGridViewEntityDefaultCategory.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewEntityDefaultCategory.Location = new System.Drawing.Point(6, 47);
             this.dataGridViewEntityDefaultCategory.Name = "dataGridViewEntityDefaultCategory";
             this.dataGridViewEntityDefaultCategory.RowHeadersWidth = 45;
-            this.dataGridViewEntityDefaultCategory.Size = new System.Drawing.Size(430, 511);
+            this.dataGridViewEntityDefaultCategory.Size = new System.Drawing.Size(287, 350);
             this.dataGridViewEntityDefaultCategory.TabIndex = 0;
             // 
             // btnEntityUsers
@@ -631,10 +597,9 @@ namespace vCardPlatform
             this.btnEntityUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEntityUsers.Enabled = false;
             this.btnEntityUsers.Image = global::vCardPlatform.Properties.Resources.users;
-            this.btnEntityUsers.Location = new System.Drawing.Point(1140, 5);
-            this.btnEntityUsers.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEntityUsers.Location = new System.Drawing.Point(760, 3);
             this.btnEntityUsers.Name = "btnEntityUsers";
-            this.btnEntityUsers.Size = new System.Drawing.Size(112, 35);
+            this.btnEntityUsers.Size = new System.Drawing.Size(75, 23);
             this.btnEntityUsers.TabIndex = 4;
             this.btnEntityUsers.Text = "Users";
             this.btnEntityUsers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -650,11 +615,9 @@ namespace vCardPlatform
             this.groupEntityStatus.Controls.Add(this.label5);
             this.groupEntityStatus.Controls.Add(this.lblEntityStatusName);
             this.groupEntityStatus.Controls.Add(this.label4);
-            this.groupEntityStatus.Location = new System.Drawing.Point(470, 49);
-            this.groupEntityStatus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupEntityStatus.Location = new System.Drawing.Point(313, 32);
             this.groupEntityStatus.Name = "groupEntityStatus";
-            this.groupEntityStatus.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupEntityStatus.Size = new System.Drawing.Size(456, 592);
+            this.groupEntityStatus.Size = new System.Drawing.Size(304, 402);
             this.groupEntityStatus.TabIndex = 0;
             this.groupEntityStatus.TabStop = false;
             this.groupEntityStatus.Text = "Status";
@@ -663,10 +626,9 @@ namespace vCardPlatform
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(42, 148);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(28, 96);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(89, 18);
+            this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 5;
             this.label6.Text = "Resources: ";
             // 
@@ -676,40 +638,36 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEntityStatusResources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelEntityStatusResources.Location = new System.Drawing.Point(9, 175);
-            this.panelEntityStatusResources.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panelEntityStatusResources.Location = new System.Drawing.Point(6, 114);
             this.panelEntityStatusResources.Name = "panelEntityStatusResources";
-            this.panelEntityStatusResources.Size = new System.Drawing.Size(437, 407);
+            this.panelEntityStatusResources.Size = new System.Drawing.Size(292, 283);
             this.panelEntityStatusResources.TabIndex = 6;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(46, 75);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(31, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 18);
+            this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 3;
             this.label5.Text = "Response: ";
             // 
             // lblEntityStatusName
             // 
             this.lblEntityStatusName.AutoSize = true;
-            this.lblEntityStatusName.Location = new System.Drawing.Point(159, 40);
-            this.lblEntityStatusName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblEntityStatusName.Location = new System.Drawing.Point(106, 26);
             this.lblEntityStatusName.Name = "lblEntityStatusName";
-            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 20);
+            this.lblEntityStatusName.Size = new System.Drawing.Size(0, 15);
             this.lblEntityStatusName.TabIndex = 2;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.471698F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(87, 40);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(58, 26);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 18);
+            this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 1;
             this.label4.Text = "Entity: ";
             // 
@@ -718,11 +676,10 @@ namespace vCardPlatform
             this.tabEndPointsSufixs.Controls.Add(this.btnEndPointsSufixsRefresh);
             this.tabEndPointsSufixs.Controls.Add(this.btnEndPointsSufixsSave);
             this.tabEndPointsSufixs.Controls.Add(this.dataGridViewEndPointsSufixs);
-            this.tabEndPointsSufixs.Location = new System.Drawing.Point(4, 29);
-            this.tabEndPointsSufixs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabEndPointsSufixs.Location = new System.Drawing.Point(4, 22);
             this.tabEndPointsSufixs.Name = "tabEndPointsSufixs";
-            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabEndPointsSufixs.Size = new System.Drawing.Size(1382, 669);
+            this.tabEndPointsSufixs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabEndPointsSufixs.Size = new System.Drawing.Size(919, 430);
             this.tabEndPointsSufixs.TabIndex = 3;
             this.tabEndPointsSufixs.Text = "EndPoints Sufixs";
             this.tabEndPointsSufixs.UseVisualStyleBackColor = true;
@@ -730,10 +687,9 @@ namespace vCardPlatform
             // btnEndPointsSufixsRefresh
             // 
             this.btnEndPointsSufixsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
-            this.btnEndPointsSufixsRefresh.Location = new System.Drawing.Point(1132, 5);
-            this.btnEndPointsSufixsRefresh.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEndPointsSufixsRefresh.Location = new System.Drawing.Point(755, 3);
             this.btnEndPointsSufixsRefresh.Name = "btnEndPointsSufixsRefresh";
-            this.btnEndPointsSufixsRefresh.Size = new System.Drawing.Size(114, 35);
+            this.btnEndPointsSufixsRefresh.Size = new System.Drawing.Size(76, 23);
             this.btnEndPointsSufixsRefresh.TabIndex = 2;
             this.btnEndPointsSufixsRefresh.Text = "Refresh";
             this.btnEndPointsSufixsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -743,10 +699,9 @@ namespace vCardPlatform
             // btnEndPointsSufixsSave
             // 
             this.btnEndPointsSufixsSave.Image = global::vCardPlatform.Properties.Resources.save;
-            this.btnEndPointsSufixsSave.Location = new System.Drawing.Point(1256, 5);
-            this.btnEndPointsSufixsSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnEndPointsSufixsSave.Location = new System.Drawing.Point(837, 3);
             this.btnEndPointsSufixsSave.Name = "btnEndPointsSufixsSave";
-            this.btnEndPointsSufixsSave.Size = new System.Drawing.Size(114, 35);
+            this.btnEndPointsSufixsSave.Size = new System.Drawing.Size(76, 23);
             this.btnEndPointsSufixsSave.TabIndex = 1;
             this.btnEndPointsSufixsSave.Text = "Save";
             this.btnEndPointsSufixsSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -756,20 +711,18 @@ namespace vCardPlatform
             // dataGridViewEndPointsSufixs
             // 
             this.dataGridViewEndPointsSufixs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewEndPointsSufixs.Location = new System.Drawing.Point(9, 48);
-            this.dataGridViewEndPointsSufixs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewEndPointsSufixs.Location = new System.Drawing.Point(6, 31);
             this.dataGridViewEndPointsSufixs.Name = "dataGridViewEndPointsSufixs";
             this.dataGridViewEndPointsSufixs.RowHeadersWidth = 45;
-            this.dataGridViewEndPointsSufixs.Size = new System.Drawing.Size(1360, 605);
+            this.dataGridViewEndPointsSufixs.Size = new System.Drawing.Size(907, 393);
             this.dataGridViewEndPointsSufixs.TabIndex = 0;
             // 
             // tabAdmistrators
             // 
             this.tabAdmistrators.Controls.Add(this.tabCAdministrators);
-            this.tabAdmistrators.Location = new System.Drawing.Point(4, 29);
-            this.tabAdmistrators.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabAdmistrators.Location = new System.Drawing.Point(4, 22);
             this.tabAdmistrators.Name = "tabAdmistrators";
-            this.tabAdmistrators.Size = new System.Drawing.Size(1408, 778);
+            this.tabAdmistrators.Size = new System.Drawing.Size(936, 501);
             this.tabAdmistrators.TabIndex = 2;
             this.tabAdmistrators.Text = "Administrators";
             this.tabAdmistrators.UseVisualStyleBackColor = true;
@@ -781,11 +734,10 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabCAdministrators.Controls.Add(this.tabTable);
             this.tabCAdministrators.Controls.Add(this.tabCreate);
-            this.tabCAdministrators.Location = new System.Drawing.Point(12, 5);
-            this.tabCAdministrators.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCAdministrators.Location = new System.Drawing.Point(8, 3);
             this.tabCAdministrators.Name = "tabCAdministrators";
             this.tabCAdministrators.SelectedIndex = 0;
-            this.tabCAdministrators.Size = new System.Drawing.Size(1388, 746);
+            this.tabCAdministrators.Size = new System.Drawing.Size(925, 485);
             this.tabCAdministrators.TabIndex = 29;
             // 
             // tabTable
@@ -793,11 +745,10 @@ namespace vCardPlatform
             this.tabTable.Controls.Add(this.btnAdministratorsDelete);
             this.tabTable.Controls.Add(this.btnAdministratorsRefresh);
             this.tabTable.Controls.Add(this.dataGridViewAdministrators);
-            this.tabTable.Location = new System.Drawing.Point(4, 29);
-            this.tabTable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabTable.Location = new System.Drawing.Point(4, 22);
             this.tabTable.Name = "tabTable";
-            this.tabTable.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabTable.Size = new System.Drawing.Size(1380, 713);
+            this.tabTable.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabTable.Size = new System.Drawing.Size(917, 459);
             this.tabTable.TabIndex = 0;
             this.tabTable.Text = "Table";
             this.tabTable.UseVisualStyleBackColor = true;
@@ -807,10 +758,9 @@ namespace vCardPlatform
             this.btnAdministratorsDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdministratorsDelete.Image = global::vCardPlatform.Properties.Resources.delete;
             this.btnAdministratorsDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsDelete.Location = new System.Drawing.Point(1114, 9);
-            this.btnAdministratorsDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAdministratorsDelete.Location = new System.Drawing.Point(743, 6);
             this.btnAdministratorsDelete.Name = "btnAdministratorsDelete";
-            this.btnAdministratorsDelete.Size = new System.Drawing.Size(112, 35);
+            this.btnAdministratorsDelete.Size = new System.Drawing.Size(75, 23);
             this.btnAdministratorsDelete.TabIndex = 22;
             this.btnAdministratorsDelete.Text = "Delete";
             this.btnAdministratorsDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -822,10 +772,9 @@ namespace vCardPlatform
             this.btnAdministratorsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdministratorsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.btnAdministratorsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(1236, 9);
-            this.btnAdministratorsRefresh.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAdministratorsRefresh.Location = new System.Drawing.Point(824, 6);
             this.btnAdministratorsRefresh.Name = "btnAdministratorsRefresh";
-            this.btnAdministratorsRefresh.Size = new System.Drawing.Size(112, 35);
+            this.btnAdministratorsRefresh.Size = new System.Drawing.Size(75, 23);
             this.btnAdministratorsRefresh.TabIndex = 21;
             this.btnAdministratorsRefresh.Text = "Refresh";
             this.btnAdministratorsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -838,11 +787,10 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewAdministrators.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewAdministrators.Location = new System.Drawing.Point(9, 54);
-            this.dataGridViewAdministrators.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewAdministrators.Location = new System.Drawing.Point(6, 35);
             this.dataGridViewAdministrators.Name = "dataGridViewAdministrators";
             this.dataGridViewAdministrators.RowHeadersWidth = 45;
-            this.dataGridViewAdministrators.Size = new System.Drawing.Size(1358, 637);
+            this.dataGridViewAdministrators.Size = new System.Drawing.Size(905, 419);
             this.dataGridViewAdministrators.TabIndex = 20;
             this.dataGridViewAdministrators.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAdministrators_CellValueChanged);
             // 
@@ -855,11 +803,10 @@ namespace vCardPlatform
             this.tabCreate.Controls.Add(this.txtAdministratorPassword);
             this.tabCreate.Controls.Add(this.txtAdministratorEmail);
             this.tabCreate.Controls.Add(this.btnCreateAdmin);
-            this.tabCreate.Location = new System.Drawing.Point(4, 29);
-            this.tabCreate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCreate.Location = new System.Drawing.Point(4, 22);
             this.tabCreate.Name = "tabCreate";
-            this.tabCreate.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabCreate.Size = new System.Drawing.Size(1380, 713);
+            this.tabCreate.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabCreate.Size = new System.Drawing.Size(917, 459);
             this.tabCreate.TabIndex = 1;
             this.tabCreate.Text = "Create";
             this.tabCreate.UseVisualStyleBackColor = true;
@@ -867,57 +814,64 @@ namespace vCardPlatform
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(376, 334);
+            this.label1.Location = new System.Drawing.Point(251, 217);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 20);
+            this.label1.Size = new System.Drawing.Size(64, 15);
             this.label1.TabIndex = 26;
             this.label1.Text = "Password:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(376, 274);
+            this.label2.Location = new System.Drawing.Point(251, 178);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(57, 20);
+            this.label2.Size = new System.Drawing.Size(46, 15);
             this.label2.TabIndex = 25;
             this.label2.Text = "E-mail:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(376, 217);
+            this.label3.Location = new System.Drawing.Point(251, 141);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 20);
+            this.label3.Size = new System.Drawing.Size(44, 15);
             this.label3.TabIndex = 24;
             this.label3.Text = "Name:";
             // 
             // txtAdministratorName
             // 
-            this.txtAdministratorName.Location = new System.Drawing.Point(476, 212);
+            this.txtAdministratorName.Location = new System.Drawing.Point(317, 138);
+            this.txtAdministratorName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAdministratorName.Name = "txtAdministratorName";
-            this.txtAdministratorName.Size = new System.Drawing.Size(523, 26);
+            this.txtAdministratorName.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorName.TabIndex = 21;
             // 
             // txtAdministratorPassword
             // 
-            this.txtAdministratorPassword.Location = new System.Drawing.Point(476, 329);
+            this.txtAdministratorPassword.Location = new System.Drawing.Point(317, 214);
+            this.txtAdministratorPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAdministratorPassword.Name = "txtAdministratorPassword";
             this.txtAdministratorPassword.PasswordChar = '*';
-            this.txtAdministratorPassword.Size = new System.Drawing.Size(523, 26);
+            this.txtAdministratorPassword.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorPassword.TabIndex = 23;
             // 
             // txtAdministratorEmail
             // 
-            this.txtAdministratorEmail.Location = new System.Drawing.Point(476, 268);
+            this.txtAdministratorEmail.Location = new System.Drawing.Point(317, 174);
+            this.txtAdministratorEmail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAdministratorEmail.Name = "txtAdministratorEmail";
-            this.txtAdministratorEmail.Size = new System.Drawing.Size(523, 26);
+            this.txtAdministratorEmail.Size = new System.Drawing.Size(350, 20);
             this.txtAdministratorEmail.TabIndex = 22;
             // 
             // btnCreateAdmin
             // 
-            this.btnCreateAdmin.Location = new System.Drawing.Point(633, 414);
+            this.btnCreateAdmin.Location = new System.Drawing.Point(422, 269);
+            this.btnCreateAdmin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCreateAdmin.Name = "btnCreateAdmin";
-            this.btnCreateAdmin.Size = new System.Drawing.Size(92, 35);
+            this.btnCreateAdmin.Size = new System.Drawing.Size(61, 23);
             this.btnCreateAdmin.TabIndex = 20;
             this.btnCreateAdmin.Text = "Create";
             this.btnCreateAdmin.UseVisualStyleBackColor = true;
@@ -926,10 +880,9 @@ namespace vCardPlatform
             // tabOperations
             // 
             this.tabOperations.Controls.Add(this.tabControl1);
-            this.tabOperations.Location = new System.Drawing.Point(4, 29);
-            this.tabOperations.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabOperations.Location = new System.Drawing.Point(4, 22);
             this.tabOperations.Name = "tabOperations";
-            this.tabOperations.Size = new System.Drawing.Size(1408, 778);
+            this.tabOperations.Size = new System.Drawing.Size(936, 501);
             this.tabOperations.TabIndex = 3;
             this.tabOperations.Text = "Operations";
             this.tabOperations.UseVisualStyleBackColor = true;
@@ -941,11 +894,10 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPageTransactionLogs);
             this.tabControl1.Controls.Add(this.tabPageGeralLogs);
-            this.tabControl1.Location = new System.Drawing.Point(4, 5);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1395, 731);
+            this.tabControl1.Size = new System.Drawing.Size(930, 475);
             this.tabControl1.TabIndex = 32;
             // 
             // tabPageTransactionLogs
@@ -962,24 +914,43 @@ namespace vCardPlatform
             this.tabPageTransactionLogs.Controls.Add(this.dateTimePickerEnd);
             this.tabPageTransactionLogs.Controls.Add(this.dateTimePickerStart);
             this.tabPageTransactionLogs.Controls.Add(this.comboBoxType);
-            this.tabPageTransactionLogs.Location = new System.Drawing.Point(4, 29);
-            this.tabPageTransactionLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageTransactionLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageTransactionLogs.Name = "tabPageTransactionLogs";
-            this.tabPageTransactionLogs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageTransactionLogs.Size = new System.Drawing.Size(1387, 698);
+            this.tabPageTransactionLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageTransactionLogs.Size = new System.Drawing.Size(922, 449);
             this.tabPageTransactionLogs.TabIndex = 0;
             this.tabPageTransactionLogs.Text = "Transaction Logs";
             this.tabPageTransactionLogs.UseVisualStyleBackColor = true;
+            // 
+            // lblFromEntity
+            // 
+            this.lblFromEntity.AutoSize = true;
+            this.lblFromEntity.Location = new System.Drawing.Point(266, 27);
+            this.lblFromEntity.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFromEntity.Name = "lblFromEntity";
+            this.lblFromEntity.Size = new System.Drawing.Size(65, 15);
+            this.lblFromEntity.TabIndex = 33;
+            this.lblFromEntity.Text = "FromEntity";
+            // 
+            // comboBoxFromEntity
+            // 
+            this.comboBoxFromEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFromEntity.FormattingEnabled = true;
+            this.comboBoxFromEntity.Location = new System.Drawing.Point(269, 42);
+            this.comboBoxFromEntity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxFromEntity.Name = "comboBoxFromEntity";
+            this.comboBoxFromEntity.Size = new System.Drawing.Size(130, 21);
+            this.comboBoxFromEntity.TabIndex = 32;
+            this.comboBoxFromEntity.SelectedIndexChanged += new System.EventHandler(this.comboBoxFromEntity_SelectedIndexChanged);
             // 
             // buttonOperationsRefresh
             // 
             this.buttonOperationsRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOperationsRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.buttonOperationsRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonOperationsRefresh.Location = new System.Drawing.Point(1266, 5);
-            this.buttonOperationsRefresh.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonOperationsRefresh.Location = new System.Drawing.Point(844, 3);
             this.buttonOperationsRefresh.Name = "buttonOperationsRefresh";
-            this.buttonOperationsRefresh.Size = new System.Drawing.Size(112, 35);
+            this.buttonOperationsRefresh.Size = new System.Drawing.Size(75, 23);
             this.buttonOperationsRefresh.TabIndex = 22;
             this.buttonOperationsRefresh.Text = "Refresh";
             this.buttonOperationsRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -988,10 +959,9 @@ namespace vCardPlatform
             // 
             // textBoxFromUser
             // 
-            this.textBoxFromUser.Location = new System.Drawing.Point(9, 66);
-            this.textBoxFromUser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBoxFromUser.Location = new System.Drawing.Point(6, 43);
             this.textBoxFromUser.Name = "textBoxFromUser";
-            this.textBoxFromUser.Size = new System.Drawing.Size(180, 26);
+            this.textBoxFromUser.Size = new System.Drawing.Size(121, 20);
             this.textBoxFromUser.TabIndex = 31;
             this.textBoxFromUser.TextChanged += new System.EventHandler(this.textBoxFromUser_TextChanged);
             // 
@@ -1000,10 +970,9 @@ namespace vCardPlatform
             this.buttonTLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonTLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
             this.buttonTLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonTLogsExportXml.Location = new System.Drawing.Point(1113, 5);
-            this.buttonTLogsExportXml.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonTLogsExportXml.Location = new System.Drawing.Point(742, 3);
             this.buttonTLogsExportXml.Name = "buttonTLogsExportXml";
-            this.buttonTLogsExportXml.Size = new System.Drawing.Size(146, 35);
+            this.buttonTLogsExportXml.Size = new System.Drawing.Size(97, 23);
             this.buttonTLogsExportXml.TabIndex = 23;
             this.buttonTLogsExportXml.Text = "Export to Xml";
             this.buttonTLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1013,10 +982,9 @@ namespace vCardPlatform
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(202, 42);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(135, 27);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(43, 20);
+            this.label8.Size = new System.Drawing.Size(33, 15);
             this.label8.TabIndex = 30;
             this.label8.Text = "Type";
             // 
@@ -1025,10 +993,9 @@ namespace vCardPlatform
             this.buttonTLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonTLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
             this.buttonTLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonTLogsExportExcel.Location = new System.Drawing.Point(951, 5);
-            this.buttonTLogsExportExcel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonTLogsExportExcel.Location = new System.Drawing.Point(634, 3);
             this.buttonTLogsExportExcel.Name = "buttonTLogsExportExcel";
-            this.buttonTLogsExportExcel.Size = new System.Drawing.Size(153, 35);
+            this.buttonTLogsExportExcel.Size = new System.Drawing.Size(102, 23);
             this.buttonTLogsExportExcel.TabIndex = 24;
             this.buttonTLogsExportExcel.Text = "Export to Excel";
             this.buttonTLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1038,10 +1005,9 @@ namespace vCardPlatform
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 42);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(3, 27);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(80, 20);
+            this.label7.Size = new System.Drawing.Size(62, 15);
             this.label7.TabIndex = 29;
             this.label7.Text = "FromUser";
             // 
@@ -1051,31 +1017,30 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewOperations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewOperations.Location = new System.Drawing.Point(6, 105);
+            this.dataGridViewOperations.Location = new System.Drawing.Point(4, 68);
+            this.dataGridViewOperations.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridViewOperations.Name = "dataGridViewOperations";
             this.dataGridViewOperations.ReadOnly = true;
             this.dataGridViewOperations.RowHeadersWidth = 51;
             this.dataGridViewOperations.RowTemplate.Height = 24;
-            this.dataGridViewOperations.Size = new System.Drawing.Size(1370, 575);
+            this.dataGridViewOperations.Size = new System.Drawing.Size(913, 378);
             this.dataGridViewOperations.TabIndex = 0;
             this.dataGridViewOperations.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewOperations_CellDoubleClick);
             // 
             // dateTimePickerEnd
             // 
-            this.dateTimePickerEnd.Location = new System.Drawing.Point(930, 65);
-            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(620, 42);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
-            this.dateTimePickerEnd.Size = new System.Drawing.Size(298, 26);
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerEnd.TabIndex = 28;
             this.dateTimePickerEnd.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
             this.dateTimePickerEnd.ValueChanged += new System.EventHandler(this.dateTimePicker2_ValueChanged);
             // 
             // dateTimePickerStart
             // 
-            this.dateTimePickerStart.Location = new System.Drawing.Point(614, 66);
-            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dateTimePickerStart.Location = new System.Drawing.Point(409, 43);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
-            this.dateTimePickerStart.Size = new System.Drawing.Size(298, 26);
+            this.dateTimePickerStart.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerStart.TabIndex = 27;
             this.dateTimePickerStart.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
             this.dateTimePickerStart.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
@@ -1084,10 +1049,9 @@ namespace vCardPlatform
             // 
             this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxType.FormattingEnabled = true;
-            this.comboBoxType.Location = new System.Drawing.Point(206, 65);
-            this.comboBoxType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.comboBoxType.Location = new System.Drawing.Point(137, 42);
             this.comboBoxType.Name = "comboBoxType";
-            this.comboBoxType.Size = new System.Drawing.Size(180, 28);
+            this.comboBoxType.Size = new System.Drawing.Size(121, 21);
             this.comboBoxType.TabIndex = 26;
             this.comboBoxType.SelectedIndexChanged += new System.EventHandler(this.comboBoxType_SelectedIndexChanged);
             // 
@@ -1099,11 +1063,10 @@ namespace vCardPlatform
             this.tabPageGeralLogs.Controls.Add(this.dateTimePickerEnd2);
             this.tabPageGeralLogs.Controls.Add(this.dateTimePickerStart2);
             this.tabPageGeralLogs.Controls.Add(this.dataGridViewGeralLogs);
-            this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 29);
-            this.tabPageGeralLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPageGeralLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeralLogs.Name = "tabPageGeralLogs";
-            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabPageGeralLogs.Size = new System.Drawing.Size(1387, 698);
+            this.tabPageGeralLogs.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageGeralLogs.Size = new System.Drawing.Size(922, 449);
             this.tabPageGeralLogs.TabIndex = 1;
             this.tabPageGeralLogs.Text = "Geral Logs";
             this.tabPageGeralLogs.UseVisualStyleBackColor = true;
@@ -1113,10 +1076,9 @@ namespace vCardPlatform
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Image = global::vCardPlatform.Properties.Resources.refresh;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(1262, 22);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button1.Location = new System.Drawing.Point(841, 14);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 35);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 31;
             this.button1.Text = "Refresh";
             this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1128,10 +1090,9 @@ namespace vCardPlatform
             this.buttonGLogsExportXml.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonGLogsExportXml.Image = global::vCardPlatform.Properties.Resources.xml;
             this.buttonGLogsExportXml.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonGLogsExportXml.Location = new System.Drawing.Point(1108, 22);
-            this.buttonGLogsExportXml.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonGLogsExportXml.Location = new System.Drawing.Point(739, 14);
             this.buttonGLogsExportXml.Name = "buttonGLogsExportXml";
-            this.buttonGLogsExportXml.Size = new System.Drawing.Size(146, 35);
+            this.buttonGLogsExportXml.Size = new System.Drawing.Size(97, 23);
             this.buttonGLogsExportXml.TabIndex = 32;
             this.buttonGLogsExportXml.Text = "Export to Xml";
             this.buttonGLogsExportXml.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1143,10 +1104,9 @@ namespace vCardPlatform
             this.buttonGLogsExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonGLogsExportExcel.Image = global::vCardPlatform.Properties.Resources.excel;
             this.buttonGLogsExportExcel.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.buttonGLogsExportExcel.Location = new System.Drawing.Point(946, 22);
-            this.buttonGLogsExportExcel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.buttonGLogsExportExcel.Location = new System.Drawing.Point(631, 14);
             this.buttonGLogsExportExcel.Name = "buttonGLogsExportExcel";
-            this.buttonGLogsExportExcel.Size = new System.Drawing.Size(153, 35);
+            this.buttonGLogsExportExcel.Size = new System.Drawing.Size(102, 23);
             this.buttonGLogsExportExcel.TabIndex = 33;
             this.buttonGLogsExportExcel.Text = "Export to Excel";
             this.buttonGLogsExportExcel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -1155,20 +1115,18 @@ namespace vCardPlatform
             // 
             // dateTimePickerEnd2
             // 
-            this.dateTimePickerEnd2.Location = new System.Drawing.Point(318, 28);
-            this.dateTimePickerEnd2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dateTimePickerEnd2.Location = new System.Drawing.Point(212, 18);
             this.dateTimePickerEnd2.Name = "dateTimePickerEnd2";
-            this.dateTimePickerEnd2.Size = new System.Drawing.Size(298, 26);
+            this.dateTimePickerEnd2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerEnd2.TabIndex = 30;
             this.dateTimePickerEnd2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
             this.dateTimePickerEnd2.ValueChanged += new System.EventHandler(this.dateTimePickerEnd2_ValueChanged);
             // 
             // dateTimePickerStart2
             // 
-            this.dateTimePickerStart2.Location = new System.Drawing.Point(9, 26);
-            this.dateTimePickerStart2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dateTimePickerStart2.Location = new System.Drawing.Point(6, 17);
             this.dateTimePickerStart2.Name = "dateTimePickerStart2";
-            this.dateTimePickerStart2.Size = new System.Drawing.Size(298, 26);
+            this.dateTimePickerStart2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerStart2.TabIndex = 29;
             this.dateTimePickerStart2.Value = new System.DateTime(2021, 12, 10, 1, 20, 35, 0);
             this.dateTimePickerStart2.ValueChanged += new System.EventHandler(this.dateTimePickerStart2_ValueChanged);
@@ -1179,20 +1137,18 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGeralLogs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGeralLogs.Location = new System.Drawing.Point(9, 66);
-            this.dataGridViewGeralLogs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewGeralLogs.Location = new System.Drawing.Point(6, 43);
             this.dataGridViewGeralLogs.Name = "dataGridViewGeralLogs";
             this.dataGridViewGeralLogs.RowHeadersWidth = 45;
-            this.dataGridViewGeralLogs.Size = new System.Drawing.Size(1365, 605);
+            this.dataGridViewGeralLogs.Size = new System.Drawing.Size(910, 398);
             this.dataGridViewGeralLogs.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.dataGridViewRealtime);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1408, 778);
+            this.tabPage1.Size = new System.Drawing.Size(936, 501);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Realtime";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1206,12 +1162,11 @@ namespace vCardPlatform
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewRealtime.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewRealtime.Location = new System.Drawing.Point(0, 46);
-            this.dataGridViewRealtime.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dataGridViewRealtime.Location = new System.Drawing.Point(0, 30);
             this.dataGridViewRealtime.Name = "dataGridViewRealtime";
             this.dataGridViewRealtime.ReadOnly = true;
             this.dataGridViewRealtime.RowHeadersWidth = 45;
-            this.dataGridViewRealtime.Size = new System.Drawing.Size(1410, 683);
+            this.dataGridViewRealtime.Size = new System.Drawing.Size(940, 444);
             this.dataGridViewRealtime.TabIndex = 0;
             // 
             // statusStrip1
@@ -1220,67 +1175,49 @@ namespace vCardPlatform
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.statusProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 778);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1416, 33);
+            this.statusStrip1.Size = new System.Drawing.Size(944, 24);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(101, 26);
+            this.lblStatus.Size = new System.Drawing.Size(79, 19);
             this.lblStatus.Text = "StatusLabel";
             // 
             // statusProgressBar
             // 
             this.statusProgressBar.Name = "statusProgressBar";
-            this.statusProgressBar.Size = new System.Drawing.Size(150, 25);
+            this.statusProgressBar.Size = new System.Drawing.Size(100, 18);
             // 
             // btnLogout
             // 
             this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
             this.btnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLogout.Location = new System.Drawing.Point(1310, 772);
+            this.btnLogout.Location = new System.Drawing.Point(873, 502);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(104, 38);
+            this.btnLogout.Size = new System.Drawing.Size(69, 25);
             this.btnLogout.TabIndex = 6;
             this.btnLogout.Text = "Logout";
             this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
-            // comboBoxFromEntity
-            // 
-            this.comboBoxFromEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFromEntity.FormattingEnabled = true;
-            this.comboBoxFromEntity.Location = new System.Drawing.Point(403, 65);
-            this.comboBoxFromEntity.Name = "comboBoxFromEntity";
-            this.comboBoxFromEntity.Size = new System.Drawing.Size(193, 28);
-            this.comboBoxFromEntity.TabIndex = 32;
-            this.comboBoxFromEntity.SelectedIndexChanged += new System.EventHandler(this.comboBoxFromEntity_SelectedIndexChanged);
-            // 
-            // lblFromEntity
-            // 
-            this.lblFromEntity.AutoSize = true;
-            this.lblFromEntity.Location = new System.Drawing.Point(399, 42);
-            this.lblFromEntity.Name = "lblFromEntity";
-            this.lblFromEntity.Size = new System.Drawing.Size(86, 20);
-            this.lblFromEntity.TabIndex = 33;
-            this.lblFromEntity.Text = "FromEntity";
-            // 
             // FormMainApplication
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1416, 811);
+            this.ClientSize = new System.Drawing.Size(944, 527);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabCMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(1429, 841);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MinimumSize = new System.Drawing.Size(958, 561);
             this.Name = "FormMainApplication";
             this.Text = "MainApplication";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMainApplication_FormClosing);

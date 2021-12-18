@@ -7,7 +7,9 @@ namespace vCardGateway.Models
 {
     public class Secret
     {
+
         public string Password { get; set; }
         public string NewPassword { get; set; }
+        public string NewConfirmationCode { get; set; }
     }
 }

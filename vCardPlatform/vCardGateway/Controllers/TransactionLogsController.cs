@@ -13,6 +13,12 @@ namespace vCardGateway.Controllers
     {
         static string connectionString = Properties.Settings.Default.ConnStr;
 
+        /// <summary>
+        /// Search for transaction logs
+        /// </summary>
+        /// <param name="filter">Filter struct to find transaction logs</param>
+        /// <returns>A list of all categories</returns>
+        /// <response code="200">Returns the Transaction Logs found.</response>
         [BasicAuthentication]
         [Route("api/transactionlogs")]
         public IEnumerable<TransactionLog> GetTransactionLogs([FromUri] Filter filter)
@@ -92,17 +98,24 @@ namespace vCardGateway.Controllers
             }
         }
 
+        /// <summary>
+        /// Search for transaction log
+        /// </summary>
+        /// <param name="transactionlog_id">Transaction Log ID</param>
+        /// <returns>Transaction Log found</returns>
+        /// <response code="200">Returns the Transaction Log found</response>
+        /// <response code="404">If the Transaction Log was not found</response>
         [BasicAuthentication]
-        [Route("api/transactionlogs/{id:int}")]
-        public IHttpActionResult GetTransactionLog(int id)
+        [Route("api/transactionlogs/{transactionlog_id:int}")]
+        public IHttpActionResult GetTransactionLog(int transactionlog_id)
         {
-            string queryString = "SELECT * FROM GeneralLogs WHERE Id = @id";
+            string queryString = "SELECT * FROM TransactionLogs WHERE Id = @id";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@id", transactionlog_id);
                 try
                 {
                     connection.Open();
@@ -139,7 +152,7 @@ namespace vCardGateway.Controllers
                         connection.Close();
                     }
                 }
-                return NotFound();
+                return Content(HttpStatusCode.NotFound, $"Transaction Log {transactionlog_id} was not found");
             }
         }
 

@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,11 +17,116 @@ namespace vCardGateway.Controllers
         string connectionString = Properties.Settings.Default.ConnStr;
         
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
-        RestClient client = new RestClient("http://localhost:59458/api");
 
+        /// <summary>
+        /// Search for all transactions based on User authenticated
+        /// </summary>
+        /// <param name="entity_id">Entity ID</param>
+        /// <returns>Transaction found</returns>
+        /// <response code="200">Returns the Transactions found. Returns null if you are not authorized</response>
+        [Route("api/entities/{entity_id}/transactions")]
+        public IHttpActionResult GetTransactions(string entity_id)
+        {
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            DateTime responseTimeStart = DateTime.Now;
+            try
+            {
+                Entity entity = handlerXML.GetEntity(entity_id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest("transactions", Method.GET);
+
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
+                IRestResponse<List<Transaction>> response = client.Execute<List<Transaction>>(request);
+                dynamic dataDefaultTransaction = JsonConvert.DeserializeObject(response.Content);
+                if (dataDefaultTransaction != null)
+                {
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", entity.Name, response.StatusCode.ToString(), "GetTransactions", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(response.StatusCode, dataDefaultTransaction);
+                }
+                GeneralLogsController.PostGeneralLog("Transaction", "N/A", entity.Name, HttpStatusCode.Unauthorized.ToString(), "GetTransactions", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                return Content(HttpStatusCode.Unauthorized, HttpStatusCode.Unauthorized.ToString());
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Search for a transaction based on given ID and User authenticated
+        /// </summary>
+        /// <param name="entity_id">Entity ID</param>
+        /// <param name="transaction_id">Transaction ID</param>
+        /// <returns>A list of all transactions</returns>
+        /// <response code="200">Returns the Transaction found</response>
+        /// <response code="401">Transaction does not belongs to authenticated user</response>
+        /// <response code="404">If the Transaction was not found</response>
+        [Route("api/entities/{entity_id}/transactions/{transaction_id}")]
+        public IHttpActionResult GetTransaction(string entity_id, int transaction_id)
+        {
+            DateTime responseTimeStart = DateTime.Now;
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(entity_id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest($"transactions/{transaction_id}", Method.GET);
+
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
+                IRestResponse<Transaction> response = client.Execute<Transaction>(request);
+                //if (response.IsSuccessful && response.Data != null)
+                //{
+                //    return Content(response.StatusCode, response.Data);
+                //}
+                dynamic dataDefaultTransaction = JsonConvert.DeserializeObject(response.Content);
+                if (dataDefaultTransaction != null)
+                {
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", entity.Name, response.StatusCode.ToString(), "GetTransaction", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(response.StatusCode, dataDefaultTransaction);
+                }
+                GeneralLogsController.PostGeneralLog("Transaction", "N/A", entity.Name, response.StatusCode.ToString(), "GetTransaction", response.StatusDescription, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                return Content(response.StatusCode, response.StatusDescription);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        /// <summary>
+        /// Insert Transaction from authenticated User to other User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST
+        ///     {
+        ///         "Payment_reference": "913406043",
+        ///         "Value": "3",
+        ///         "Payment_type": "VCARD",
+        ///         "Type": "D",
+        ///         "Category": "7",
+        ///         "Description": "Food For School",
+        ///         "FromUser": "900000001",
+        ///         "FromEntity": "MBWAY" 
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="transaction">Transaction to insert</param>
+        /// <returns>Transaction inserted</returns>
+        /// <response code="200">Returns the newly created Transaction</response>
+        /// <response code="400">If something went wrong with inputs</response>
+        /// <response code="500">If a fatal error eccurred</response>
         [Route("api/transactions")]
         public IHttpActionResult PostTransaction(Transaction transaction)
         {
+            DateTime responseTimeStart = DateTime.Now;
             try
             {
                 HandlerXML handlerXML = new HandlerXML(entitiesPath);
@@ -30,7 +136,7 @@ namespace vCardGateway.Controllers
 
                 if (entityDebit == null)
                 {
-                    GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.FromEntity}", "Invalid Entity", DateTime.Now);
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.FromEntity}", "Invalid Entity", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     return Content(HttpStatusCode.NotFound, $"{transaction.FromEntity} entity does not exist.");
                 }
                 #endregion
@@ -47,7 +153,7 @@ namespace vCardGateway.Controllers
 
                 if (entityCredit == null)
                 {
-                    GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.Payment_Type}", "Invalid Entity", DateTime.Now);
+                    GeneralLogsController.PostGeneralLog("Transaction", "N/A", "Gateway", HttpStatusCode.NotFound.ToString(), $"Failed to Find Entity {transaction.Payment_Type}", "Invalid Entity", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     return Content(HttpStatusCode.NotFound, $"{transaction.Payment_Type} entity does not exist.");
                 }
                 #endregion
@@ -68,7 +174,8 @@ namespace vCardGateway.Controllers
                     type=transaction.Type.ToString(),
                     phonenumber = transaction.FromUser.ToString() ?? null,
                 });
-                requestDebit.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                requestDebit.AddHeader("Authorization", auth);
                 IRestResponse<Transaction> responseDebit = clientDebit.Execute<Transaction>(requestDebit);
                 #endregion
 
@@ -105,6 +212,7 @@ namespace vCardGateway.Controllers
                     debitTransactionLog.NewBalance = debitTransaction.New_Balance;
                     debitTransactionLog.OldBalance = debitTransaction.Old_Balance;
 
+                    GeneralLogsController.PostGeneralLog("Transaction", debitTransactionLog.FromUser, debitTransactionLog.FromEntity, responseDebit.StatusCode.ToString(), $"Money [{debitTransactionLog.FromUser} FROM {debitTransactionLog.FromEntity} - {debitTransactionLog.Amount} €] WAS sent [D]", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     TransactionLogsController.PostTransactionLog(debitTransactionLog);
                     #endregion
 
@@ -213,6 +321,7 @@ namespace vCardGateway.Controllers
                             earningBackTransactionLog.NewBalance = earningBackTransaction.New_Balance;
                             earningBackTransactionLog.OldBalance = earningBackTransaction.Old_Balance;
 
+                            GeneralLogsController.PostGeneralLog("Transaction", earningBackTransactionLog.ToUser, earningBackTransactionLog.ToEntity, responseEarningBack.StatusCode.ToString(), $"Earning Back money [{earningBackTransactionLog.ToUser} FROM {earningBackTransactionLog.ToEntity} - {earningBackTransactionLog.Amount} €] WAS sent back [E]", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                             TransactionLogsController.PostTransactionLog(earningBackTransactionLog);
                             #endregion
                         }
@@ -224,7 +333,7 @@ namespace vCardGateway.Controllers
                             earningBackTransactionLog.Message = responseCredit.Content.ToString();
                             earningBackTransactionLog.Timestamp = DateTime.Now;
 
-                            GeneralLogsController.PostGeneralLog("Transaction", earningBackTransactionLog.ToUser, earningBackTransactionLog.ToEntity, responseEarningBack.StatusCode.ToString(), $"Earning Back money [{earningBackTransactionLog.ToUser} FROM {earningBackTransactionLog.ToEntity} - {earningBackTransactionLog.Amount} €] WAS NOT sent back [E]", "Earning Back money WAS NOT sent back", DateTime.Now);
+                            GeneralLogsController.PostGeneralLog("Transaction", earningBackTransactionLog.ToUser, earningBackTransactionLog.ToEntity, responseEarningBack.StatusCode.ToString(), $"Earning Back money [{earningBackTransactionLog.ToUser} FROM {earningBackTransactionLog.ToEntity} - {earningBackTransactionLog.Amount} €] WAS NOT sent back [E]", "Earning Back money WAS NOT sent back", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                             TransactionLogsController.PostTransactionLog(earningBackTransactionLog);
                             #endregion
                         }
@@ -272,6 +381,7 @@ namespace vCardGateway.Controllers
                             creditTransactionLog.NewBalance = creditTransaction.New_Balance;
                             creditTransactionLog.OldBalance = creditTransaction.Old_Balance;
 
+                            GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.ToUser, creditTransactionLog.ToEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.ToUser} FROM {creditTransactionLog.ToEntity} - {creditTransactionLog.Amount} €] WAS sent back [C]", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                             TransactionLogsController.PostTransactionLog(creditTransactionLog);
                             #endregion
                         }
@@ -282,12 +392,12 @@ namespace vCardGateway.Controllers
                             creditTransactionLog.ErrorMessage = "Response Credit: " + responseCredit.Content + "\n Response Credit Back" + responseCreditBack.Content;
                             creditTransactionLog.Message = responseCredit.Content.ToString();
                             creditTransactionLog.Timestamp = DateTime.Now;
-                            
-                            GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.ToUser, creditTransactionLog.ToEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.ToUser} FROM {creditTransactionLog.ToEntity} - {creditTransactionLog.Amount} €] WAS NOT sent back [C]", "! Money WAS NOT sent back", DateTime.Now);
+
+                            GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.ToUser, creditTransactionLog.ToEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.ToUser} FROM {creditTransactionLog.ToEntity} - {creditTransactionLog.Amount} €] WAS NOT sent back [C]", "! Money WAS NOT sent back", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                             TransactionLogsController.PostTransactionLog(creditTransactionLog);
                             #endregion
                         }
-                        GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.FromUser, creditTransactionLog.FromEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.FromUser} FROM {creditTransactionLog.FromEntity} - {creditTransactionLog.Amount} €] WAS NOT sent [C]", "! Money WAS NOT sent", DateTime.Now);
+                        GeneralLogsController.PostGeneralLog("Transaction", creditTransactionLog.FromUser, creditTransactionLog.FromEntity, responseCreditBack.StatusCode.ToString(), $"Money [{creditTransactionLog.FromUser} FROM {creditTransactionLog.FromEntity} - {creditTransactionLog.Amount} €] WAS NOT sent [C]", "! Money WAS NOT sent", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
 
                         return InternalServerError(new Exception(responseCredit.StatusCode.ToString()));
                     }
@@ -301,7 +411,7 @@ namespace vCardGateway.Controllers
                     debitTransactionLog.Message = responseDebit.Content.ToString();
                     debitTransactionLog.Timestamp = DateTime.Now;
 
-                    GeneralLogsController.PostGeneralLog("Transaction", debitTransactionLog.FromUser, debitTransactionLog.FromEntity, responseDebit.StatusCode.ToString(), $"Money [{debitTransactionLog.FromUser} FROM {debitTransactionLog.FromEntity} - {debitTransactionLog.Amount} €] WAS NOT sent [D]", "! Money WAS NOT sent", DateTime.Now);
+                    GeneralLogsController.PostGeneralLog("Transaction", debitTransactionLog.FromUser, debitTransactionLog.FromEntity, responseDebit.StatusCode.ToString(), $"Money [{debitTransactionLog.FromUser} FROM {debitTransactionLog.FromEntity} - {debitTransactionLog.Amount} €] WAS NOT sent [D]", "! Money WAS NOT sent", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     TransactionLogsController.PostTransactionLog(debitTransactionLog);
                     #endregion
 
@@ -311,8 +421,60 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
-                GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.InternalServerError.ToString(), $"Fatal error", ex.Message, DateTime.Now);
+                GeneralLogsController.PostGeneralLog("Transaction", null, "Gateway", HttpStatusCode.InternalServerError.ToString(), $"Fatal error", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(new Exception(ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Update Transaction of authenticated User
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT
+        ///     {
+        ///         "Category": "61",
+        ///         "Description": "Food",
+        ///     }
+        ///     
+        ///     Type IN ("D", "C")
+        /// </remarks>
+        /// <param name="entity_id">Entity ID</param>
+        /// <param name="transaction_id">Transaction ID</param>
+        /// <param name="transaction">Transaction to be updated</param>
+        /// <returns>Transaction Updated</returns>
+        /// <response code="200">Returns the updated created Transaction</response>
+        /// <response code="401">Transaction does not belongs to authenticated user</response>
+        /// <response code="404">If given Transaction not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
+        [Route("api/entities/{entity_id}/transactions/{transaction_id}")]
+        public IHttpActionResult PatchTransactions(string entity_id, int transaction_id, [FromBody] Transaction transaction)
+        {
+            DateTime responseTimeStart = DateTime.Now;
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                Entity entity = handlerXML.GetEntity(entity_id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest($"transactions/{transaction_id}", Method.PATCH, DataFormat.Json);
+                request.AddJsonBody(transaction);
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
+                IRestResponse<Transaction> response = client.Execute<Transaction>(request);
+                //if (response.IsSuccessful && response.Data != null)
+                //{
+                //    return Content(response.StatusCode, response.Data);
+                //}
+                GeneralLogsController.PostGeneralLog("Entities", "N/A", "Gateway", response.StatusCode.ToString(), "PatchTransactions", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                dynamic dataDefaultTransaction = JsonConvert.DeserializeObject(response.Content);
+                return Content(response.StatusCode, dataDefaultTransaction);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
     }

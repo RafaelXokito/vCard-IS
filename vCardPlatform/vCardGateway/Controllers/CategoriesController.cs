@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using vCardGateway.Models;
@@ -11,19 +12,16 @@ namespace vCardGateway.Controllers
     public class CategoriesController : ApiController
     {
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
-
         /// <summary>
-        /// Only For IS Entities
-        /// Search for a category based on given ID based on User authenticated
+        /// Search for category
         /// </summary>
         /// <param name="entity_id">Entity ID</param>
-        /// <returns>Category founded</returns>
-        /// <response code="200">Returns the Category founded</response>
-        /// <response code="401">Category does not belongs to authenticated user</response>
-        /// <response code="404">If the Category was not founded</response>
+        /// <returns>A list of all categories</returns>
+        /// <response code="200">Returns the Categories found. Returns null if you are not authorized</response>
         [Route("api/entities/{entity_id}/categories")]
         public IHttpActionResult GetCategories(string entity_id)
         {
+            DateTime responseTimeStart = DateTime.Now;
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
@@ -33,8 +31,10 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest("categories", Method.GET);
 
-                request.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
                 IRestResponse<List<Category>> response = client.Execute<List<Category>>(request);
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultCategory != null)
                 {
@@ -44,20 +44,25 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
             }
         }
 
         /// <summary>
-        /// Search for all categories based on User authenticated
+        /// Only For IS Entities
+        /// Search for category based on given ID and User authenticated
         /// </summary>
         /// <param name="entity_id">Entity ID</param>
         /// <param name="category_id">Category ID</param>
-        /// <returns>A list of all categories</returns>
-        /// <response code="200">Returns the Categories founded. Returns null if you are not authorized</response>
+        /// <returns>Category found</returns>
+        /// <response code="200">Returns the Category found</response>
+        /// <response code="401">Category does not belongs to authenticated user</response>
+        /// <response code="404">If the Category was not found</response>
         [Route("api/entities/{entity_id}/categories/{category_id}")]
-        public IHttpActionResult GetCategories(string entity_id, int category_id)
+        public IHttpActionResult GetCategory(string entity_id, int category_id)
         {
+            DateTime responseTimeStart = DateTime.Now;
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
@@ -67,12 +72,14 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest($"categories/{category_id}", Method.GET);
 
-                request.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
                 IRestResponse<Category> response = client.Execute<Category>(request);
                 //if (response.IsSuccessful && response.Data != null)
                 //{
                 //    return Content(response.StatusCode, response.Data);
                 //}
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "GetCategory", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 if (dataDefaultCategory != null)
                 {
@@ -82,6 +89,7 @@ namespace vCardGateway.Controllers
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "GetCategory", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
             }
         }
@@ -109,6 +117,7 @@ namespace vCardGateway.Controllers
         [Route("api/entities/{entity_id}/categories")]
         public IHttpActionResult PostCategories(string entity_id, Category category)
         {
+            DateTime responseTimeStart = DateTime.Now;
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
@@ -118,13 +127,16 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest($"categories", Method.POST, DataFormat.Json);
                 request.AddJsonBody(category);
-                request.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
                 IRestResponse<Category> response = client.Execute<Category>(request);
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PostCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PostCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
             }
         }
@@ -154,6 +166,7 @@ namespace vCardGateway.Controllers
         [Route("api/entities/{entity_id}/categories/{category_id}")]
         public IHttpActionResult PutCategories(string entity_id, int category_id, [FromBody]Category category)
         {
+            DateTime responseTimeStart = DateTime.Now;
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
@@ -163,17 +176,20 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest($"categories/{category_id}", Method.PUT, DataFormat.Json);
                 request.AddJsonBody(category);
-                request.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
                 IRestResponse<Category> response = client.Execute<Category>(request);
                 //if (response.IsSuccessful && response.Data != null)
                 //{
                 //    return Content(response.StatusCode, response.Data);
                 //}
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "PutCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PutCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
             }
         }
@@ -191,6 +207,7 @@ namespace vCardGateway.Controllers
         [Route("api/entities/{entity_id}/categories/{category_id}")]
         public IHttpActionResult DeleteCategories(string entity_id, int category_id)
         {
+            DateTime responseTimeStart = DateTime.Now;
             HandlerXML handlerXML = new HandlerXML(entitiesPath);
 
             try
@@ -200,14 +217,17 @@ namespace vCardGateway.Controllers
 
                 RestRequest request = new RestRequest($"categories/{category_id}", Method.DELETE);
 
-                request.AddHeader("Authorization", Request.Headers.Authorization.ToString());
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
 
                 IRestResponse response = client.Execute(request);
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", entity.Name, response.StatusCode.ToString(), "DeleteCategories", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 dynamic dataDefaultCategory = JsonConvert.DeserializeObject(response.Content);
                 return Content(response.StatusCode, dataDefaultCategory);
             }
             catch (Exception ex)
             {
+                GeneralLogsController.PostGeneralLog("Categories", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "DeleteCategories", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return InternalServerError(ex);
             }
         }

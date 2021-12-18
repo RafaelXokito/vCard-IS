@@ -53,13 +53,13 @@ namespace vCardAPI.Controllers
         /// Search for a user based on given number
         /// </summary>
         /// <param name="number">User Phone Number</param>
-        /// <returns>User founded</returns>
-        /// <response code="200">Returns the User founded</response>
+        /// <returns>User found</returns>
+        /// <response code="200">Returns the User found</response>
         /// <response code="401">User does not belongs to authenticated user</response>
-        /// <response code="404">If the User was not founded</response>
+        /// <response code="404">If the User was not found</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
-        public IHttpActionResult GetUser(int number)
+        public IHttpActionResult GetUsers(int number)
         {
             string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
             if (number.ToString() != phoneNumber)
@@ -155,7 +155,7 @@ namespace vCardAPI.Controllers
         /// Search for all users based on User authenticated
         /// </summary>
         /// <returns>A list of all users</returns>
-        /// <response code="200">Returns the users founded. Returns null if you are not authorized</response>
+        /// <response code="200">Returns the users found. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
@@ -603,14 +603,15 @@ namespace vCardAPI.Controllers
             }
         }
 
+
         /// <summary>
         /// Delete a user based on given number and on User authenticated
         /// </summary>
         /// <param name="number">User Phone Number</param>
         /// <returns>HTTPResponse</returns>
         /// <response code="200">Returns the subjective message</response>
+        /// <response code="400">Something went wrong</response>
         /// <response code="401">User does not belongs to authenticated user</response>
-        /// <response code="404">If given User not exist</response>
         /// <response code="500">If a fatal error eccurred</response>
         [BasicAuthentication]
         [Route("api/users/{number:int}")]
@@ -648,6 +649,8 @@ namespace vCardAPI.Controllers
                         }
                     }
 
+                    reader.Close();
+
                     command = new SqlCommand(queryStringDelUser, connection);
 
                     command.Parameters.AddWithValue("@phonenumber", phoneNumber);
@@ -655,7 +658,7 @@ namespace vCardAPI.Controllers
                     if (command.ExecuteNonQuery() == 0)
                     {
                         connection.Close();
-                        return NotFound();
+                        return Content(HttpStatusCode.BadRequest, "Something went wrong.");
                     }
 
                     command = new SqlCommand(queryStringDelCategories, connection);
@@ -663,11 +666,11 @@ namespace vCardAPI.Controllers
 
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        return Ok();
+                        return Ok("User deleted with success");
                     }
 
                     connection.Close();
-                    return NotFound();
+                    return Content(HttpStatusCode.BadRequest, "Something went wrong.");
                 }
                 catch (Exception ex)
                 {

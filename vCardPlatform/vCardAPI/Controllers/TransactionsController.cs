@@ -17,10 +17,10 @@ namespace vCardAPI.Controllers
         /// Search for a Transaction based on given ID based on User authenticated
         /// </summary>
         /// <param name="id">Transaction ID</param>
-        /// <returns>Transaction founded</returns>
-        /// <response code="200">Returns the Transaction founded</response>
+        /// <returns>Transaction found</returns>
+        /// <response code="200">Returns the Transaction found</response>
         /// <response code="401">Transaction does not belongs to authenticated user</response>
-        /// <response code="404">If the Transaction was not founded</response>
+        /// <response code="404">If the Transaction was not found</response>
         [BasicAuthentication]
         [Route("api/transactions/{id:int}")]
         public IHttpActionResult GetTransactionAPI(int id)
@@ -140,7 +140,7 @@ namespace vCardAPI.Controllers
         /// Search for all Transactions based on User authenticated
         /// </summary>
         /// <returns>A list of all Transactions</returns>
-        /// <response code="200">Returns the Transactions founded. Returns null if you are not authorized</response>
+        /// <response code="200">Returns the Transactions found. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/transactions")]
         public IEnumerable<Transaction> GetTransactions()

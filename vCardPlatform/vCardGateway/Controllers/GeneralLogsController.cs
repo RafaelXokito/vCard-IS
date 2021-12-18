@@ -20,10 +20,15 @@ namespace vCardGateway.Controllers
         static String STR_CHANNEL_NAME = "logs";
         static MqttClient m_cClient = new MqttClient("127.0.0.1");
 
-
+        /// <summary>
+        /// Search for general logs
+        /// </summary>
+        /// <param name="filter">Filter struct to find general logs</param>
+        /// <returns>A list of all categories</returns>
+        /// <response code="200">Returns the General Logs found.</response>
         [BasicAuthentication]
         [Route("api/generallogs")]
-        public IEnumerable<GeneralLog> GetGeneralLogs([FromUri] Filter filter)
+        public IEnumerable<GeneralLog> GetGeneralLogs([FromUri] Filter filter = null)
         {
             string queryString = GetFilterQueryString("SELECT * FROM GeneralLogs", filter);
 
@@ -37,11 +42,11 @@ namespace vCardGateway.Controllers
 
                     SqlCommand command = new SqlCommand(queryString, connection);
 
-                    if (filter.DateStart != null)
+                    if (filter!= null && filter.DateStart != null)
                     {
                         command.Parameters.AddWithValue("@datestart", DateTime.Parse(filter.DateStart));
                     }
-                    if (filter.DateEnd != null)
+                    if (filter != null && filter.DateEnd != null)
                     {
                         command.Parameters.AddWithValue("@dateend", DateTime.Parse(filter.DateEnd));
                     }
@@ -57,9 +62,10 @@ namespace vCardGateway.Controllers
                             Username = (string)reader["Username"],
                             Entity = (string)reader["Entity"],
                             Status = (string)reader["Status"],
-                            Message = reader["ErrorMessage"].ToString(),
+                            Message = reader["Message"].ToString(),
                             ErrorMessage = reader["ErrorMessage"].ToString(),
-                            Timestamp = (DateTime)reader["Timestamp"]
+                            Timestamp = (DateTime)reader["Timestamp"],
+                            ResponseTime = Convert.ToInt64(reader["ResponseTime"])
                         };
 
                         logs.Add(log);
@@ -80,9 +86,16 @@ namespace vCardGateway.Controllers
             }
         }
 
+        /// <summary>
+        /// Search for general log
+        /// </summary>
+        /// <param name="generallog_id">General Log ID</param>
+        /// <returns>General Log found</returns>
+        /// <response code="200">Returns the General Log found</response>
+        /// <response code="404">If the General Log was not found</response>
         [BasicAuthentication]
-        [Route("api/generallogs/{id:int}")]
-        public IHttpActionResult GetGeneralLog(int id)
+        [Route("api/generallogs/{generallog_id:int}")]
+        public IHttpActionResult GetGeneralLog(int generallog_id)
         {
             string queryString = "SELECT * FROM GeneralLogs WHERE Id = @id";
 
@@ -90,7 +103,7 @@ namespace vCardGateway.Controllers
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
-                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@id", generallog_id);
                 try
                 {
                     connection.Open();
@@ -107,7 +120,8 @@ namespace vCardGateway.Controllers
                             Status = (string)reader["Status"],
                             Message = reader["ErrorMessage"].ToString(),
                             ErrorMessage = reader["ErrorMessage"].ToString(),
-                            Timestamp = (DateTime)reader["Timestamp"]
+                            Timestamp = (DateTime)reader["Timestamp"],
+                            ResponseTime = (long)reader["ResponseTime"]
                         };
                         return Ok(log);
                     }
@@ -122,11 +136,11 @@ namespace vCardGateway.Controllers
                         connection.Close();
                     }
                 }
-                return NotFound();
+                return Content(HttpStatusCode.NotFound, $"General Log {generallog_id} was not found");
             }
         }
 
-        public static GeneralLog PostGeneralLog(string Type, string Username, string Entity, string Status, string Message, string ErrorMessage, DateTime Timestamp)
+        public static GeneralLog PostGeneralLog(string Type, string Username, string Entity, string Status, string Message, string ErrorMessage, DateTime Timestamp, long ResponseTime)
         {
             GeneralLog generalLog = new GeneralLog { 
                 Type = Type,
@@ -136,6 +150,7 @@ namespace vCardGateway.Controllers
                 Message = Message,
                 ErrorMessage = ErrorMessage,
                 Timestamp = Timestamp,
+                ResponseTime = ResponseTime,
             };
             return PostGeneralLog(generalLog);
         }
@@ -144,9 +159,9 @@ namespace vCardGateway.Controllers
         {
 
             string queryString = @"INSERT INTO GeneralLogs
-                            (Type, Username, Entity, Status, Message, ErrorMessage, Timestamp) 
+                            (Type, Username, Entity, Status, Message, ErrorMessage, Timestamp, ResponseTime) 
                         VALUES
-                            (@type, @username, @entity, @status, @message, @errormessage, @timestamp)";
+                            (@type, @username, @entity, @status, @message, @errormessage, @timestamp, @responsetime)";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -161,7 +176,7 @@ namespace vCardGateway.Controllers
                     command.Parameters.AddWithValue("@message", general.Message);
                     command.Parameters.AddWithValue("@errormessage", general.ErrorMessage);
                     command.Parameters.AddWithValue("@timestamp", general.Timestamp);
-
+                    command.Parameters.AddWithValue("@responsetime", general.ResponseTime);
                     connection.Open();
 
                     if (command.ExecuteNonQuery() > 0)
@@ -194,7 +209,7 @@ namespace vCardGateway.Controllers
             string queryString = baseQueryString;
             bool hasOne = false;
 
-            if (filter.DateStart != null || filter.DateEnd != null)
+            if (filter!= null && (filter.DateStart != null || filter.DateEnd != null))
             {
                 queryString += " WHERE ";
                 if (filter.DateStart != null)

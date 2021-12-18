@@ -4,4 +4,5 @@
   <sufix>/api/categories</sufix>
   <sufix>/api/users</sufix>
   <sufix>/api/xpto</sufix>
+  <sufix>/api/signin</sufix>
 </sufixs>

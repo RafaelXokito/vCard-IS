@@ -15,5 +15,6 @@ namespace vCardPlatform.Models
         public string Message { get; set; }
         public string ErrorMessage { get; set; }
         public DateTime Timestamp { get; set; }
+        public long ResponseTime { get; set; }
     }
 }

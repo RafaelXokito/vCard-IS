@@ -48,7 +48,7 @@ namespace vCardPlatform
             try
             {
                 RestRequest request = new RestRequest($"entities/{entity.Id}/users", Method.GET);
-
+                request.AddHeader("Authorization", entity.Authentication.Token);
                 IRestResponse responseData = client.Execute(request);
                 if (responseData.IsSuccessful)
                 {
@@ -63,7 +63,7 @@ namespace vCardPlatform
                     }
 
                     string content = responseData.Content.Replace("\\", "");
-                    dynamic dataEntityUsers = Json.Decode(content.Substring(1, content.Length - 2));
+                    dynamic dataEntityUsers = Json.Decode(content);
                     List<User> auxList = new List<User>();
                     if (dataEntityUsers.data != null)
                         dataEntityUsers = dataEntityUsers.data;
@@ -178,6 +178,7 @@ namespace vCardPlatform
                 RestRequest request = new RestRequest($"entities/{entity.Id}/users", Method.POST, DataFormat.Json);
 
                 request.AddJsonBody(user);
+                request.AddHeader("Authorization", entity.Authentication.Token);
                 IRestResponse<User> responseData = client.Execute<User>(request);
                 if (responseData.IsSuccessful)
                 {
@@ -185,6 +186,7 @@ namespace vCardPlatform
                     IRestRequest requestPhoto = new RestRequest($"entities/{entity.Id}/users/{user.Username}/photo", Method.POST, DataFormat.Json);
                     user.Photo = imageB64;
                     requestPhoto.AddJsonBody(user);
+                    requestPhoto.AddHeader("Authorization", entity.Authentication.Token);
                     IRestResponse response = client.Execute(requestPhoto);
                     if (response.IsSuccessful)
                     {
@@ -219,6 +221,11 @@ namespace vCardPlatform
             var entries = dict.Select(d =>
                 string.Format("\"{0}\": [{1}]", d.Key, string.Join(",", d.Value)));
             return "{" + string.Join(",", entries) + "}";
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            loadUsers();
         }
     }
 

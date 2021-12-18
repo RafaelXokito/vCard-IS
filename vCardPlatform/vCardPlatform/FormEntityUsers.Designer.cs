@@ -34,6 +34,8 @@ namespace vCardPlatform
             this.tabEntityUserTable = new System.Windows.Forms.TabPage();
             this.dataGridViewEntityUser = new System.Windows.Forms.DataGridView();
             this.tabEntityUserCreate = new System.Windows.Forms.TabPage();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.picImage = new System.Windows.Forms.PictureBox();
             this.btnCreate = new System.Windows.Forms.Button();
             this.lblPhoto = new System.Windows.Forms.Label();
@@ -47,8 +49,7 @@ namespace vCardPlatform
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtUsername = new System.Windows.Forms.TextBox();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.tabControlEntityUser.SuspendLayout();
             this.tabEntityUserTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEntityUser)).BeginInit();
@@ -69,6 +70,7 @@ namespace vCardPlatform
             // 
             // tabEntityUserTable
             // 
+            this.tabEntityUserTable.Controls.Add(this.btnRefresh);
             this.tabEntityUserTable.Controls.Add(this.dataGridViewEntityUser);
             this.tabEntityUserTable.Location = new System.Drawing.Point(4, 22);
             this.tabEntityUserTable.Name = "tabEntityUserTable";
@@ -80,12 +82,14 @@ namespace vCardPlatform
             // 
             // dataGridViewEntityUser
             // 
+            this.dataGridViewEntityUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewEntityUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewEntityUser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewEntityUser.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewEntityUser.Location = new System.Drawing.Point(3, 28);
             this.dataGridViewEntityUser.Name = "dataGridViewEntityUser";
             this.dataGridViewEntityUser.RowHeadersWidth = 45;
-            this.dataGridViewEntityUser.Size = new System.Drawing.Size(930, 493);
+            this.dataGridViewEntityUser.Size = new System.Drawing.Size(930, 468);
             this.dataGridViewEntityUser.TabIndex = 0;
             // 
             // tabEntityUserCreate
@@ -112,6 +116,23 @@ namespace vCardPlatform
             this.tabEntityUserCreate.TabIndex = 1;
             this.tabEntityUserCreate.Text = "Create";
             this.tabEntityUserCreate.UseVisualStyleBackColor = true;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(101, 227);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(61, 15);
+            this.lblPassword.TabIndex = 16;
+            this.lblPassword.Text = "Password";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(104, 250);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(221, 20);
+            this.txtPassword.TabIndex = 15;
             // 
             // picImage
             // 
@@ -225,22 +246,18 @@ namespace vCardPlatform
             this.txtUsername.Size = new System.Drawing.Size(221, 20);
             this.txtUsername.TabIndex = 0;
             // 
-            // lblPassword
+            // btnRefresh
             // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(101, 227);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(61, 15);
-            this.lblPassword.TabIndex = 16;
-            this.lblPassword.Text = "Password";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(104, 250);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(221, 20);
-            this.txtPassword.TabIndex = 15;
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Image = global::vCardPlatform.Properties.Resources.refresh;
+            this.btnRefresh.Location = new System.Drawing.Point(858, 3);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.TabIndex = 2;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // FormEntityUsers
             // 
@@ -284,5 +301,6 @@ namespace vCardPlatform
         private System.Windows.Forms.PictureBox picImage;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }

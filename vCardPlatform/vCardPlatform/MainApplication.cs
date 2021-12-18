@@ -28,6 +28,9 @@ namespace vCardPlatform
         string connStr = Properties.Settings.Default.ConnStr;
 
         RestClient client = new RestClient("http://localhost:59458/api");
+
+        //ClientAux dont have authorization --Util para enviar pedidos que têm a própria autenticação do lado do cliente
+        RestClient clientAux = new RestClient("http://localhost:59458/api");
         Administrator administrator = null;
 
         //MQTT Variables
@@ -395,8 +398,9 @@ namespace vCardPlatform
             }
             else
             {
+                MessageBox.Show(response.Content, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.ForeColor = Color.Red;
-                lblStatus.Text = response.ErrorMessage;
+                lblStatus.Text = "Failed to create Administrator";
             }
             #endregion
             statusProgressBar.Value = 100;
@@ -678,17 +682,20 @@ namespace vCardPlatform
                 return;
             }
             //You can assign the Column types while initializing
+            DataGridViewColumn d1 = new DataGridViewTextBoxColumn();
             DataGridViewColumn d2 = new DataGridViewTextBoxColumn();
             DataGridViewColumn d3 = new DataGridViewTextBoxColumn();
 
             //Add Header Texts to be displayed on the Columns
+            d1.HeaderText = "Id";
+            d1.Name = "id";
             d2.HeaderText = "Name";
             d2.Name = "name";
             d3.HeaderText = "Type";
             d3.Name = "type";
 
             dataGridViewEntityDefaultCategory.Columns.Clear();
-            dataGridViewEntityDefaultCategory.Columns.AddRange(d2, d3);
+            dataGridViewEntityDefaultCategory.Columns.AddRange(d1, d2, d3);
 
             dataGridViewEntityDefaultCategory.Rows.Clear();
 
@@ -697,9 +704,12 @@ namespace vCardPlatform
                 {
                     int rowId = dataGridViewEntityDefaultCategory.Rows.Add();
                     DataGridViewRow row = dataGridViewEntityDefaultCategory.Rows[rowId];
+                    row.Cells["id"].Value = defaultCategory.Id;
                     row.Cells["name"].Value = defaultCategory.Name;
                     row.Cells["type"].Value = (defaultCategory.Type == "D" ? "Debit" : "Credit");
                 }
+
+            dataGridViewEntityDefaultCategory.Columns["id"].Visible = false;
         }
 
         private void btnEntityDCRemoveRow_Click(object sender, EventArgs e)
@@ -798,12 +808,22 @@ namespace vCardPlatform
                             DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEntityDefaultCategory);
                             dataTable2.Columns[0].ColumnName = FirstCharToUpper(dataTable2.Columns[0].ColumnName);
                             dataTable2.Columns[1].ColumnName = FirstCharToUpper(dataTable2.Columns[1].ColumnName);
-
+                            dataTable2.Columns[2].ColumnName = FirstCharToUpper(dataTable2.Columns[2].ColumnName);
                             #region Get Default Categories From Endpoint & Prepare To Compare
+
                             List<DefaultCategory> defaultCategories = loadEntityDefaultCategories();
 
                             DataTable dataTable1 = ConvertToDataTable<DefaultCategory>(defaultCategories);
-                            dataTable1.Columns.RemoveAt(0);
+
+                            //Set Same Types
+                            DataTable dtCloned = dataTable1.Clone();
+                            dtCloned.Columns[0].DataType = typeof(string);
+                            foreach (DataRow row in dataTable1.Rows)
+                            {
+                                dtCloned.ImportRow(row);
+                            }
+                            dataTable1 = dtCloned;
+
 
                             #endregion
 
@@ -834,10 +854,11 @@ namespace vCardPlatform
                                 }
                                 else if (row["Method"].ToString() == "DELETE")
                                 {
-                                    request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories", RestSharp.Method.DELETE);
+                                    request = new RestSharp.RestRequest("entities/" + txtEntityId.Text + "/defaultcategories/"+ row["Id"], RestSharp.Method.DELETE);
                                     request.AddJsonBody(defaultCategory);
                                 }
-                                RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                                request.AddHeader("Authorization", entity.Authentication.Token);
+                                RestSharp.IRestResponse responseDefaultCategory = clientAux.Execute(request);
                                 #endregion
                             }
                                 #endregion
@@ -907,7 +928,7 @@ namespace vCardPlatform
             return table;
         }
 
-        private DataTable GetDataGridViewAsDataTable(DataGridView _DataGridView)
+        private DataTable GetDataGridViewAsDataTable(DataGridView _DataGridView, bool checkCols = true)
         {
             try
             {
@@ -923,7 +944,8 @@ namespace vCardPlatform
                 ///////insert row data
                 foreach (DataGridViewRow row in _DataGridView.Rows)
                 {
-                    if (row.Cells[0].Value == null || row.Cells[0].Value.ToString() == "")
+                    if (checkCols)
+                    if ((row.Cells[1].Value == null || row.Cells[1].Value.ToString() == "") || (row.Cells[2].Value == null || row.Cells[2].Value.ToString() == ""))
                     {
                         continue;
                     }
@@ -1079,6 +1101,11 @@ namespace vCardPlatform
                 if (groupEntityStatus.Controls[i].Name == "")
                     groupEntityStatus.Controls.Remove(groupEntityStatus.Controls[i]);
 
+            c = panelEntityStatusResources.Controls.Count;
+            for (int i = c - 1; i >= 0; i--)
+                if (panelEntityStatusResources.Controls[i].Name == "")
+                    panelEntityStatusResources.Controls.Remove(panelEntityStatusResources.Controls[i]);
+
             dataGridViewEntityDefaultCategory.Rows.Clear();
             dataGridViewEntityDefaultCategory.Refresh();
 
@@ -1170,7 +1197,7 @@ namespace vCardPlatform
                         responselabel.Text = item.Content;
                         AppendElemToPanel(panelEntityStatusResources, responselabel);
 
-                        if (responseData.StatusCode != 0)
+                        if (responseData.StatusCode != 0 && responseData.StatusCode != HttpStatusCode.NotFound)
                         {
                             AppendTextBox(responselabel, "Success");
                             responselabel.BackColor = Color.GreenYellow;
@@ -1186,9 +1213,9 @@ namespace vCardPlatform
                 else
                 {
                     Label lblEntityStatusResponse = new Label();
-                    lblEntityStatusResponse.Location = new Point(99, 119);
+                    lblEntityStatusResponse.Location = new Point(106, 49);
                     lblEntityStatusResponse.Text = "Unreachable";
-                    AppendElemToPanel(panelEntityStatusResources, lblEntityStatusResponse);
+                    AppendElemToGroup(groupEntityStatus, lblEntityStatusResponse);
                     lblEntityStatusResponse.BackColor = Color.MediumVioletRed;
                 }
                 AppendStatusBar(100, "Done!");
@@ -1264,44 +1291,58 @@ namespace vCardPlatform
 
         private void btnEndPointsSufixsSave_Click(object sender, EventArgs e)
         {
-            #region Get End Point Sufixs From Endpoint & Prepare To Compare
-
-            var request = new RestRequest("endpointssufixs", Method.GET);
-
-            List<EndpointSufix> endpointSufixes = client.Execute<List<EndpointSufix>>(request).Data;
-
-            DataTable dataTable1 = ConvertToDataTable<EndpointSufix>(endpointSufixes);
-
-            #endregion
-
-            DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEndPointsSufixs);
-
-            DataTable dt = getDifferentRecords(dataTable2, dataTable1);
-
-            #region Handle Different Rows
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                EndpointSufix endpointSufix = new EndpointSufix
-                {
-                    Content = row["Content"].ToString(),
-                };
+                AppendStatusBar(0, "Endpoints Sufixs updating...");
 
-                #region Create&Populate&Send Request
-                if (row["Method"].ToString() == "POST")
-                {
-                    request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.POST, DataFormat.Json);
-                    request.AddJsonBody(endpointSufix);
-                }
-                else if (row["Method"].ToString() == "DELETE")
-                {
-                    request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.DELETE);
-                    request.AddJsonBody(endpointSufix);
+                #region Get End Point Sufixs From Endpoint & Prepare To Compare
 
-                }
-                RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                var request = new RestRequest("endpointssufixs", Method.GET);
+
+                List<EndpointSufix> endpointSufixes = client.Execute<List<EndpointSufix>>(request).Data;
+
+                DataTable dataTable1 = ConvertToDataTable<EndpointSufix>(endpointSufixes);
+
                 #endregion
+
+                DataTable dataTable2 = GetDataGridViewAsDataTable(dataGridViewEndPointsSufixs, false);
+                dataTable2 = dataTable2.Rows
+                     .Cast<DataRow>()
+                     .Where(row => !row.ItemArray.All(f => f is DBNull ||
+                                      string.IsNullOrEmpty(f as string ?? f.ToString())))
+                     .CopyToDataTable();
+                DataTable dt = getDifferentRecords(dataTable2, dataTable1);
+
+                #region Handle Different Rows
+                foreach (DataRow row in dt.Rows)
+                {
+                    EndpointSufix endpointSufix = new EndpointSufix
+                    {
+                        Content = row["Content"].ToString(),
+                    };
+
+                    #region Create&Populate&Send Request
+                    if (row["Method"].ToString() == "POST")
+                    {
+                        request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.POST, DataFormat.Json);
+                        request.AddJsonBody(endpointSufix);
+                    }
+                    else if (row["Method"].ToString() == "DELETE")
+                    {
+                        request = new RestSharp.RestRequest("endpointssufixs", RestSharp.Method.DELETE);
+                        request.AddJsonBody(endpointSufix);
+
+                    }
+                    RestSharp.IRestResponse responseDELETE = client.Execute(request);
+                    #endregion
+                }
+                #endregion
+                AppendStatusBar(100, "Endpoints Sufixs updated" );
             }
-            #endregion
+            catch (Exception ex)
+            {
+                AppendStatusBar(100, ex.Message);
+            }
         }
 
         private void btnEntityTestAuthentication_Click(object sender, EventArgs e)
@@ -1352,7 +1393,7 @@ namespace vCardPlatform
                 IRestResponse<Entity> result = client.Execute<Entity>(request);
                 if (result.IsSuccessful)
                 {
-                    FormEntityUsers form = new FormEntityUsers(result.Data, client);
+                    FormEntityUsers form = new FormEntityUsers(result.Data, clientAux);
                     form.Show();
                 }
             }

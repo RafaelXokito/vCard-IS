@@ -17,10 +17,10 @@ namespace vCardAPI.Controllers
         /// Search for a category based on given ID based on User authenticated
         /// </summary>
         /// <param name="id">Category ID</param>
-        /// <returns>Category founded</returns>
-        /// <response code="200">Returns the Category founded</response>
+        /// <returns>Category found</returns>
+        /// <response code="200">Returns the Category found</response>
         /// <response code="401">Category does not belongs to authenticated user</response>
-        /// <response code="404">If the Category was not founded</response>
+        /// <response code="404">If the Category was not found</response>
         [BasicAuthentication]
         [Route("api/categories/{id:int}")]
         public IHttpActionResult GetCategory(int id)
@@ -128,7 +128,7 @@ namespace vCardAPI.Controllers
         /// Search for all categories based on User authenticated
         /// </summary>
         /// <returns>A list of all categories</returns>
-        /// <response code="200">Returns the Categories founded. Returns null if you are not authorized</response>
+        /// <response code="200">Returns the Categories found. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/categories")]
         public IEnumerable<Category> GetCategories()

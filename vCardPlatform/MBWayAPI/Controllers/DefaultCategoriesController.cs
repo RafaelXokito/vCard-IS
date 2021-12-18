@@ -18,10 +18,10 @@ namespace MBWayAPI.Controllers
         /// Search for a category based on given ID based on User authenticated
         /// </summary>
         /// <param name="id">Default Categoy ID</param>
-        /// <returns>Default Categoy founded</returns>
-        /// <response code="200">Returns the Default Categoy founded</response>
+        /// <returns>Default Categoy found</returns>
+        /// <response code="200">Returns the Default Categoy found</response>
         /// <response code="401">Default Categoy does not belongs to authenticated user</response>
-        /// <response code="404">If the Default Categoy was not founded</response>
+        /// <response code="404">If the Default Categoy was not found</response>
         [BasicAuthentication]
         [Route("api/defaultcategories/{id:int}")]
         public IHttpActionResult GetDefaultCategory(int id)
@@ -116,7 +116,7 @@ namespace MBWayAPI.Controllers
         /// Search for all Default Categoies based on User authenticated
         /// </summary>
         /// <returns>A list of all Default Categoies</returns>
-        /// <response code="200">Returns the Default Categoies founded. Returns null if you are not authorized</response>
+        /// <response code="200">Returns the Default Categoies found. Returns null if you are not authorized</response>
         [BasicAuthentication]
         [Route("api/defaultcategories")]
         public IEnumerable<DefaultCategory> GetDefaultCategories()
