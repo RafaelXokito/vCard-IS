@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Script.Serialization;
+using System.Text.RegularExpressions;
 
 namespace vCardAPI.Controllers
 {
