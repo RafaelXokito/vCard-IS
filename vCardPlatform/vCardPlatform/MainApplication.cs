@@ -247,10 +247,11 @@ namespace vCardPlatform
                 m_cClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
 
                 byte[] qosLevels = { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE };
+                
                 m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
 
                 string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
-                m_cClient.Subscribe(m_strTopicsInfoBlocked, qosLevels);
+                m_cClient.Subscribe(m_strTopicsInfoBlocked, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
                 #endregion
 

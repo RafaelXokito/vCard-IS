@@ -12,6 +12,7 @@ namespace vCardGateway.Controllers
     public class CategoriesController : ApiController
     {
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
+        private string entitiesPathXSD = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xsd";
         /// <summary>
         /// Search for category
         /// </summary>
@@ -22,7 +23,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult GetCategories(string entity_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -63,7 +64,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult GetCategory(string entity_id, int category_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -118,7 +119,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult PostCategories(string entity_id, Category category)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -172,7 +173,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult PutCategories(string entity_id, int category_id, [FromBody]Category category)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -218,7 +219,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult DeleteCategories(string entity_id, int category_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {

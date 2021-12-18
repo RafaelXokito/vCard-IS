@@ -450,26 +450,22 @@ namespace MBWayAPI.Controllers
         private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
             string queryString = baseQueryString;
-            bool hasOne = false;
 
             if (filter != null)
             {
                 if (filter.Type != null)
                 {
-                    queryString += (hasOne ? "AND " : "") + "Type = @type ";
-                    hasOne = true;
+                    queryString +="AND Type = @type ";
                 }
 
                 if (filter.DateStart != null)
                 {
-                    queryString += (hasOne ? "AND " : "") + "Date >= @datestart ";
-                    hasOne = true;
+                    queryString += "AND Date >= @datestart ";
                 }
 
                 if (filter.DateEnd != null)
                 {
-                    queryString += (hasOne ? "AND " : "") + "Date <= @dateend ";
-                    hasOne = true;
+                    queryString += "AND Date <= @dateend ";
                 }
             }
 

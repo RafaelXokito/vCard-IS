@@ -13,6 +13,7 @@ namespace vCardGateway.Controllers
     public class DefaultCategoriesController : ApiController
     {
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
+        private string entitiesPathXSD = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xsd";
 
         /// <summary>
         /// Search for all Default Categoies based on User authenticated
@@ -24,7 +25,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult GetDefaultCategories(string entity_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -65,7 +66,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult GetDefaultCategoriy(string entity_id, int category_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -112,7 +113,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult PostDefaultCategories(string entity_id, DefaultCategory defaultCategory)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -171,7 +172,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult PutDefaultCategories(string entity_id, int category_id, DefaultCategory defaultCategory)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -218,7 +219,7 @@ namespace vCardGateway.Controllers
         public IHttpActionResult DeleteDefaultCategories(string entity_id, int category_id)
         {
             DateTime responseTimeStart = DateTime.Now;
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {

@@ -15,6 +15,7 @@ namespace vCardGateway.Controllers
     public class EntitiesController : ApiController
     {
         private string entitiesPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xml";
+        private string entitiesPathXSD = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\Entities.xsd";
 
         /// <summary>
         /// Search for a entity based on given ID and User authenticated
@@ -29,7 +30,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             GeneralLogsController.PostGeneralLog("Entities", email, "Gateway", HttpStatusCode.OK.ToString(), "GetEntities", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "entities");
             return handlerXML.GetEntities(name);
@@ -46,7 +47,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             Entity entity = handlerXML.GetEntity(entity_id);
 
@@ -90,7 +91,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -160,7 +161,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -225,7 +226,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
@@ -259,7 +260,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+            HandlerXML handlerXML = new HandlerXML(entitiesPath, entitiesPathXSD);
 
             try
             {
