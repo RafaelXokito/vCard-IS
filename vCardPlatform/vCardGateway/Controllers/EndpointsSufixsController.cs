@@ -54,7 +54,11 @@ namespace vCardGateway.Controllers
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
             HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
-
+            if (sufix == null || sufix.Content == null || sufix.Content == "")
+            {
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "GetEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+            }
             EndpointSufix sufix_r = handlerXML.GetEndpointSufix(sufix.Content);
 
             if (sufix_r == null)
@@ -93,6 +97,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (sufix == null || sufix.Content == null || sufix.Content == "")
+                {
+                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 handlerXML.CreateEndpointSufix(sufix);
                 GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "PostEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return Content(HttpStatusCode.Created, sufix);
@@ -131,6 +140,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (sufix == null || sufix.Content == null || sufix.Content == "")
+                {
+                    GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "DeleteEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 handlerXML.DeleteEndpointSufix(sufix.Content);
                 GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "DeleteEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                 return Ok($"EndPoint {sufix.Content} Deleted");

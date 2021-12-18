@@ -40,6 +40,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (credentials == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostSignin", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -172,6 +177,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (user == null || user.Photo == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUserPhoto", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -226,6 +236,15 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (user == null || user.Username == null || user.Username == ""
+                                 || user.Password == null || user.Password == ""
+                                 || user.Name == null || user.Name == ""
+                                 || user.Email == null || user.Email == ""
+                                 || user.ConfirmationCode == null || user.ConfirmationCode == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -278,6 +297,12 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (user == null || user.Name == null || user.Name == ""
+                                 || user.Email == null || user.Email == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutUser", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -301,6 +326,66 @@ namespace vCardGateway.Controllers
                 return InternalServerError(ex);
             }
         }
+
+
+        /// <summary>
+        /// Update authenticated User Maximum Limit
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH
+        ///     {
+        ///         "MaximumLimit": "1234"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="entity_id">Entity ID</param>
+        /// <param name="username">User Phone Number</param>
+        /// <param name="user">Secret struct body used to update</param>
+        /// <returns>User Updated</returns>
+        /// <response code="200">Returns the updated updated User</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
+        [Route("api/entities/{entity_id}/users/{username}/maxlimit")]
+        public IHttpActionResult PatchUserMaxLimit(string entity_id, string username, [FromBody] User user)
+        {
+            DateTime responseTimeStart = DateTime.Now;
+            HandlerXML handlerXML = new HandlerXML(entitiesPath);
+
+            try
+            {
+                if (user == null || user.MaximumLimit <= 0)
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserMaxLimit", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
+
+                Entity entity = handlerXML.GetEntity(entity_id);
+                RestClient client = new RestClient(entity.Endpoint + "/api");
+
+                RestRequest request = new RestRequest($"users/{username}/maxlimit", Method.PATCH, DataFormat.Json);
+
+                string auth = Request.Headers.Authorization == null ? "" : Request.Headers.Authorization.ToString();
+                request.AddHeader("Authorization", auth);
+                request.AddJsonBody (user);
+                IRestResponse<User> response = client.Execute<User>(request);
+                dynamic dataDefaultUser = JsonConvert.DeserializeObject(response.Content);
+                GeneralLogsController.PostGeneralLog("Users", "N/A", entity.Name, response.StatusCode.ToString(), "PatchUserMaxLimit", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                if (dataDefaultUser != null)
+                {
+                    return Content(response.StatusCode, dataDefaultUser);
+                }
+                return Content(response.StatusCode, response.StatusDescription);
+            }
+            catch (Exception ex)
+            {
+                GeneralLogsController.PostGeneralLog("Users", "N/A", "GATEWAY", HttpStatusCode.InternalServerError.ToString(), "PatchUserMaxLimit", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                return InternalServerError(ex);
+            }
+        }
+
 
         /// <summary>
         /// Update authenticated User Password
@@ -331,6 +416,12 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (secret == null || secret.Password == null || secret.Password == ""
+                                 || secret.NewPassword == null || secret.NewPassword == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserPassword", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -385,6 +476,12 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (secret == null || secret.Password == null || secret.Password == ""
+                                 || secret.NewConfirmationCode == null || secret.NewConfirmationCode == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Users", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchUserConfirmationCode", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 

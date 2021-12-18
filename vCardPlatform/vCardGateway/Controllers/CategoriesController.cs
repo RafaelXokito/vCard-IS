@@ -122,6 +122,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (category == null || category.Name == null || category.Type == null || (category.Type != "D" && category.Type != "C"))
+                {
+                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PostCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 
@@ -171,6 +176,11 @@ namespace vCardGateway.Controllers
 
             try
             {
+                if (category == null || category.Name == null || category.Type == null || (category.Type != "D" && category.Type != "C"))
+                {
+                    GeneralLogsController.PostGeneralLog("Categories", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "PutCategories", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Invalid inputs");
+                }
                 Entity entity = handlerXML.GetEntity(entity_id);
                 RestClient client = new RestClient(entity.Endpoint + "/api");
 

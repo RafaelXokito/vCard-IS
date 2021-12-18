@@ -460,6 +460,66 @@ namespace vCardAPI.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Update authenticated User Maximum Limit
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     {
+        ///         "MaximumLimit": "500"
+        ///     }
+        ///
+        /// </remarks>
+        /// <param name="number">User Phone Number</param>
+        /// <param name="user">Secret struct to be updated</param>
+        /// <returns>User Updated</returns>
+        /// <response code="200">Returns the updated updated User</response>
+        /// <response code="401">User does not belongs to authenticated user</response>
+        /// <response code="404">If given User not exist</response>
+        /// <response code="500">If a fatal error eccurred</response>
+        [BasicAuthentication]
+        [Route("api/users/{number:int}/maxlimit")]
+        public IHttpActionResult PatchUserMaxLimit(int number, [FromBody] User user)
+        {
+            string phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+            if (number.ToString() != phoneNumber)
+            {
+                return Content(HttpStatusCode.Unauthorized, $"You are not the user {number}.");
+            }
+
+            string queryString = "UPDATE Users SET MaximumLimit = @MaximumLimit WHERE PhoneNumber = @phonenumber";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    SqlCommand command = new SqlCommand(queryString, connection);
+
+                    command.Parameters.AddWithValue("@phonenumber", number.ToString());
+                    command.Parameters.AddWithValue("@MaximumLimit", user.MaximumLimit);
+
+                    connection.Open();
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        return Ok(GetUserByNumber(phoneNumber));
+                    }
+                    connection.Close();
+
+                    return Content(HttpStatusCode.NotFound, $"User does not exist.");
+                }
+                catch (Exception ex)
+                {
+                    if (connection.State == System.Data.ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
         public class Secret
         {
             public string Password { get; set; }

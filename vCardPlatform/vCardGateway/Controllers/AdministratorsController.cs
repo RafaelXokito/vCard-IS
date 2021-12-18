@@ -242,6 +242,21 @@ namespace vCardGateway.Controllers
             {
                 try
                 {
+                    if (administrator.Name == null || administrator.Name == "")
+                    {
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostAdministrator", "Name is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        return Content(HttpStatusCode.BadRequest, "Administrator Name cant be null or empty");
+                    }
+                    if (administrator.Email == null || administrator.Email == "")
+                    {
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostAdministrator", "Email is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        return Content(HttpStatusCode.BadRequest, "Administrator Email cant be null or empty");
+                    }
+                    if (administrator.Password == null || administrator.Password == "")
+                    {
+                        GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PostAdministrator", "Password is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                        return Content(HttpStatusCode.BadRequest, "Administrator Password cant be null or empty");
+                    }
                     SqlCommand command = new SqlCommand(queryString, connection);
 
                     command.Parameters.AddWithValue("@email", administrator.Email);
@@ -285,8 +300,7 @@ namespace vCardGateway.Controllers
         ///
         ///     PUT
         ///     {
-        ///       "Name": "Jhon",
-        ///       "Disabled": 1
+        ///       "Name": "Jhon"
         ///     }
         ///     
         ///     Disabled in (0, 1)
@@ -310,6 +324,12 @@ namespace vCardGateway.Controllers
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
 
+                if (administrator == null || (administrator.Name == null || administrator.Name == ""))
+                {
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutAdministrator", "Name is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Administrator name cant be null or empty");
+                }
+
                 command.Parameters.AddWithValue("@name", administrator.Name);
                 //command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
                 command.Parameters.AddWithValue("@id", id);
@@ -323,7 +343,7 @@ namespace vCardGateway.Controllers
                         return Content(HttpStatusCode.OK, $"Administrator {administrator.Name} updated");
                     }
                     connection.Close();
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "GetLoggedAdministrator", "Something went wrong with inputs", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PutAdministrator", "Something went wrong with inputs", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     return Content(HttpStatusCode.BadRequest, "Something went wrong with inputs");
                 }
                 catch (Exception ex)
@@ -332,7 +352,7 @@ namespace vCardGateway.Controllers
                     {
                         connection.Close();
                     }
-                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "GetLoggedAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.InternalServerError.ToString(), "PutAdministrator", ex.Message, DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
                     return InternalServerError(ex);
                 }
             }
@@ -368,6 +388,11 @@ namespace vCardGateway.Controllers
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                if (administrator == null)
+                {
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchAdministratorDisabled", "Disabled is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Administrator Disabled cant be null or empty");
+                }
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@disabled", administrator.Disabled ? 1 : 0);
@@ -427,6 +452,16 @@ namespace vCardGateway.Controllers
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                if (secret == null || secret.Password == null || secret.Password == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchAdministratorPassword", "Password is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Administrator Password cant be null or empty");
+                }
+                if (secret == null || secret.NewPassword == null || secret.NewPassword == "")
+                {
+                    GeneralLogsController.PostGeneralLog("Administrator", email, "Gateway", HttpStatusCode.BadRequest.ToString(), "PatchAdministratorPassword", "NewPassword is required", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds));
+                    return Content(HttpStatusCode.BadRequest, "Administrator NewPassword cant be null or empty");
+                }
                 SqlCommand command = new SqlCommand(queryString, connection);
 
                 command.Parameters.AddWithValue("@id", id);
