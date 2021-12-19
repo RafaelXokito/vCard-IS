@@ -451,20 +451,24 @@ namespace vCardAPI.Controllers
         private string GetFilterQueryString(string baseQueryString, Filter filter)
         {
             string queryString = baseQueryString;
+            bool hasOne = false;
 
             if (filter.Type != null)
             {
-                queryString += "AND Type = @type ";
+                queryString += (hasOne ? "AND " : "") + "Type = @type ";
+                hasOne = true;
             }
 
             if (filter.DateStart != null)
             {
-                queryString += "AND Date >= @datestart ";
+                queryString += (hasOne ? "AND " : "") + "Date >= @datestart ";
+                hasOne = true;
             }
 
             if (filter.DateEnd != null)
             {
-                queryString += "AND Date <= @dateend ";
+                queryString += (hasOne ? "AND " : "") + "Date <= @dateend ";
+                hasOne = true;
             }
 
             return queryString + " ORDER BY Date DESC";

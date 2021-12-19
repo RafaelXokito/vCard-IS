@@ -3,6 +3,6 @@
   <sufix>/api/defaultcategories</sufix>
   <sufix>/api/categories</sufix>
   <sufix>/api/users</sufix>
-  <sufix>/api/signin</sufix>
   <sufix>/api/xpto</sufix>
+  <sufix>/api/signin</sufix>
 </sufixs>

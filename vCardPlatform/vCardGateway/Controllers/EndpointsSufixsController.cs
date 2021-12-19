@@ -12,7 +12,7 @@ namespace vCardGateway.Controllers
     public class EndpointsSufixsController : ApiController
     {
         private string endpointssufixsPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\EndpointsSufixs.xml";
-        private string endpointssufixsPathXSD = System.AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\EndpointsSufixs.xsd";
+
 
         /// <summary>
         /// Search for sufix
@@ -24,7 +24,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath, endpointssufixsPathXSD);
+            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
             GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "Getendpointssufixs", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
             return handlerXML.GetEndpointSufixs();
         }
@@ -53,7 +53,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath, endpointssufixsPathXSD);
+            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
             if (sufix == null || sufix.Content == null || sufix.Content == "")
             {
                 GeneralLogsController.PostGeneralLog("EndpointSufixs", "N/A", "Gateway", HttpStatusCode.BadRequest.ToString(), "GetEndpointSufix", "Invalid input", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
@@ -93,7 +93,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath, endpointssufixsPathXSD);
+            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
 
             try
             {
@@ -103,7 +103,7 @@ namespace vCardGateway.Controllers
                     return Content(HttpStatusCode.BadRequest, "Invalid inputs");
                 }
                 handlerXML.CreateEndpointSufix(sufix);
-                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.Created.ToString(), "PostEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
+                GeneralLogsController.PostGeneralLog("EndpointSufixs", email, "Gateway", HttpStatusCode.OK.ToString(), "PostEndpointSufix", "", DateTime.Now, Convert.ToInt64((DateTime.Now - responseTimeStart).TotalMilliseconds), "endpointssufixs");
                 return Content(HttpStatusCode.Created, sufix);
             }
             catch (Exception ex)
@@ -136,7 +136,7 @@ namespace vCardGateway.Controllers
         {
             DateTime responseTimeStart = DateTime.Now;
             string email = AdminValidate.GetAdministratorEmailAuth(Request.Headers.Authorization);
-            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath, endpointssufixsPathXSD);
+            HandlerXML handlerXML = new HandlerXML(endpointssufixsPath);
 
             try
             {
