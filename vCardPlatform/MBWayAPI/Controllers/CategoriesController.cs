@@ -81,6 +81,9 @@ namespace MBWayAPI.Controllers
 
         public Category GetCategoryById(int id, string phoneNumber = null)
         {
+            if (phoneNumber == null)
+                phoneNumber = UserValidate.GetUserNumberAuth(Request.Headers.Authorization);
+
             string queryString = "SELECT * FROM Categories WHERE Id = @id AND Owner = @owner";
 
             using (SqlConnection connection = new SqlConnection(connectionString))

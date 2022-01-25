@@ -25,9 +25,8 @@ namespace vCardAPI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\dcarr\\Documents\\GitH" +
-            "ub\\vCard-IS\\vCardPlatform\\vCardAPI\\App_Data\\DBvCard.mdf;Integrated Security=True" +
-            "")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Admin\\Desktop\\escola" +
+            "\\vCard-IS\\vCardPlatform\\vCardAPI\\App_Data\\DBvCard.mdf;Integrated Security=True")]
         public string ConnStr {
             get {
                 return ((string)(this["ConnStr"]));
