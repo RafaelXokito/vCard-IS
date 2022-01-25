@@ -46,7 +46,7 @@ namespace vCardPlatform
         //MQTT Variables
         bool valid = true;
         MqttClient m_cClient = new MqttClient("127.0.0.1");
-        string[] m_strTopicsInfo = { "administrators", "categories", "defaultcategories", "endpointssufixs", "entities", "transactions", "users", "" };
+        string[] m_strTopicsInfo = { "administrators", "categories", "defaultcategories", "endpointssufixs", "entities", "transactions", "users" };
 
         public FormMainApplication(string username, string password)
         {
@@ -250,7 +250,7 @@ namespace vCardPlatform
                 m_cClient.Subscribe(m_strTopicsInfo, qosLevels);
 
                 string[] m_strTopicsInfoBlocked = { administrator.Id.ToString() };
-                m_cClient.Subscribe(m_strTopicsInfoBlocked, qosLevels);
+                m_cClient.Subscribe(m_strTopicsInfoBlocked, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
                 #endregion
 

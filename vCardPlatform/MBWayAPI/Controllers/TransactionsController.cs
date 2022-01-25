@@ -306,11 +306,6 @@ namespace MBWayAPI.Controllers
                         //Debit Transaction Inclusion
                         if (transaction.Type == "D")
                         {
-                            #region Verify Category Owner
-                            CategoriesController categoriesController = new CategoriesController();
-                            if (transaction.Category != 0 && categoriesController.GetCategoryById(Convert.ToInt32(transaction.Category)).Owner != transaction.PhoneNumber)
-                                return Content(HttpStatusCode.Unauthorized, $"That category don't belongs to you");
-                            #endregion
                             if (transaction.Category != 0)
                                 command.Parameters.AddWithValue("@classificationid", transaction.Category);
                             else

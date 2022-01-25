@@ -12,7 +12,7 @@ namespace MBWayAPI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,9 +25,9 @@ namespace MBWayAPI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\NOPLEX\\Documents\\Git" +
-            "Hub\\vCard-IS\\vCardPlatform\\MBWayAPI\\App_Data\\DBMBWay.mdf;Integrated Security=Tru" +
-            "e")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\dcarr\\Documents\\GitH" +
+            "ub\\vCard-IS\\vCardPlatform\\MBWayAPI\\App_Data\\DBMBWay.mdf;Integrated Security=True" +
+            "")]
         public string ConnStr {
             get {
                 return ((string)(this["ConnStr"]));
